@@ -71,9 +71,9 @@ document.addEventListener('DOMContentLoaded', () => {
       let htmlContent = title.getAttribute('data-original-html');
       if (title.closest('#hero')) {
         if (isMobile) {
-          htmlContent = 'A MYKA NO<br>CORAÇÃO DA SUA<br>INDÚSTRIA.';
+          htmlContent = 'A MYKA NO<br>PULMÃO DA SUA<br>INDÚSTRIA.';
         } else {
-          htmlContent = 'A MYKA NO CORAÇÃO<br>DA SUA INDÚSTRIA.';
+          htmlContent = 'A MYKA NO PULMÃO<br>DA SUA INDÚSTRIA.';
         }
       }
       
@@ -127,7 +127,7 @@ document.addEventListener('DOMContentLoaded', () => {
               span.textContent = word + ' ';
             }
           } else {
-            if (cleanWord.toUpperCase() === 'CORAÇÃO' || cleanWord.toUpperCase() === 'CORACAO' || cleanWord.toUpperCase() === 'PROTEJA') {
+            if (cleanWord.toUpperCase() === 'PULMÃO' || cleanWord.toUpperCase() === 'PULMAO' || cleanWord.toUpperCase() === 'CORAÇÃO' || cleanWord.toUpperCase() === 'CORACAO' || cleanWord.toUpperCase() === 'PROTEJA') {
               span.classList.add('heart-highlight');
             } else if (cleanWord.toUpperCase() === 'INDÚSTRIA' || cleanWord.toUpperCase() === 'INDUSTRIA') {
               span.classList.add('industry-highlight');
@@ -188,12 +188,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // Textos explicativos para o Modal do Robô Mascote em cada seção (Aprox. 45 segundos de narração em linguagem natural)
   const videoTransmissions = {
     'hero': {
-      title: 'A MYKA NO CORAÇÃO DA SUA INDÚSTRIA.',
-      speech: '"Olá! Eu sou o MIKRON, especialista da MYKA COMPRESSORES. Estou muito feliz em te receber aqui e se está aqui é por que você já percebeu como os compressores são importantes na sua indústria! A boa notícia é que você está em boas mãos! O compressor de ar dá fôlego a toda a sua produção e se ele parar, tudo para. Por isso, a minha missão diária é garantir que esse motor vital nunca pare de soprar com pressão e constância, trazendo a força estável e segura que a sua fábrica precisa para crescer. Vamos juntos manter esse ritmo sempre forte?"'
+      title: 'A MYKA NO PULMÃO DA SUA INDÚSTRIA.',
+      speech: '"Olá! Eu sou o MIKRON, especialista da MYKA COMPRESSORES. Estou muito feliz em te receber aqui e se está aqui é por que você já percebeu como os compressores são importantes na sua indústria! A boa notícia é que você está em boas mãos! O compressor de ar é o verdadeiro pulmão da sua indústria, dando fôlego a toda a sua produção — e se ele parar, tudo para. Por isso, a minha missão diária é garantir que esse pulmão vital nunca pare de soprar com pressão e constância, trazendo a força estável e segura que a sua indústria precisa para crescer. Vamos juntos manter esse ritmo sempre forte?"'
     },
     'quem-somos': {
       title: 'RESPONSABILIDADE. PROFISSIONALISMO. EXPERIÊNCIA.',
-      speech: '"Aqui na Myka, nós encaramos o seu negócio com total responsabilidade. Sabemos que cada minuto da sua produção é valioso, e é por isso que agimos com o máximo profissionalismo em cada atendimento. Nossa história é construída com anos de experiência no mercado de ar comprimido, entregando confiança e segurança para marcas de todo o país. Não somos apenas fornecedores, somos parceiros que entendem o ritmo da sua fábrica. Venha conhecer o jeito Myka de cuidar da sua empresa com quem realmente entende do assunto!"'
+      speech: '"Aqui na Myka, nós encaramos o seu negócio com total responsabilidade. Sabemos que cada minuto da sua produção é valioso, e é por isso que agimos com o máximo profissionalismo em cada atendimento. Nossa história é construída com anos de experiência no mercado de ar comprimido, entregando confiança e segurança para marcas de todo o país. Não somos apenas fornecedores, somos parceiros que entendem o ritmo da sua indústria. Venha conhecer o jeito Myka de cuidar da sua empresa com quem realmente entende do assunto!"'
     },
     'servicos': {
       title: 'MANUTENÇÃO. LOCAÇÃO. VENDA.',
@@ -201,7 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     'manutencao': {
       title: 'PREVENÇÃO. PREDIÇÃO. CORREÇÃO.',
-      speech: '"Para que sua fábrica nunca pare por imprevistos, nossa equipe atua em três frentes essenciais. Com a manutenção preventiva, limpamos e ajustamos tudo no tempo certo. Com a preditiva, usamos tecnologia avançada para antecipar problemas antes que eles aconteçam. E se algo der errado, nossa corretiva rápida entra em ação imediatamente para reestabelecer o seu ar comprimido. É segurança máxima para proteger o seu investimento e manter a produtividade lá no alto. Pode confiar, nós cuidamos de cada detalhe!"'
+      speech: '"Para que sua indústria nunca pare por imprevistos, nossa equipe atua em três frentes essenciais. Com a manutenção preventiva, limpamos e ajustamos tudo no tempo certo. Com a preditiva, usamos tecnologia avançada para antecipar problemas antes que eles aconteçam. E se algo der errado, nossa corretiva rápida entra em ação imediatamente para reestabelecer o seu ar comprimido. É segurança máxima para proteger o seu investimento e manter a produtividade lá no alto. Pode confiar, nós cuidamos de cada detalhe!"'
     },
     'locacao': {
       title: 'DISPONIBILIDADE. FLEXIBILIDADE. AGILIDADE.',
@@ -384,8 +384,83 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
+    // Animação dos contadores da seção EMPRESA
+    animateCompanyStats();
+
     // ANIMAÇÃO 3D CONTROLADA POR SCROLL (SCENARIOS & CAMERAS)
     animate3DSceneByScroll(currentScrollFraction);
+  }
+
+  // LÓGICA DE ANIMAÇÃO DOS NÚMEROS DA SEÇÃO EMPRESA (QUEM SOMOS)
+  let statsAnimated = false;
+  function animateCompanyStats() {
+    const quemSomosSection = document.getElementById('quem-somos');
+    if (!quemSomosSection) return;
+
+    const isActive = quemSomosSection.classList.contains('active');
+
+    if (isActive && !statsAnimated) {
+      statsAnimated = true;
+      const statNumbers = quemSomosSection.querySelectorAll('.stat-number');
+
+      statNumbers.forEach(stat => {
+        let target = parseInt(stat.getAttribute('data-target'), 10);
+        const startYear = parseInt(stat.getAttribute('data-start-year'), 10);
+        const isMonthlyGrowth = stat.getAttribute('data-monthly-growth') === 'true';
+
+        const now = new Date();
+        const currentYear = now.getFullYear();
+        const currentMonth = now.getMonth(); // 0 = Jan, 6 = Jul, etc.
+
+        const isWeeklyGrowth = stat.hasAttribute('data-weekly-growth');
+
+        if (isWeeklyGrowth && !isNaN(startYear)) {
+          // 4 novos contratos a cada semana decorrida desde 1995
+          const weeklyRate = parseInt(stat.getAttribute('data-weekly-growth'), 10) || 4;
+          const startDate = new Date(startYear, 0, 1);
+          const diffInDays = Math.floor((now.getTime() - startDate.getTime()) / (1000 * 3600 * 24));
+          const elapsedWeeks = Math.floor(diffInDays / 7);
+          target = elapsedWeeks * weeklyRate;
+        } else if (isMonthlyGrowth && !isNaN(startYear)) {
+          // 1 novo cliente por mês decorrido desde janeiro de 1995
+          const elapsedMonths = (currentYear - startYear) * 12 + (currentMonth + 1);
+          target = elapsedMonths;
+        } else if (!isNaN(startYear)) {
+          // Anos de experiência (incrementa a cada virada de ano)
+          target = Math.max(1, currentYear - startYear);
+        }
+
+        if (isNaN(target)) return;
+
+        const duration = 1600; // Duração de 1.6 segundos
+        const startTime = performance.now();
+
+        function updateNumber(currentTime) {
+          const elapsed = currentTime - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+          // Easing cubic out para desaceleraçã̃o suave no final
+          const easeProgress = 1 - Math.pow(1 - progress, 3);
+          const currentVal = Math.floor(easeProgress * target);
+
+          stat.textContent = currentVal.toLocaleString('pt-BR');
+
+          if (progress < 1) {
+            requestAnimationFrame(updateNumber);
+          } else {
+            stat.textContent = target.toLocaleString('pt-BR');
+          }
+        }
+
+        requestAnimationFrame(updateNumber);
+      });
+    } else if (!isActive && statsAnimated) {
+      // Reseta os números ao sair da seção para poder reanimar quando retornar
+      statsAnimated = false;
+      const statNumbers = quemSomosSection.querySelectorAll('.stat-number');
+      statNumbers.forEach(stat => {
+        stat.textContent = '0';
+      });
+    }
   }
 
   function animate3DSceneByScroll(progress) {
