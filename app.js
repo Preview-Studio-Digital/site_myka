@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
       introScreen.classList.add('fade-out');
       document.body.style.overflow = '';
       document.documentElement.style.overflow = '';
-    }, 2000); // Exibição total de 2 segundos
+    }, 3000); // Exibição total de 3 segundos (inclui fade-out com zoom)
   }
 
   // 1. INICIALIZAÇÃO DE ELEMENTOS DE INTERFACE

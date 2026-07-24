@@ -1440,94 +1440,87 @@ body.scroll-up .garrafal-title .title-word {
   text-align: center;
   padding: 24px;
   z-index: 10;
-  animation: intro-zoom 2s ease-out forwards;
+  animation: intro-zoom 3s linear forwards;
 }
 
 @keyframes intro-zoom {
   0% {
-    transform: scale(0.94);
+    transform: scale(0.88);
     opacity: 0;
   }
   15% {
     opacity: 1;
   }
-  60% {
-    transform: scale(1);
+  75% {
     opacity: 1;
   }
   100% {
-    transform: scale(1);
-    opacity: 1;
+    transform: scale(1.18); /* Zoom in constante durante os 3s */
+    opacity: 0;             /* Fade out no final */
   }
 }
 
-/* Grupo de Títulos com Alinhamento Centrado */
-.intro-title-group {
+/* Frase Tipográfica Impactante na Tela de Carregamento */
+.intro-phrase {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2px;
+  gap: 6px;
 }
 
-.intro-huge-word-motivos {
+.intro-line-1 {
   font-family: var(--font-garrafal);
-  font-size: 3.2rem;
+  font-size: 1.3rem;
+  letter-spacing: 6px;
+  color: #8E9BAE;
+  text-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+}
+
+/* Retornada a fonte original garrafal */
+.intro-line-2,
+.intro-line-4 {
+  font-family: var(--font-garrafal);
+  font-size: 4.5rem;
   line-height: 0.95;
+  letter-spacing: 3px;
   color: var(--accent-cyan);
-  letter-spacing: 2px;
-  animation: shimmer-cyan-glow 4.4s infinite ease-in-out;
+  text-shadow: 0 0 20px rgba(0, 229, 255, 0.6), 0 0 35px rgba(0, 229, 255, 0.3);
+  animation: shimmer-cyan-glow 3.2s infinite ease-in-out;
 }
 
-.intro-sub-text {
-  font-family: var(--font-body);
-  font-weight: 600;
-  font-size: 0.85rem; /* Ajustado para casar visualmente com a largura do MOTIVOS acima */
-  letter-spacing: 5px;
-  margin-right: -5px; /* Compensa o offset final */
-  color: var(--text-secondary);
-  margin-top: 14px;
-  text-transform: uppercase;
+.intro-line-3 {
+  font-family: var(--font-garrafal);
+  font-size: 1.6rem;
+  letter-spacing: 3px;
+  color: #FFFFFF;
+  margin: 4px 0;
 }
 
-.intro-divider {
-  width: 80px;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent);
-  box-shadow: var(--glow-cyan);
-  margin: 22px 0 16px 0;
-}
-
-.intro-logo {
-  transform: scale(1.5);
-  margin-top: 10px;
-  margin-bottom: 0;
-}
-
-/* Ampliação da logo na tela de carregamento para efeito dramático */
-.intro-logo .brand-text {
-  font-size: 2.8rem !important;
-  letter-spacing: 1.5px !important;
-}
-
-.intro-logo .brand-sub {
-  font-size: 0.95rem !important;
-  letter-spacing: 1px !important;
+/* INDÚSTRIA — fonte maior para destaque na linha intermediária */
+.intro-highlight-blue {
+  color: #0B72FF;
+  font-size: 1.45em;
+  display: inline-block;
+  line-height: 1;
+  text-shadow: 0 0 16px rgba(11, 114, 255, 0.8), 0 0 28px rgba(11, 114, 255, 0.4);
+  animation: shimmer-blue-glow 3.7s infinite ease-in-out 0.4s;
 }
 
 @media (max-width: 767px) {
-  .intro-huge-word-motivos {
-    font-size: 2.8rem; /* Retornado ao valor original do mobile */
+  .intro-line-1 {
+    font-size: 1.1rem;
     letter-spacing: 4px;
-    margin-right: -4px;
   }
-  
-  .intro-sub-text {
-    font-size: 0.62rem; /* Retornado ao valor original do mobile */
-    letter-spacing: 3px;
-    margin-right: 0;
-    margin-top: 10px;
+  .intro-line-2,
+  .intro-line-4 {
+    font-size: 3.2rem;
+    letter-spacing: 2px;
   }
-  
+  .intro-line-3 {
+    font-size: 1.2rem;
+    letter-spacing: 2px;
+  }
+}
   .intro-logo {
     transform: scale(1.25);
   }
