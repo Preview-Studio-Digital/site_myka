@@ -415,14 +415,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const isWeeklyGrowth = stat.hasAttribute('data-weekly-growth');
 
         if (isWeeklyGrowth && !isNaN(startYear)) {
-          // 4 novos contratos a cada semana decorrida desde 1995
+          // 4 novos contratos a cada semana decorrida desde o ano inicial (startYear)
           const weeklyRate = parseInt(stat.getAttribute('data-weekly-growth'), 10) || 4;
           const startDate = new Date(startYear, 0, 1);
           const diffInDays = Math.floor((now.getTime() - startDate.getTime()) / (1000 * 3600 * 24));
           const elapsedWeeks = Math.floor(diffInDays / 7);
           target = elapsedWeeks * weeklyRate;
         } else if (isMonthlyGrowth && !isNaN(startYear)) {
-          // 1 novo cliente por mês decorrido desde janeiro de 1995
+          // 1 novo cliente por mês decorrido desde o ano inicial (startYear)
           const elapsedMonths = (currentYear - startYear) * 12 + (currentMonth + 1);
           target = elapsedMonths;
         } else if (!isNaN(startYear)) {
@@ -535,12 +535,27 @@ document.addEventListener('DOMContentLoaded', () => {
   // 4. LÓGICA DO MODAL DE VÍDEO FUTURISTA COM REPRODUÇÃO DE ÁUDIO E TRAVA DE SCROLL
   let currentAudio = null;
   const playPauseBtn = document.getElementById('play-pause-btn');
+  const modalVideo = document.getElementById('modal-video');
+  const videoVignette = document.getElementById('video-vignette');
+  const robotSimulation = document.getElementById('robot-simulation');
 
   function stopAudio() {
     if (currentAudio) {
       currentAudio.pause();
       currentAudio.currentTime = 0;
       currentAudio = null;
+    }
+    if (modalVideo) {
+      modalVideo.pause();
+      modalVideo.currentTime = 0;
+    }
+    if (videoVignette) {
+      videoVignette.classList.add('hidden');
+    }
+    // Retoma o vídeo de fundo ao fechar o modal
+    const bgVideoElement = document.getElementById('bg-video');
+    if (bgVideoElement) {
+      bgVideoElement.play().catch(err => console.log("Background video play error on resume:", err));
     }
     if (playPauseBtn) {
       playPauseBtn.classList.remove('playing');
@@ -571,35 +586,46 @@ document.addEventListener('DOMContentLoaded', () => {
       document.body.style.overflow = 'hidden';
       document.documentElement.style.overflow = 'hidden';
 
+      // Pausa o vídeo de fundo para economizar recursos (CPU/GPU) e evitar lentidão
+      const bgVideoElement = document.getElementById('bg-video');
+      if (bgVideoElement) {
+        bgVideoElement.pause();
+      }
+
       const waves = document.querySelectorAll('.audio-wave');
 
-      // Toca áudio apenas na seção 1 (Hero)
       if (videoKey === 'hero') {
-        if (playPauseBtn) {
-          playPauseBtn.style.display = 'flex';
-          playPauseBtn.classList.add('playing');
-          const iconSpan = playPauseBtn.querySelector('.icon');
-          if (iconSpan) iconSpan.textContent = '⏸';
+        // Exibe o vídeo real no slide 1 e esconde a simulação do robô
+        if (robotSimulation) robotSimulation.style.display = 'none';
+        if (modalVideo) {
+          modalVideo.classList.remove('hidden');
+          modalVideo.src = 'video-slide1.webm';
+          modalVideo.play().catch(err => console.log("Video playback initiated with error:", err));
         }
-        waves.forEach(w => {
-          w.style.display = 'flex';
-          w.classList.remove('paused');
-        });
-        currentAudio = new Audio('audio01.mp3');
-        currentAudio.play()
-          .then(() => {
-            waves.forEach(w => w.classList.remove('paused'));
-          })
-          .catch(err => {
-            console.log("Playback block:", err);
-            if (playPauseBtn) {
-              playPauseBtn.classList.remove('playing');
-              const iconSpan = playPauseBtn.querySelector('.icon');
-              if (iconSpan) iconSpan.textContent = '▶';
-            }
-            waves.forEach(w => w.classList.add('paused'));
-          });
+        if (videoVignette) {
+          videoVignette.classList.remove('hidden');
+        }
+        if (modalCloseBtn) {
+          modalCloseBtn.classList.remove('hidden');
+        }
+        
+        // Esconde os controles de simulação
+        if (playPauseBtn) playPauseBtn.style.display = 'none';
+        waves.forEach(w => w.style.display = 'none');
       } else {
+        // Exibe a simulação do robô e esconde o vídeo real
+        if (modalVideo) {
+          modalVideo.classList.add('hidden');
+          modalVideo.src = '';
+        }
+        if (videoVignette) {
+          videoVignette.classList.add('hidden');
+        }
+        if (modalCloseBtn) {
+          modalCloseBtn.classList.add('hidden');
+        }
+        if (robotSimulation) robotSimulation.style.display = 'flex';
+
         // Esconde botão de play/pause e ondas se a seção não tiver áudio
         if (playPauseBtn) playPauseBtn.style.display = 'none';
         waves.forEach(w => w.style.display = 'none');
@@ -624,6 +650,34 @@ document.addEventListener('DOMContentLoaded', () => {
           playPauseBtn.classList.remove('playing');
           if (iconSpan) iconSpan.textContent = '▶';
           waves.forEach(w => w.classList.add('paused'));
+        }
+      }
+    });
+  }
+
+  if (modalVideo) {
+    modalVideo.addEventListener('click', () => {
+      if (modalVideo.paused) {
+        modalVideo.play().catch(err => console.log("Video play error on click:", err));
+      } else {
+        modalVideo.pause();
+      }
+    });
+
+    modalVideo.addEventListener('ended', () => {
+      stopAudio();
+      unlockScroll();
+      modal.classList.add('hidden');
+    });
+
+    document.addEventListener('keydown', (e) => {
+      // Verifica se o modal e o vídeo estão visíveis e a tecla pressionada é espaço
+      if (e.code === 'Space' && !modal.classList.contains('hidden') && !modalVideo.classList.contains('hidden')) {
+        e.preventDefault(); // Impede rolagem da página com barra de espaço
+        if (modalVideo.paused) {
+          modalVideo.play().catch(err => console.log("Spacebar play error:", err));
+        } else {
+          modalVideo.pause();
         }
       }
     });
