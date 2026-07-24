@@ -169,14 +169,22 @@ body {
   z-index: 120;
 }
 
-/* Blur no fundo do wrapper do site quando o menu está aberto */
-body.menu-active .content-wrapper {
+/* Blur no fundo do wrapper do site e na logo do topo quando o menu está aberto */
+body.menu-active .content-wrapper,
+body.menu-active .hud-header > .hud-logo-link {
   filter: blur(8px);
   transition: filter 0.4s ease;
+  pointer-events: none;
 }
 
-/* Transição de volta para o filtro */
-.content-wrapper {
+body.is-scrolling .content-wrapper,
+body.is-scrolling .hud-header > .hud-logo-link {
+  filter: blur(3px);
+}
+
+/* Transição suave de volta para o filtro */
+.content-wrapper,
+.hud-header > .hud-logo-link {
   transition: filter 0.4s ease;
 }
 
@@ -915,8 +923,8 @@ body.scroll-up .garrafal-title .title-word {
 
 /* Espaçamento no topo reajustado para 95px para limpar o cabeçalho fixo */
 #contato {
-  padding-top: 95px !important; /* Igualado a 95px com os outros slides */
-  padding-bottom: 45px !important; /* Garante respiro amplo na base para não encostar no rodapé fixo */
+  padding-top: 95px !important; /* Mantém o título fixo no topo igual aos outros slides */
+  padding-bottom: 25px !important; /* Baixa todo o conjunto de elementos o máximo possível em direção ao rodapé */
 }
 
 /* Compactações exclusivas da seção de contato para compensar a descida do topo */
@@ -930,15 +938,15 @@ body.scroll-up .garrafal-title .title-word {
 }
 
 #contato .section-desc {
-  margin-top: auto !important; /* Força o empurrão do texto explicativo para baixo */
-  margin-bottom: 20px !important; /* Alinha com a margem inferior padrão das outras seções */
+  margin-top: auto !important; /* Empurra todo o conjunto (texto + botão + cards) o máximo para a base */
+  margin-bottom: 6px !important;
 }
 
 #contato .action-buttons {
   max-width: none !important;
   width: 100% !important;
-  margin-bottom: 12px !important;
-  margin-top: 8px !important;
+  margin-top: 0 !important;
+  margin-bottom: 6px !important; /* Mantém o botão ASSISTA bem próximo dos cards */
 }
 
 #contato .action-buttons .btn {
@@ -948,8 +956,8 @@ body.scroll-up .garrafal-title .title-word {
 }
 
 #contato .contact-card {
-  margin-top: 8px !important; /* Alinha com a margem superior padrão dos botões das outras seções */
-  margin-bottom: 32px !important; /* Afasta o último card (LOCALIZAÇÃO) do rodapé fixo */
+  margin-top: 0 !important; /* Encostado logo abaixo do botão ASSISTA */
+  margin-bottom: 4px !important; /* Rebaixa o último card o máximo possível rente ao rodapé */
 }
 
 .footer-info .copy {
