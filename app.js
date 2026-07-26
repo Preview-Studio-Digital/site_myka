@@ -193,7 +193,7 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     'quem-somos': {
       title: 'RESPONSABILIDADE. PROFISSIONALISMO. EXPERIÊNCIA.',
-      speech: '"Aqui na Myka, nós encaramos o seu negócio com total responsabilidade. Sabemos que cada minuto da sua produção é valioso, e é por isso que agimos com o máximo profissionalismo em cada atendimento. Nossa história é construída com anos de experiência no mercado de ar comprimido, entregando confiança e segurança para marcas de todo o país. Não somos apenas fornecedores, somos parceiros que entendem o ritmo da sua indústria. Venha conhecer o jeito Myka de cuidar da sua empresa com quem realmente entende do assunto!"'
+      speech: '"Aqui na Myka Compressores, nós encaramos o seu negócio com total responsabilidade. Sabemos que cada minuto da sua produção é valioso, e é por isso que agimos com o máximo profissionalismo em cada atendimento. Nossa história é construída com mais de 40 anos de experiência no mercado de ar comprimido, entregando confiança e segurança para indústrias de todo o país. Não somos apenas fornecedores, somos parceiros que entendem o ritmo da sua indústria. Vem com a gente!"'
     },
     'servicos': {
       title: 'MANUTENÇÃO. LOCAÇÃO. VENDA.',

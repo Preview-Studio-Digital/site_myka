@@ -521,6 +521,16 @@ body.is-scrolling .scrolly-section.active .bg-section-number {
   font-size: 0.9em !important;
 }
 
+#servicos .garrafal-title .title-line:nth-child(1) {
+  font-size: 1.5em !important;
+}
+#servicos .garrafal-title .title-line:nth-child(2) {
+  font-size: 1.3em !important;
+}
+#servicos .garrafal-title .title-line:nth-child(3) {
+  font-size: 1.1em !important;
+}
+
 @media (max-width: 767px) {
   #hero .garrafal-title .title-line:nth-child(1),
   #contato .garrafal-title .title-line:nth-child(1) {
