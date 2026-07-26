@@ -824,6 +824,14 @@ body.scroll-up .garrafal-title .title-word {
   backdrop-filter: blur(10px);
 }
 
+.btn-whatsapp {
+  background: rgba(37, 211, 102, 0.08);
+  color: #25D366;
+  border: 1px solid rgba(37, 211, 102, 0.25);
+  box-shadow: none;
+  backdrop-filter: blur(10px);
+}
+
 .btn-primary:hover,
 .btn-primary:active,
 .btn-secondary:hover,
@@ -832,6 +840,38 @@ body.scroll-up .garrafal-title .title-word {
   color: #000 !important;
   border-color: transparent !important;
   box-shadow: var(--glow-cyan);
+  transform: translateY(-2px);
+}
+
+.btn-whatsapp:hover,
+.btn-whatsapp:active {
+  background: #25D366 !important;
+  color: #000 !important;
+  border-color: transparent !important;
+  box-shadow: 0 0 15px rgba(37, 211, 102, 0.4);
+  transform: translateY(-2px);
+}
+
+.whatsapp-btn-icon {
+  width: 14px;
+  height: 14px;
+  fill: currentColor;
+}
+
+.watch-btn {
+  background: rgba(255, 0, 0, 0.08) !important;
+  color: #ff0000 !important;
+  border: 1px solid rgba(255, 0, 0, 0.25) !important;
+  box-shadow: none !important;
+  backdrop-filter: blur(10px);
+}
+
+.watch-btn:hover,
+.watch-btn:active {
+  background: #ff0000 !important;
+  color: #fff !important;
+  border-color: transparent !important;
+  box-shadow: 0 0 15px rgba(255, 0, 0, 0.5) !important;
   transform: translateY(-2px);
 }
 
@@ -1107,14 +1147,14 @@ body.scroll-up .garrafal-title .title-word {
 
 .video-close-btn {
   position: absolute;
-  bottom: 20px; /* Abaixado de 40px para 20px */
+  bottom: 70px; /* Subido de 20px para 70px */
   left: 50%;
   transform: translateX(-50%);
   z-index: 1010;
   width: auto;
   max-width: 250px;
-  padding: 6px 20px; /* Reduzido de 12px 40px para diminuir a área do botão */
-  font-size: 0.8rem; /* Mantém a fonte */
+  padding: 6px 20px;
+  font-size: 0.8rem;
   flex: none;
 }
 
@@ -1230,7 +1270,7 @@ body.scroll-up .garrafal-title .title-word {
   align-items: center;
   gap: 16px;
   margin-top: 15px;
-  margin-bottom: 20px;
+  margin-bottom: 70px; /* Subido de 20px para 70px */
   width: 100%;
   z-index: 5;
 }

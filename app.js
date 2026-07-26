@@ -197,7 +197,7 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     'servicos': {
       title: 'MANUTENÇÃO. LOCAÇÃO. VENDA.',
-      speech: '"Você sabia que a Myka cuida de todas as etapas do seu ar comprimido? Oferecemos um serviço completo que une manutenção preventiva para evitar falhas, locação flexível para atender suas emergências ou picos de produção, e venda de equipamentos modernos de alta durabilidade. Seja qual for a sua necessidade atual, temos a solução certa, do tamanho exato da sua empresa. Cuidamos de tudo para que você possa focar no que faz de melhor: fazer a sua indústria produzir e crescer sem limites!"'
+      speech: '"A MYKA COMPRESSORES oferece um serviço completo que une manutenção para evitar falhas ou corrigir defeitos nos equipamentos compressores, locação flexível para atender suas emergências ou picos de produção, e venda de equipamentos modernos de alta durabilidade. Seja qual for a sua necessidade atual, temos a solução certa, do tamanho exato da sua empresa. Em qual desses serviços podemos ser úteis?"'
     },
     'manutencao': {
       title: 'PREVENÇÃO. PREDIÇÃO. CORREÇÃO.',
