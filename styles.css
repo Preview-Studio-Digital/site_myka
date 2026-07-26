@@ -314,7 +314,7 @@ body.is-scrolling .content-wrapper {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  font-family: var(--font-garrafal);
+  font-family: 'Black Ops One', sans-serif;
   font-size: 55vh; /* Número monumental */
   font-weight: normal;
   line-height: 1;
