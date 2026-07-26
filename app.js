@@ -548,7 +548,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (modalVideo) {
       modalVideo.pause();
-      modalVideo.currentTime = 0;
+      modalVideo.removeAttribute('src'); // Libera o decodificador de vídeo no mobile instantaneamente
+      modalVideo.load();
     }
     if (videoVignette) {
       videoVignette.classList.add('hidden');
