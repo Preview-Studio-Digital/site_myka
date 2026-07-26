@@ -329,7 +329,7 @@ body.is-scrolling .content-wrapper {
 
 .scrolly-section.active .bg-section-number {
   opacity: 0.05; /* Retornado para 5% conforme solicitação final */
-  right: -10vw; /* Mais deslocado para a direita, mostrando menos do número */
+  right: -18vw; /* Mais deslocado para a direita, mostrando menos do número */
 }
 /* Efeito dinâmico: Número acende ao rolar e suaviza ao parar */
 body.is-scrolling .scrolly-section.active .bg-section-number {
@@ -1096,7 +1096,7 @@ body.scroll-up .garrafal-title .title-word {
   width: 100%;
   height: 100%;
   pointer-events: none;
-  background: radial-gradient(circle, rgba(0, 0, 0, 0) 25%, rgba(0, 0, 0, 0.92) 100%);
+  background: radial-gradient(circle, rgba(0, 0, 0, 0) 25%, rgba(0, 0, 0, 1) 100%);
   z-index: 2;
   transition: opacity 0.3s ease;
 }

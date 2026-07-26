@@ -599,12 +599,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const waves = document.querySelectorAll('.audio-wave');
 
-      if (videoKey === 'hero') {
-        // Exibe o vídeo real no slide 1 e esconde a simulação do robô
+      if (videoKey === 'hero' || videoKey === 'quem-somos') {
+        // Exibe o vídeo real no slide correspondente e esconde a simulação do robô
         if (robotSimulation) robotSimulation.style.display = 'none';
         if (modalVideo) {
           modalVideo.classList.remove('hidden');
-          modalVideo.src = 'video-slide1.webm';
+          modalVideo.src = (videoKey === 'hero' ? 'video-slide1.webm' : 'video-slide2.webm') + '?t=' + Date.now();
           modalVideo.play().catch(err => console.log("Video playback initiated with error:", err));
         }
         if (videoVignette) {
