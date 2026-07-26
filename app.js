@@ -422,9 +422,10 @@ document.addEventListener('DOMContentLoaded', () => {
           const elapsedWeeks = Math.floor(diffInDays / 7);
           target = elapsedWeeks * weeklyRate;
         } else if (isMonthlyGrowth && !isNaN(startYear)) {
-          // 1 novo cliente por mês decorrido desde o ano inicial (startYear)
+          // Calcula com base no ritmo mensal customizado (ex: 2 clientes/mês)
+          const monthlyRate = parseInt(stat.getAttribute('data-monthly-growth'), 10) || 1;
           const elapsedMonths = (currentYear - startYear) * 12 + (currentMonth + 1);
-          target = elapsedMonths;
+          target = elapsedMonths * monthlyRate;
         } else if (!isNaN(startYear)) {
           // Anos de experiência (incrementa a cada virada de ano)
           target = Math.max(1, currentYear - startYear);
