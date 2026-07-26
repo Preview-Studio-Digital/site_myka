@@ -221,11 +221,13 @@ body.is-scrolling .hud-header > .hud-logo-link {
   box-shadow: var(--glow-cyan);
 }
 
-.nav-link:hover {
+.nav-link:hover,
+.nav-link.active {
   color: var(--accent-cyan);
 }
 
-.nav-link:hover::after {
+.nav-link:hover::after,
+.nav-link.active::after {
   width: 100%;
 }
 

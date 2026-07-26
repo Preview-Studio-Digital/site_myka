@@ -377,10 +377,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     sections.forEach((sec, idx) => {
+      const link = document.querySelector(`#hud-navigation a[href="#${sec.id}"]`);
       if (idx === currentStep) {
         sec.classList.add('active');
+        if (link) link.classList.add('active');
       } else {
         sec.classList.remove('active');
+        if (link) link.classList.remove('active');
       }
     });
 
