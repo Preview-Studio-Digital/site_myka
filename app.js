@@ -409,7 +409,7 @@ document.addEventListener('DOMContentLoaded', () => {
       statNumbers.forEach(stat => {
         let target = parseInt(stat.getAttribute('data-target'), 10);
         const startYear = parseInt(stat.getAttribute('data-start-year'), 10);
-        const isMonthlyGrowth = stat.getAttribute('data-monthly-growth') === 'true';
+        const isMonthlyGrowth = stat.hasAttribute('data-monthly-growth');
 
         const now = new Date();
         const currentYear = now.getFullYear();
