@@ -329,7 +329,7 @@ body.is-scrolling .content-wrapper {
 
 .scrolly-section.active .bg-section-number {
   opacity: 0.05; /* Retornado para 5% conforme solicitação final */
-  right: -18vw; /* Mais deslocado para a direita, mostrando menos do número */
+  right: 15px; /* Posiciona o número dentro da seção ativa no mobile, sem corte */
 }
 /* Efeito dinâmico: Número acende ao rolar e suaviza ao parar */
 body.is-scrolling .scrolly-section.active .bg-section-number {
@@ -1482,7 +1482,7 @@ body.scroll-up .garrafal-title .title-word {
   }
 
   .scrolly-section.active .bg-section-number {
-    right: -6vw !important;
+    right: 40px !important; /* Posiciona o número totalmente visível no desktop, sem corte */
     opacity: 0.05 !important;
   }
 
