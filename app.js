@@ -201,7 +201,7 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     'manutencao': {
       title: 'PREVENÇÃO. PREDIÇÃO. CORREÇÃO.',
-      speech: '"Para que sua indústria nunca pare por imprevistos, nossa equipe atua em três frentes essenciais. Com a manutenção preventiva, limpamos e ajustamos tudo no tempo certo. Com a preditiva, usamos tecnologia avançada para antecipar problemas antes que eles aconteçam. E se algo der errado, nossa corretiva rápida entra em ação imediatamente para reestabelecer o seu ar comprimido. É segurança máxima para proteger o seu investimento e manter a produtividade lá no alto. Pode confiar, nós cuidamos de cada detalhe!"'
+      speech: '"Para que sua indústria nunca pare, nossa equipe atua em três frentes essenciais. Com a manutenção preventiva ajustamos tudo no tempo certo. Com a manutenção preditiva, usamos tecnologia avançada para antecipar problemas antes que eles aconteçam. Na manutenção corretiva agimos imediatamente para reestabelecer o seu ar comprimido. É segurança máxima para proteger o seu investimento e manter a produtividade lá no alto. Como está a saúde dos seus compressores? "'
     },
     'locacao': {
       title: 'DISPONIBILIDADE. FLEXIBILIDADE. AGILIDADE.',
@@ -544,6 +544,11 @@ document.addEventListener('DOMContentLoaded', () => {
   const robotSimulation = document.getElementById('robot-simulation');
 
   function stopAudio() {
+    const loaderOverlay = document.getElementById('video-loader-overlay');
+    if (loaderOverlay) {
+      loaderOverlay.classList.remove('active');
+      loaderOverlay.classList.add('hidden');
+    }
     if (currentAudio) {
       currentAudio.pause();
       currentAudio.currentTime = 0;
@@ -585,7 +590,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (modalTitle) modalTitle.textContent = info.title;
       robotSpeechText.textContent = info.speech;
-      modal.classList.remove('hidden');
 
       // Trava scroll da página ao abrir modal
       document.body.style.overflow = 'hidden';
@@ -599,41 +603,170 @@ document.addEventListener('DOMContentLoaded', () => {
 
       const waves = document.querySelectorAll('.audio-wave');
 
-      if (videoKey === 'hero' || videoKey === 'quem-somos') {
-        // Exibe o vídeo real no slide correspondente e esconde a simulação do robô
-        if (robotSimulation) robotSimulation.style.display = 'none';
-        if (modalVideo) {
-          modalVideo.classList.remove('hidden');
-          modalVideo.src = (videoKey === 'hero' ? 'video-slide1.webm' : 'video-slide2.webm') + '?t=' + Date.now();
-          modalVideo.play().catch(err => console.log("Video playback initiated with error:", err));
-        }
-        if (videoVignette) {
-          videoVignette.classList.remove('hidden');
-        }
-        if (modalCloseBtn) {
-          modalCloseBtn.classList.remove('hidden');
-        }
-        
-        // Esconde os controles de simulação
-        if (playPauseBtn) playPauseBtn.style.display = 'none';
-        waves.forEach(w => w.style.display = 'none');
-      } else {
-        // Exibe a simulação do robô e esconde o vídeo real
-        if (modalVideo) {
-          modalVideo.classList.add('hidden');
-          modalVideo.src = '';
-        }
-        if (videoVignette) {
-          videoVignette.classList.add('hidden');
-        }
-        if (modalCloseBtn) {
-          modalCloseBtn.classList.add('hidden');
-        }
-        if (robotSimulation) robotSimulation.style.display = 'flex';
+      // TELA DE CARREGAMENTO COM PALAVRA DO TITULO DO SLIDE
+      const loaderOverlay = document.getElementById('video-loader-overlay');
+      const loaderWordText = document.getElementById('loader-word-text');
+      
+      const titleKeywords = {
+        'hero': 'ATUAÇÃO',
+        'quem-somos': 'EMPRESA',
+        'servicos': 'ATIVIDADES',
+        'manutencao': 'MANUTENÇÃO',
+        'locacao': 'LOCAÇÃO',
+        'venda': 'VENDAS',
+        'contato': 'CONTATO'
+      };
 
-        // Esconde botão de play/pause e ondas se a seção não tiver áudio
-        if (playPauseBtn) playPauseBtn.style.display = 'none';
-        waves.forEach(w => w.style.display = 'none');
+      if (loaderOverlay && loaderWordText) {
+        // Reset loader classes and text
+        loaderOverlay.classList.remove('hidden', 'active');
+        loaderWordText.className = 'loader-word';
+        loaderWordText.textContent = titleKeywords[videoKey] || 'MYKA';
+        
+        // Show modal and loader overlay
+        modal.classList.remove('hidden');
+        loaderOverlay.classList.remove('hidden');
+        
+        // Trigger reflow
+        loaderOverlay.offsetHeight;
+        loaderOverlay.classList.add('active');
+        
+        // Animação fade in da palavra
+        setTimeout(() => {
+          loaderWordText.classList.add('fade-in');
+        }, 50);
+
+        let videoLoaded = false;
+        let animationDone = false;
+
+        const onVideoReady = () => {
+          videoLoaded = true;
+          checkAndStart();
+        };
+
+        // Inicia carregamento do vídeo em paralelo
+        if (videoKey === 'hero' || videoKey === 'quem-somos' || videoKey === 'servicos') {
+          if (modalVideo) {
+            modalVideo.classList.add('hidden');
+            let videoSrc = 'video-slide1.webm';
+            if (videoKey === 'quem-somos') {
+              videoSrc = 'video-slide2.webm';
+            } else if (videoKey === 'servicos') {
+              videoSrc = 'video-slide3.webm';
+            }
+            modalVideo.src = videoSrc + '?t=' + Date.now();
+            modalVideo.load();
+            
+            // Eventos de carregamento do vídeo
+            modalVideo.addEventListener('canplaythrough', onVideoReady, { once: true });
+            modalVideo.addEventListener('loadeddata', onVideoReady, { once: true });
+            
+            // Backup timeout para o carregamento do vídeo (evita travamento em conexões ruins)
+            setTimeout(() => {
+              if (!videoLoaded) {
+                console.log("Video loading timeout, proceeding anyway");
+                onVideoReady();
+              }
+            }, 3000);
+          } else {
+            videoLoaded = true;
+          }
+        } else {
+          // A simulação do robô não possui arquivo de vídeo real para carregar
+          videoLoaded = true;
+        }
+
+        // Animação fade out da palavra (começa em 1.5s, leva 0.8s)
+        setTimeout(() => {
+          loaderWordText.classList.remove('fade-in');
+          loaderWordText.classList.add('fade-out');
+        }, 1500);
+
+        // Tempo mínimo de exibição do loader (2.3 segundos)
+        setTimeout(() => {
+          animationDone = true;
+          checkAndStart();
+        }, 2300);
+
+        function checkAndStart() {
+          if (videoLoaded && animationDone) {
+            // Inicia a execução correspondente primeiro, tornando-a visível por baixo do overlay
+            if (videoKey === 'hero' || videoKey === 'quem-somos' || videoKey === 'servicos') {
+              if (robotSimulation) robotSimulation.style.display = 'none';
+              if (modalVideo) {
+                modalVideo.classList.remove('hidden');
+                modalVideo.play().catch(err => console.log("Video playback initiated with error:", err));
+              }
+              if (videoVignette) {
+                videoVignette.classList.remove('hidden');
+              }
+              if (modalCloseBtn) {
+                modalCloseBtn.classList.remove('hidden');
+              }
+              if (playPauseBtn) playPauseBtn.style.display = 'none';
+              waves.forEach(w => w.style.display = 'none');
+            } else {
+              if (modalVideo) {
+                modalVideo.classList.add('hidden');
+                modalVideo.src = '';
+              }
+              if (videoVignette) {
+                videoVignette.classList.add('hidden');
+              }
+              if (modalCloseBtn) {
+                modalCloseBtn.classList.add('hidden');
+              }
+              if (robotSimulation) robotSimulation.style.display = 'flex';
+              if (playPauseBtn) playPauseBtn.style.display = 'none';
+              waves.forEach(w => w.style.display = 'none');
+            }
+
+            // Agora removemos a classe 'active' para fazer o fade out do overlay diretamente por cima do conteúdo ativo
+            loaderOverlay.classList.remove('active');
+            setTimeout(() => {
+              loaderOverlay.classList.add('hidden');
+            }, 500);
+          }
+        }
+      } else {
+        // Fallback caso os elementos do loader não existam
+        modal.classList.remove('hidden');
+        if (videoKey === 'hero' || videoKey === 'quem-somos' || videoKey === 'servicos') {
+          if (robotSimulation) robotSimulation.style.display = 'none';
+          if (modalVideo) {
+            modalVideo.classList.remove('hidden');
+            let videoSrc = 'video-slide1.webm';
+            if (videoKey === 'quem-somos') {
+              videoSrc = 'video-slide2.webm';
+            } else if (videoKey === 'servicos') {
+              videoSrc = 'video-slide3.webm';
+            }
+            modalVideo.src = videoSrc + '?t=' + Date.now();
+            modalVideo.play().catch(err => console.log("Video playback initiated with error:", err));
+          }
+          if (videoVignette) {
+            videoVignette.classList.remove('hidden');
+          }
+          if (modalCloseBtn) {
+            modalCloseBtn.classList.remove('hidden');
+          }
+          if (playPauseBtn) playPauseBtn.style.display = 'none';
+          waves.forEach(w => w.style.display = 'none');
+        } else {
+          if (modalVideo) {
+            modalVideo.classList.add('hidden');
+            modalVideo.src = '';
+          }
+          if (videoVignette) {
+            videoVignette.classList.add('hidden');
+          }
+          if (modalCloseBtn) {
+            modalCloseBtn.classList.add('hidden');
+          }
+          if (robotSimulation) robotSimulation.style.display = 'flex';
+          if (playPauseBtn) playPauseBtn.style.display = 'none';
+          waves.forEach(w => w.style.display = 'none');
+        }
       }
     });
   });
