@@ -588,6 +588,10 @@ document.addEventListener('DOMContentLoaded', () => {
       
       stopAudio();
 
+      // Oculta imediatamente os elementos do modal para não piscarem durante o carregamento
+      if (robotSimulation) robotSimulation.style.display = 'none';
+      if (modalVideo) modalVideo.classList.add('hidden');
+
       if (modalTitle) modalTitle.textContent = info.title;
       robotSpeechText.textContent = info.speech;
 
