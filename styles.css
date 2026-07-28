@@ -288,7 +288,7 @@ body.is-scrolling .content-wrapper {
 
 .scrolly-section {
   min-height: 100vh;
-  padding: 75px 24px calc(4vw + 12px) 24px; /* Aumentado padding horizontal para compensar largura total */
+  padding: 75px 24px 32px 24px; /* Ajustado para mover menos (32px), liberando os botões sem subir demais */
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -550,12 +550,7 @@ body.is-scrolling .scrolly-section.active .bg-section-number {
     padding: 4px 10px !important;
   }
 
-  #contato {
-    padding-bottom: 45px !important;
-  }
-  #contato .contact-card {
-    margin-bottom: 35px !important;
-  }
+
 }
 
 
@@ -575,7 +570,7 @@ body.scroll-up .garrafal-title .title-word {
   line-height: 1.65;
   color: var(--text-secondary);
   margin-top: auto; /* Empurra o bloco texto+botões para a base da seção flex */
-  margin-bottom: 8px;
+  margin-bottom: 0 !important; /* Zerado para evitar espaço extra entre o texto e os botões */
   font-weight: 300;
   width: calc(100% + 14px);
   max-width: calc(100% + 14px);
@@ -725,7 +720,8 @@ body.scroll-up .garrafal-title .title-word {
   }
 
   /* bottom-group: largura natural do fluxo, expandindo para preencher a tela */
-  #quem-somos .bottom-group {
+  #quem-somos .bottom-group,
+  #contato .bottom-group {
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -734,6 +730,13 @@ body.scroll-up .garrafal-title .title-word {
     margin-top: 0 !important; /* Permite expansão vertical total a partir do título */
     gap: 6px;   /* espaço mínimo entre ícones e texto */
     flex: 1 !important;    /* Permite expansão vertical para alinhar botões na base */
+  }
+
+  @media (min-width: 768px) {
+    #quem-somos .bottom-group,
+    #contato .bottom-group {
+      gap: 0 !important; /* Remove gap no desktop para evitar empurrar botões para baixo */
+    }
   }
 
   /* 3 ícones dividem o espaço vertical igualmente (repetindo alinhamento mobile) */
@@ -778,9 +781,8 @@ body.scroll-up .garrafal-title .title-word {
   display: flex;
   gap: 12px;
   width: 100%;
-  margin-left: 0;
   flex-wrap: nowrap; /* Impede quebra de linha para manter lado a lado */
-  margin-top: 8px; /* Espaço fixo logo abaixo do texto descritivo */
+  margin: 12px 0 0 0 !important; /* Espaçamento superior igual ao preenchimento lateral dos botões mobile (12px) */
   
   /* Escondido por padrão, surge com delay */
   opacity: 0;
@@ -953,68 +955,124 @@ body.scroll-up .garrafal-title .title-word {
   pointer-events: auto;
 }
 
-.contact-link {
+#contato .contact-card.minimal.vertical {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-evenly !important;
+  align-items: flex-start !important;
+  flex: 1 !important;
+  margin-top: 0 !important; /* Removido margin extra para padronizar com action-buttons */
+  margin-bottom: 0 !important; /* Removido margin extra para padronizar com action-buttons */
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  padding: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  position: relative !important;
+  gap: 2px !important; /* Espaço reduzido para caber na tela */
+}
+
+.contact-item-row {
   display: flex;
+  flex-direction: row;
   align-items: center;
-  gap: 10px;
-  padding: 8px 8px; /* Reduzido o padding lateral para 8px para liberar mais espaço para o endereço */
-  background: var(--bg-card);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 8px;
+  justify-content: flex-start; /* Alinhamento na esquerda novamente */
+  width: 100%;
+}
+
+
+
+@media (min-width: 768px) {
+
+
+  #contato .contact-card.minimal.vertical {
+    width: 50vw !important;
+    max-width: 50vw !important; /* Exata largura dos botões superiores e texto no desktop */
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+  }
+}
+
+.contact-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px; /* Ajustado para o novo tamanho do ícone */
+  height: 24px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
   text-decoration: none;
-  color: var(--text-primary);
-  backdrop-filter: blur(10px);
-  transition: all 0.3s ease;
+  position: static !important;
+  transition: transform 0.3s ease;
+  padding: 0;
+  outline: none;
+  flex-shrink: 0;
 }
 
-.contact-link:hover {
-  border-color: var(--accent-cyan);
-  transform: translateX(4px);
+
+
+.contact-icon-btn:hover {
+  transform: translateY(-3px);
 }
 
-.contact-link .icon {
-  font-size: 1.2rem; /* Reduzido de 1.5rem */
+.contact-icon-btn .icon {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 26px; /* Reduzido de 32px para alinhar de forma mais compacta */
-  flex-shrink: 0; /* Impede o amassamento do ícone */
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: none;
+  transition: all 0.3s ease;
 }
 
-.whatsapp-card-icon,
+.contact-icon-btn:hover .icon,
+.contact-icon-btn.active-banner-icon .icon {
+  filter: drop-shadow(0 0 8px rgba(0, 229, 255, 0.6));
+}
+
 .phone-card-icon,
 .email-card-icon,
-.location-card-icon {
-  width: 18px; /* Reduzido de 24px para economizar altura */
-  height: 18px; /* Reduzido de 24px */
-  fill: var(--accent-cyan); /* Todos acompanham a cor ciano neon do tema e dos títulos */
+.location-card-icon,
+.linkedin-card-icon,
+.instagram-card-icon,
+.facebook-card-icon {
+  width: 24px; /* Aumentado */
+  height: 24px; /* Aumentado */
+  fill: var(--accent-cyan);
   transition: fill 0.3s ease;
 }
 
-/* Compensação de tamanho para o ícone do WhatsApp que parecia menor */
-.whatsapp-card-icon {
-  width: 21px !important;
-  height: 21px !important;
-}
-
-.contact-link .info {
+/* Banner flutuante inline deslizante */
+.inline-info-banner {
   display: flex;
-  flex-direction: column;
-  gap: 1px; /* Reduzido de 2px */
+  align-items: center;
+  justify-content: flex-start;
+  background: #0a0f1d;
+  border: 1.5px solid var(--accent-cyan);
+  border-radius: 8px;
+  color: #ffffff;
+  font-family: var(--font-body);
+  font-size: clamp(0.55rem, 3.1vw, 0.85rem);
+  white-space: nowrap;
+  
+  max-width: 0;
+  opacity: 0;
+  padding: 0;
+  margin-left: 0;
+  border-width: 0;
+  overflow: hidden;
+  transition: all 0.4s ease;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.9), 0 0 20px rgba(0, 229, 255, 0.35);
 }
 
-.contact-link .info strong {
-  font-family: var(--font-body);
-  font-weight: 600;
-  font-size: 0.75rem; /* Reduzido para 0.75rem */
-  letter-spacing: 1px;
-  color: var(--accent-cyan);
-}
-
-.contact-link .info span {
-  font-family: var(--font-body);
-  font-size: 0.65rem; /* Reduzido de 0.75rem para caber "SP" na mesma linha em telas menores */
-  color: var(--text-secondary);
+.inline-info-banner.active {
+  max-width: 100%;
+  opacity: 1;
+  padding: 10px 12px;
+  border-width: 1.5px;
+  margin-left: 12px; /* Espaço entre o ícone e o banner */
 }
 
 .footer-info {
@@ -1022,14 +1080,16 @@ body.scroll-up .garrafal-title .title-word {
   bottom: 0;
   left: 0;
   width: 100%;
+  height: 32px; /* Altura idêntica ao padding-bottom do mobile (32px) */
+  display: flex;
+  align-items: center;
+  justify-content: center;
   z-index: 99;
   font-family: var(--font-body);
   font-size: 0.55rem; /* Reduzido para 0.55rem */
   color: var(--text-secondary);
   line-height: 1.5;
-  text-align: center;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 6px 16px;
+  padding: 0 16px;
   background: rgba(10, 15, 25, 0.75);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
@@ -1040,7 +1100,6 @@ body.scroll-up .garrafal-title .title-word {
 /* Espaçamento no topo reajustado para 95px para limpar o cabeçalho fixo */
 #contato {
   padding-top: 75px !important; /* Igualado a 75px com os outros slides */
-  padding-bottom: 25px !important; /* Baixa todo o conjunto de elementos o máximo possível em direção ao rodapé */
 }
 
 /* Compactações exclusivas da seção de contato para compensar a descida do topo */
@@ -1055,25 +1114,13 @@ body.scroll-up .garrafal-title .title-word {
 
 #contato .section-desc {
   margin-top: auto !important; /* Empurra todo o conjunto (texto + botão + cards) o máximo para a base */
-  margin-bottom: 6px !important;
+  margin-bottom: 0 !important; /* Zerado para evitar desalinhamento vertical dos botões */
 }
 
-#contato .action-buttons {
-  max-width: none !important;
-  width: 100% !important;
-  margin-top: 0 !important;
-  margin-bottom: 6px !important; /* Mantém o botão ASSISTA bem próximo dos cards */
-}
-
-#contato .action-buttons .btn {
-  max-width: none !important;
-  width: 100% !important;
-  flex: 1 1 100% !important;
-}
 
 #contato .contact-card {
   margin-top: 0 !important; /* Encostado logo abaixo do botão ASSISTA */
-  margin-bottom: 4px !important; /* Rebaixa o último card o máximo possível rente ao rodapé */
+  margin-bottom: 0 !important; /* Rebaixa o último card o máximo possível rente ao rodapé */
 }
 
 .footer-info .copy {
@@ -1466,43 +1513,7 @@ body.scroll-up .garrafal-title .title-word {
     }
   }
 
-  /* Seção de contato em tela cheia no desktop */
-  #contato {
-    max-width: none !important;
-    width: auto !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    padding-left: 80px !important; /* Alinha textos e cards com a logo do cabeçalho */
-    padding-right: 80px !important; /* Alinha o final dos cards com o menu do cabeçalho */
-  }
 
-  #contato .contact-card {
-    display: grid !important;
-    grid-template-columns: repeat(4, 1fr) !important; /* 4 cards lado a lado ocupando 100% da largura útil */
-    gap: 16px !important;
-    width: 100% !important;
-    max-width: none !important;
-    margin-bottom: 24px !important;
-  }
-
-  #contato .action-buttons {
-    max-width: calc(50% - 8px) !important;
-    width: 100% !important;
-    margin-bottom: 16px !important;
-    margin-top: 16px !important;
-  }
-
-  #contato .action-buttons .btn {
-    width: 100% !important;
-    max-width: none !important;
-  }
-
-  #contato .section-desc {
-    width: calc(50% - 8px + 19px) !important;
-    max-width: calc(50% - 8px + 19px) !important;
-    text-align: justify !important;
-    margin-top: auto !important;
-  }
   
   /* Seção em tela cheia no desktop para suportar os números em tela cheia no canto direito */
   .scrolly-section {
@@ -1512,7 +1523,20 @@ body.scroll-up .garrafal-title .title-word {
     padding-top: 85px !important; /* Reduzido de 110px para liberar espaço central */
     padding-left: 80px !important; /* Alinha os textos e elementos com a logo do cabeçalho */
     padding-right: 80px !important; /* Respiro lateral direito simétrico */
-    padding-bottom: 40px !important; /* Aproxima os botões do rodapé em todas as páginas sem encostar */
+    padding-bottom: 40px !important; /* Reduzido de 64px para 40px para diminuir o espaço */
+  }
+
+  #contato {
+    padding-bottom: 40px !important; /* Movemos para o final do arquivo para sobrepor regras anteriores e manter alinhamento no desktop */
+  }
+
+  .footer-info {
+    height: 40px !important; /* Ajustado para 40px no desktop */
+    background: transparent !important; /* Remove o bloco escuro enorme no desktop */
+    backdrop-filter: none !important; /* Remove o desfoque de fundo no desktop */
+    -webkit-backdrop-filter: none !important;
+    justify-content: flex-start !important; /* Alinha o texto à esquerda no desktop */
+    padding-left: 80px !important; /* Alinha com a logo e margem esquerda do site */
   }
 
   /* Ajuste de escala e posicionamento dos números gigantes no desktop */
@@ -1553,9 +1577,8 @@ body.scroll-up .garrafal-title .title-word {
   .action-buttons {
     max-width: 50vw;
     width: 50vw;
-    margin-left: 0;
+    margin: 24px 0 0 0 !important; /* Reduzido de 80px para 24px para aproximar os botões do texto */
     gap: 16px;
-    margin-top: 8px !important; /* Keeps buttons spaced nicely below the description text */
   }
 
   .btn {

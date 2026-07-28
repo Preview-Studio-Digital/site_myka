@@ -874,6 +874,60 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  // LÓGICA DE EXIBIÇÃO DE INFORMAÇÕES DOS ÍCONES DE CONTATO (VERTICAL)
+  const allIconBtns = document.querySelectorAll('.contact-icon-btn.tooltip-trigger');
+
+  function closeAllBanners() {
+    allIconBtns.forEach(icon => {
+      icon.classList.remove('active-banner-icon');
+      const banner = icon.nextElementSibling;
+      if (banner && banner.classList.contains('inline-info-banner')) {
+        banner.classList.remove('active');
+      }
+    });
+  }
+
+  allIconBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      
+      const infoText = btn.getAttribute('data-info');
+      const titleText = btn.getAttribute('data-title');
+      const banner = btn.nextElementSibling;
+      
+      // Se clicar no botão que já está ativo, fecha.
+      if (btn.classList.contains('active-banner-icon')) {
+        closeAllBanners();
+        return;
+      }
+      
+      // Fecha todos antes de abrir o novo
+      closeAllBanners();
+      
+      if (banner && banner.classList.contains('inline-info-banner')) {
+        const textSpan = banner.querySelector('.inline-info-text');
+        if (textSpan) {
+          textSpan.innerHTML = `<strong style="color: var(--accent-cyan); font-weight: 600;">${titleText}:</strong> ${infoText}`;
+        }
+        
+        btn.classList.add('active-banner-icon');
+        // Usa requestAnimationFrame para garantir a transição fluida
+        requestAnimationFrame(() => {
+          banner.classList.add('active');
+        });
+      }
+    });
+  });
+
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.contact-item-row')) {
+      closeAllBanners();
+    }
+  });
+
+
+
   // INICIALIZAÇÃO
   // init3D(); // Desativado temporariamente para remover o fundo 3D
   // render();
