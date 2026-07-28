@@ -649,7 +649,7 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         // Inicia carregamento do vídeo em paralelo
-        if (videoKey === 'hero' || videoKey === 'quem-somos' || videoKey === 'servicos' || videoKey === 'manutencao' || videoKey === 'locacao' || videoKey === 'venda') {
+        if (videoKey === 'hero' || videoKey === 'quem-somos' || videoKey === 'servicos' || videoKey === 'manutencao' || videoKey === 'locacao' || videoKey === 'venda' || videoKey === 'contato') {
           if (modalVideo) {
             modalVideo.classList.add('hidden');
             let videoSrc = 'video-slide1.webm';
@@ -663,6 +663,8 @@ document.addEventListener('DOMContentLoaded', () => {
               videoSrc = 'video-slide5.webm';
             } else if (videoKey === 'venda') {
               videoSrc = 'video-slide6.webm';
+            } else if (videoKey === 'contato') {
+              videoSrc = 'video-slide7.webm';
             }
             modalVideo.src = videoSrc + '?t=' + Date.now();
             modalVideo.load();
@@ -701,7 +703,7 @@ document.addEventListener('DOMContentLoaded', () => {
         function checkAndStart() {
           if (videoLoaded && animationDone) {
             // Inicia a execução correspondente primeiro, tornando-a visível por baixo do overlay
-            if (videoKey === 'hero' || videoKey === 'quem-somos' || videoKey === 'servicos' || videoKey === 'manutencao' || videoKey === 'locacao' || videoKey === 'venda') {
+            if (videoKey === 'hero' || videoKey === 'quem-somos' || videoKey === 'servicos' || videoKey === 'manutencao' || videoKey === 'locacao' || videoKey === 'venda' || videoKey === 'contato') {
               if (robotSimulation) robotSimulation.style.display = 'none';
               if (modalVideo) {
                 modalVideo.classList.remove('hidden');
@@ -741,7 +743,7 @@ document.addEventListener('DOMContentLoaded', () => {
       } else {
         // Fallback caso os elementos do loader não existam
         modal.classList.remove('hidden');
-        if (videoKey === 'hero' || videoKey === 'quem-somos' || videoKey === 'servicos' || videoKey === 'manutencao' || videoKey === 'locacao' || videoKey === 'venda') {
+        if (videoKey === 'hero' || videoKey === 'quem-somos' || videoKey === 'servicos' || videoKey === 'manutencao' || videoKey === 'locacao' || videoKey === 'venda' || videoKey === 'contato') {
           if (robotSimulation) robotSimulation.style.display = 'none';
           if (modalVideo) {
             modalVideo.classList.remove('hidden');
@@ -756,6 +758,8 @@ document.addEventListener('DOMContentLoaded', () => {
               videoSrc = 'video-slide5.webm';
             } else if (videoKey === 'venda') {
               videoSrc = 'video-slide6.webm';
+            } else if (videoKey === 'contato') {
+              videoSrc = 'video-slide7.webm';
             }
             modalVideo.src = videoSrc + '?t=' + Date.now();
             modalVideo.play().catch(err => console.log("Video playback initiated with error:", err));
