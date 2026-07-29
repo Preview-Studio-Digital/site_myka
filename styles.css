@@ -1575,8 +1575,18 @@ body.scroll-up .garrafal-title .title-word {
   }
 
   #contato {
-    padding-top: 85px !important; /* Alinha o topo da seção 7 com o cabeçalho no desktop (85px) */
-    padding-bottom: 40px !important; /* Movemos para o final do arquivo para sobrepor regras anteriores e manter alinhamento no desktop */
+    padding-top: 75px !important;
+    padding-bottom: 50px !important; /* Espaço suficiente para os botões ficarem visíveis acima do rodapé fixo */
+  }
+
+  #contato .contact-icon-btn {
+    width: 32px !important;
+    height: 32px !important;
+  }
+
+  #contato .garrafal-title {
+    font-size: 1.4rem !important;
+    margin-bottom: 6px !important;
   }
 
   .footer-info {
