@@ -49,6 +49,21 @@ body {
   pointer-events: none;
 }
 
+/* Esfumacado gradiente fixo com controle de opacidade continuo suave por scroll (Fade In / Out) */
+#bg-gradient-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, rgba(7, 10, 17, 0.88) 0%, rgba(7, 10, 17, 0.65) 35%, rgba(7, 10, 17, 0) 60%);
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+  will-change: opacity;
+}
+
 /* --- CANVAS 3D BACKGROUND (REMOVIDO / PREPARADO PARA VÍDEO) --- */
 #bg-canvas {
   display: none;
@@ -380,7 +395,7 @@ body.is-scrolling .scrolly-section.active .bg-section-number {
   color: var(--text-primary);
   text-transform: uppercase;
   margin-bottom: 12px;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95), 0 4px 25px rgba(0, 0, 0, 0.85);
+  text-shadow: none;
   
   display: flex;
   flex-wrap: wrap; /* Permite que as palavras quebrem linha naturalmente */
@@ -437,19 +452,19 @@ body.is-scrolling .scrolly-section.active .bg-section-number {
 .garrafal-title .brand-highlight {
   font-family: 'Black Ops One', sans-serif;
   color: var(--accent-cyan) !important;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95), 0 4px 25px rgba(0, 0, 0, 0.85);
+  text-shadow: none;
 }
 
 /* Destaque azul elétrico para a palavra PULMÃO e PROTEJA */
 .garrafal-title .heart-highlight {
   color: #0B72FF !important;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95), 0 4px 25px rgba(0, 0, 0, 0.85);
+  text-shadow: none;
 }
 
 /* Destaque azul celeste para a palavra PRODUÇÃO */
 .garrafal-title .warning-highlight {
   color: #38BDF8 !important;
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95), 0 4px 25px rgba(0, 0, 0, 0.85);
+  text-shadow: none;
 }
 
 /* Alinhamento pelo topo: todas as palavras da linha COM A MYKA. ficam retas no topo */
@@ -508,7 +523,7 @@ body.is-scrolling .scrolly-section.active .bg-section-number {
   font-size: 1.45em; /* Aumentado ainda mais para 1.45em */
   color: #00B0FF !important;
   letter-spacing: 1px; /* Estilização de espaçamento */
-  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95), 0 4px 25px rgba(0, 0, 0, 0.85);
+  text-shadow: none;
 }
 
 /* Efeito sutil de surgimento palavra por palavra */
@@ -608,7 +623,7 @@ body.scroll-up .garrafal-title .title-word {
   box-sizing: border-box;
 
   /* Leitura nítida via sombra de texto projetada (sem caixa ou balão de fundo) */
-  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.95), 0 2px 8px rgba(0, 0, 0, 0.85);
+  text-shadow: none;
 
   /* Sincronizado com os botões: invisível por padrão, surge e desaparece com a ação da seção */
   opacity: 0;
@@ -757,11 +772,13 @@ body.scroll-up .garrafal-title .title-word {
   /* --- DESKTOP: 3 ícones em linha horizontal, logo acima do texto --- */
 
   /* Botões na mesma posição dos outros slides (mesmo padding inferior) */
+  #empresa,
   #quem-somos {
     padding-bottom: 40px !important;
   }
 
   /* bottom-group: largura natural do fluxo, expandindo para preencher a tela */
+  #empresa .bottom-group,
   #quem-somos .bottom-group,
   #contato .bottom-group {
     display: flex;
@@ -775,6 +792,7 @@ body.scroll-up .garrafal-title .title-word {
   }
 
   @media (min-width: 768px) {
+    #empresa .bottom-group,
     #quem-somos .bottom-group,
     #contato .bottom-group {
       gap: 0 !important; /* Remove gap no desktop para evitar empurrar botões para baixo */
@@ -782,6 +800,7 @@ body.scroll-up .garrafal-title .title-word {
   }
 
   /* 3 ícones dividem o espaço vertical igualmente (repetindo alinhamento mobile) */
+  #empresa .company-stats,
   #quem-somos .company-stats {
     display: flex;
     flex-direction: column !important;
@@ -799,6 +818,7 @@ body.scroll-up .garrafal-title .title-word {
   }
 
   /* Cada ícone em coluna vertical, sem borda lateral */
+  #empresa .stat-item,
   #quem-somos .stat-item {
     flex: 0 0 auto;
     flex-direction: column;
@@ -808,10 +828,12 @@ body.scroll-up .garrafal-title .title-word {
     border: none;
   }
 
+  #empresa .stat-number-wrapper,
   #quem-somos .stat-number-wrapper {
     font-size: 1.1rem; /* Reduzido de 1.4rem */
   }
 
+  #empresa .stat-label,
   #quem-somos .stat-label {
     font-size: 0.52rem; /* Reduzido de 0.65rem */
     letter-spacing: 1px;

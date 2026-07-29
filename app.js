@@ -450,14 +450,30 @@ document.addEventListener('DOMContentLoaded', () => {
       scrollProgress.style.setProperty('--scroll-height', `${Math.min(100, currentScrollFraction * 100)}%`);
     }
 
-    // Identifica seção ativa (quando o slide está visível na viewport)
+    // Identifica seção ativa e calcula visibilidade continua para Fade In/Out do esfumacado
     let currentStep = 0;
+    let maxSectionVisibility = 0;
+    const windowH = window.innerHeight;
+
     sections.forEach((sec, idx) => {
       const rect = sec.getBoundingClientRect();
-      if (rect.top <= window.innerHeight * 0.7 && rect.bottom >= window.innerHeight * 0.1) {
+      if (rect.top <= windowH * 0.7 && rect.bottom >= windowH * 0.1) {
         currentStep = idx;
       }
+
+      // Calcula quanto da seção está presente na janela (de 0 a 1)
+      const visibleHeight = Math.max(0, Math.min(rect.bottom, windowH) - Math.max(rect.top, 0));
+      const visibility = visibleHeight / windowH;
+      if (visibility > maxSectionVisibility) {
+        maxSectionVisibility = visibility;
+      }
     });
+
+    // Controla Fade In e Fade Out contínuo e ultra suave do esfumacado lateral
+    const bgGradientOverlay = document.getElementById('bg-gradient-overlay');
+    if (bgGradientOverlay) {
+      bgGradientOverlay.style.opacity = Math.min(1, Math.max(0, maxSectionVisibility * 1.3));
+    }
 
     if (stepIndicator) {
       stepIndicator.textContent = `0${currentStep + 1} / 07`;
