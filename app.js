@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const isMobile = window.innerWidth < 768;
     titleElements.forEach(title => {
       let htmlContent = title.getAttribute('data-original-html');
-      if (title.closest('#hero')) {
+      if (title.closest('#inicio') || title.closest('#hero')) {
         if (isMobile) {
           htmlContent = 'A MYKA NO<br>PULMÃO DA SUA<br>INDÚSTRIA.';
         } else {
@@ -439,7 +439,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Lógica de controle de frame por scroll (primeiro ao segundo slide) no Canvas
     if (typeof scrollCanvas !== 'undefined' && scrollCanvas) {
-      const scrollRange = window.innerHeight; // Do slide 1 ao slide 2 (exatamente 1 altura de tela)
+      const empresaSection = document.getElementById('empresa') || document.getElementById('quem-somos');
+      const scrollRange = empresaSection ? empresaSection.offsetTop : window.innerHeight * 1.8;
       const progress = Math.min(1, Math.max(0, currentScrollY / scrollRange));
       targetFrameIndex = progress * (frameCount - 1);
     }
@@ -449,8 +450,15 @@ document.addEventListener('DOMContentLoaded', () => {
       scrollProgress.style.setProperty('--scroll-height', `${Math.min(100, currentScrollFraction * 100)}%`);
     }
 
-    // Identifica seção ativa
-    const currentStep = Math.min(6, Math.floor(currentScrollFraction * 7.01)); // Leve fator de precisão
+    // Identifica seção ativa (quando o slide está visível na viewport)
+    let currentStep = 0;
+    sections.forEach((sec, idx) => {
+      const rect = sec.getBoundingClientRect();
+      if (rect.top <= window.innerHeight * 0.7 && rect.bottom >= window.innerHeight * 0.1) {
+        currentStep = idx;
+      }
+    });
+
     if (stepIndicator) {
       stepIndicator.textContent = `0${currentStep + 1} / 07`;
     }
@@ -476,10 +484,10 @@ document.addEventListener('DOMContentLoaded', () => {
   // LÓGICA DE ANIMAÇÃO DOS NÚMEROS DA SEÇÃO EMPRESA (QUEM SOMOS)
   let statsAnimated = false;
   function animateCompanyStats() {
-    const quemSomosSection = document.getElementById('quem-somos');
-    if (!quemSomosSection) return;
+    const empresaSection = document.getElementById('empresa') || document.getElementById('quem-somos');
+    if (!empresaSection) return;
 
-    const isActive = quemSomosSection.classList.contains('active');
+    const isActive = empresaSection.classList.contains('active');
 
     if (isActive && !statsAnimated) {
       statsAnimated = true;
@@ -691,12 +699,16 @@ document.addEventListener('DOMContentLoaded', () => {
       const loaderWordText = document.getElementById('loader-word-text');
       
       const titleKeywords = {
+        'inicio': 'ATUAÇÃO',
         'hero': 'ATUAÇÃO',
+        'empresa': 'EMPRESA',
         'quem-somos': 'EMPRESA',
+        'atividades': 'ATIVIDADES',
         'servicos': 'ATIVIDADES',
         'manutencao': 'MANUTENÇÃO',
         'locacao': 'LOCAÇÃO',
-        'venda': 'VENDAS',
+        'venda': 'VENDA',
+        'vendas': 'VENDA',
         'contato': 'CONTATO'
       };
 

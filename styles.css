@@ -201,10 +201,10 @@ body.menu-active .content-wrapper {
 }
 
 body.is-scrolling .content-wrapper {
-  filter: blur(3px);
+  /* Blur de movimento removido a pedido */
 }
 
-/* Transição suave de volta para o filtro */
+/* Transição suave */
 .content-wrapper {
   transition: filter 0.4s ease;
 }
@@ -299,29 +299,29 @@ body.is-scrolling .content-wrapper {
   position: relative;
   z-index: 10;
   width: 100%;
-  transition: filter 0.15s ease; /* Transição de foco acelerada para 0.15s */
+  transition: filter 0.15s ease;
   will-change: filter;
-}
-
-body.is-scrolling .content-wrapper {
-  filter: blur(3px); /* Desfoque de movimento premium ao rolar */
 }
 
 .scrolly-section {
   min-height: 100vh;
-  padding: 75px 24px 32px 24px; /* Ajustado para mover menos (32px), liberando os botões sem subir demais */
+  padding: 75px 24px 32px 24px;
+  margin-bottom: 100vh; /* Exatamente 1 tela inteira de espaço de transição entre cada slide */
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
   width: 100%;
   max-width: none;
-  margin: 0;
   opacity: 0.4;
   transform: translateY(20px);
   transition: opacity 0.6s ease, transform 0.6s ease;
   position: relative;
   overflow: hidden;
+}
+
+.scrolly-section:last-child {
+  margin-bottom: 0;
 }
 
 .scrolly-section.active {
@@ -380,7 +380,7 @@ body.is-scrolling .scrolly-section.active .bg-section-number {
   color: var(--text-primary);
   text-transform: uppercase;
   margin-bottom: 12px;
-  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95), 0 4px 25px rgba(0, 0, 0, 0.85);
   
   display: flex;
   flex-wrap: wrap; /* Permite que as palavras quebrem linha naturalmente */
@@ -433,23 +433,23 @@ body.is-scrolling .scrolly-section.active .bg-section-number {
   }
 }
 
-/* Destaque de cor da marca (Ciano Neon - Ciclo de 4.4s) */
+/* Destaque de cor da marca (Ciano Neon) */
 .garrafal-title .brand-highlight {
   font-family: 'Black Ops One', sans-serif;
   color: var(--accent-cyan) !important;
-  animation: shimmer-cyan-glow 4.4s infinite ease-in-out;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95), 0 4px 25px rgba(0, 0, 0, 0.85);
 }
 
-/* Destaque azul elétrico para a palavra PULMÃO e PROTEJA (Azul Elétrico Neon - Ciclo de 3.7s e delay) */
+/* Destaque azul elétrico para a palavra PULMÃO e PROTEJA */
 .garrafal-title .heart-highlight {
   color: #0B72FF !important;
-  animation: shimmer-blue-glow 3.7s infinite ease-in-out 0.4s;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95), 0 4px 25px rgba(0, 0, 0, 0.85);
 }
 
-/* Destaque azul celeste para a palavra PRODUÇÃO (Azul Celeste - Ciclo de 5.2s e delay) */
+/* Destaque azul celeste para a palavra PRODUÇÃO */
 .garrafal-title .warning-highlight {
   color: #38BDF8 !important;
-  animation: shimmer-azure-glow 5.2s infinite ease-in-out 0.9s;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95), 0 4px 25px rgba(0, 0, 0, 0.85);
 }
 
 /* Alinhamento pelo topo: todas as palavras da linha COM A MYKA. ficam retas no topo */
@@ -481,7 +481,8 @@ body.is-scrolling .scrolly-section.active .bg-section-number {
   vertical-align: top;     /* Cola no topo junto com MYKA */
 }
 
-/* Ampliação da palavra MYKA na seção inicial (Hero) para alto contraste */
+/* Ampliação da palavra MYKA na seção inicial (Início/Hero) para alto contraste */
+#inicio .garrafal-title .brand-highlight,
 #hero .garrafal-title .brand-highlight {
   font-size: 2.1em; /* Aumentado de 1.5em para 2.1em para destacar massivamente na página inicial */
   line-height: 0.75; /* Evita que o tamanho gigante empurre a linha para cima */
@@ -502,12 +503,12 @@ body.is-scrolling .scrolly-section.active .bg-section-number {
   margin-bottom: 0.22em; /* Aumenta o espaçamento vertical entre as linhas do título */
 }
 
-/* Destaque azul profundo ampliado para a palavra INDÚSTRIA (Azul Neon - Ciclo de 4.8s e delay) */
+/* Destaque azul profundo ampliado para a palavra INDÚSTRIA */
 .garrafal-title .industry-highlight {
   font-size: 1.45em; /* Aumentado ainda mais para 1.45em */
   color: #00B0FF !important;
   letter-spacing: 1px; /* Estilização de espaçamento */
-  animation: shimmer-blue-glow 4.8s infinite ease-in-out 1.3s;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.95), 0 4px 25px rgba(0, 0, 0, 0.85);
 }
 
 /* Efeito sutil de surgimento palavra por palavra */
@@ -521,13 +522,13 @@ body.is-scrolling .scrolly-section.active .bg-section-number {
 }
 
 /* Escalonamento de tamanho das três palavras (efeito cascata visual) nas demais seções */
-.scrolly-section:not(#hero) .garrafal-title .title-line:nth-child(1) {
+.scrolly-section:not(#inicio):not(#hero) .garrafal-title .title-line:nth-child(1) {
   font-size: 1.2em;
 }
-.scrolly-section:not(#hero) .garrafal-title .title-line:nth-child(2) {
+.scrolly-section:not(#inicio):not(#hero) .garrafal-title .title-line:nth-child(2) {
   font-size: 0.95em;
 }
-.scrolly-section:not(#hero) .garrafal-title .title-line:nth-child(3) {
+.scrolly-section:not(#inicio):not(#hero) .garrafal-title .title-line:nth-child(3) {
   font-size: 0.75em;
 }
 
@@ -541,25 +542,31 @@ body.is-scrolling .scrolly-section.active .bg-section-number {
   font-size: 0.9em !important;
 }
 
+#atividades .garrafal-title .title-line:nth-child(1),
 #servicos .garrafal-title .title-line:nth-child(1) {
   font-size: 1.5em !important;
 }
+#atividades .garrafal-title .title-line:nth-child(2),
 #servicos .garrafal-title .title-line:nth-child(2) {
   font-size: 1.3em !important;
 }
+#atividades .garrafal-title .title-line:nth-child(3),
 #servicos .garrafal-title .title-line:nth-child(3) {
   font-size: 1.1em !important;
 }
 
 @media (max-width: 767px) {
+  #inicio .garrafal-title .title-line:nth-child(1),
   #hero .garrafal-title .title-line:nth-child(1),
   #contato .garrafal-title .title-line:nth-child(1) {
     font-size: 1.25em;
   }
+  #inicio .garrafal-title .title-line:nth-child(2),
   #hero .garrafal-title .title-line:nth-child(2),
   #contato .garrafal-title .title-line:nth-child(2) {
     font-size: 1.1em;
   }
+  #inicio .garrafal-title .title-line:nth-child(3),
   #hero .garrafal-title .title-line:nth-child(3),
   #contato .garrafal-title .title-line:nth-child(3) {
     font-size: 0.75em;
@@ -588,17 +595,32 @@ body.scroll-up .garrafal-title .title-word {
 .section-desc {
   font-size: 0.8rem;
   line-height: 1.65;
-  color: var(--text-secondary);
+  color: #FFFFFF;
   margin-top: auto; /* Empurra o bloco texto+botões para a base da seção flex */
   margin-bottom: 0 !important; /* Zerado para evitar espaço extra entre o texto e os botões */
-  font-weight: 300;
+  font-weight: 400;
   width: calc(100% + 14px);
   max-width: calc(100% + 14px);
   text-align: justify;
-  border-left: 2px solid rgba(0, 229, 255, 0.3); /* Indicador HUD ciano sutil */
+  border-left: 2px solid rgba(0, 229, 255, 0.5); /* Indicador HUD ciano sutil */
   padding-left: 12px;
   margin-left: -14px;
   box-sizing: border-box;
+
+  /* Leitura nítida via sombra de texto projetada (sem caixa ou balão de fundo) */
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.95), 0 2px 8px rgba(0, 0, 0, 0.85);
+
+  /* Sincronizado com os botões: invisível por padrão, surge e desaparece com a ação da seção */
+  opacity: 0;
+  transform: translateY(15px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  transition-delay: 0s; /* Dispare o desaparecimento imediato ao sair da seção */
+}
+
+.scrolly-section.active .section-desc {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.5s; /* Surge simultaneamente com os botões (0.5s após a seção ficar ativa) */
 }
 
 /* bottom-group: agrupa ícones + texto + botões; flex:1 no mobile para preencher espaço vertical */
@@ -1539,11 +1561,18 @@ body.scroll-up .garrafal-title .title-word {
   .scrolly-section {
     max-width: none !important;
     width: auto !important;
-    margin: 0 !important;
+    margin-top: 0 !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    margin-bottom: 100vh !important; /* Exatamente 1 tela inteira de espaço de transição mantido no desktop */
     padding-top: 85px !important; /* Reduzido de 110px para liberar espaço central */
     padding-left: 80px !important; /* Alinha os textos e elementos com a logo do cabeçalho */
     padding-right: 80px !important; /* Respiro lateral direito simétrico */
     padding-bottom: 40px !important; /* Reduzido de 64px para 40px para diminuir o espaço */
+  }
+
+  .scrolly-section:last-child {
+    margin-bottom: 0 !important;
   }
 
   #contato {
