@@ -34,6 +34,11 @@ body {
   min-height: 100vh;
   position: relative;
   width: 100%;
+  background-image: linear-gradient(rgba(7, 10, 17, 0.70), rgba(7, 10, 17, 0.70)), url('compressor_04.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed; /* Mantém estático por trás de todos os slides */
 }
 
 /* --- CANVAS 3D BACKGROUND (REMOVIDO / PREPARADO PARA VÍDEO) --- */
@@ -50,7 +55,7 @@ body {
   height: 100%;
   object-fit: cover;       /* Cobre toda a tela sem distorção */
   z-index: 0;              /* Atrás de todo o conteúdo */
-  opacity: 0.25;           /* Transparência sutil — presença sem distrair */
+  opacity: 0.12;           /* Reduzido de 0.25 para 0.12 (vídeo mais transparente/discreto) */
   pointer-events: none;    /* Não interfere em cliques */
   mix-blend-mode: screen;  /* Blend com o fundo escuro para integração natural */
 }
@@ -1087,9 +1092,9 @@ body.scroll-up .garrafal-title .title-word {
   color: var(--text-secondary);
   line-height: 1.5;
   padding: 0 16px;
-  background: rgba(10, 15, 25, 0.75);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  background: linear-gradient(0deg, rgba(7, 10, 17, 0.9) 0%, rgba(7, 10, 17, 0) 100%); /* Efeito gradiente igual ao cabeçalho (invertido) */
+  backdrop-filter: blur(8px); /* Efeito de desfoque igual ao cabeçalho */
+  -webkit-backdrop-filter: blur(8px);
   white-space: nowrap; /* Garante que fique em uma única linha no mobile */
   box-sizing: border-box;
 }
@@ -1530,9 +1535,6 @@ body.scroll-up .garrafal-title .title-word {
 
   .footer-info {
     height: 40px !important; /* Ajustado para 40px no desktop */
-    background: transparent !important; /* Remove o bloco escuro enorme no desktop */
-    backdrop-filter: none !important; /* Remove o desfoque de fundo no desktop */
-    -webkit-backdrop-filter: none !important;
     justify-content: flex-start !important; /* Alinha o texto à esquerda no desktop */
     padding-left: 80px !important; /* Alinha com a logo e margem esquerda do site */
   }
