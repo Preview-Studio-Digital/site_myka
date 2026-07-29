@@ -344,32 +344,9 @@ body.is-scrolling .content-wrapper {
   transform: translateY(0);
 }
 
-/* Números gigantes em plano de fundo transparentes */
+/* Números gigantes em plano de fundo transparentes (REMOVIDOS) */
 .bg-section-number {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  font-family: 'Black Ops One', sans-serif;
-  font-size: 55vh; /* Número monumental */
-  font-weight: normal;
-  line-height: 1;
-  color: var(--accent-cyan);
-  pointer-events: none;
-  user-select: none;
-  z-index: 0;
-  transition: right 1s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s ease;
-  opacity: 0;
-  right: -25vw;
-}
-
-.scrolly-section.active .bg-section-number {
-  opacity: 0.05; /* Retornado para 5% conforme solicitação final */
-  right: -10vw; /* Cortado na margem física direita da tela */
-}
-/* Efeito dinâmico: Número acende ao rolar e suaviza ao parar */
-body.is-scrolling .scrolly-section.active .bg-section-number {
-  opacity: 0.25; /* Opacidade alta temporária durante o scroll */
-  transition: opacity 0.2s ease;
+  display: none !important;
 }
 
 .section-badge {
