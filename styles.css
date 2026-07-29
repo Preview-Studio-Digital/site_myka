@@ -169,22 +169,19 @@ body {
   z-index: 120;
 }
 
-/* Blur no fundo do wrapper do site e na logo do topo quando o menu está aberto */
-body.menu-active .content-wrapper,
-body.menu-active .hud-header > .hud-logo-link {
+/* Blur no fundo do wrapper do site quando o menu está aberto */
+body.menu-active .content-wrapper {
   filter: blur(8px);
   transition: filter 0.4s ease;
   pointer-events: none;
 }
 
-body.is-scrolling .content-wrapper,
-body.is-scrolling .hud-header > .hud-logo-link {
+body.is-scrolling .content-wrapper {
   filter: blur(3px);
 }
 
 /* Transição suave de volta para o filtro */
-.content-wrapper,
-.hud-header > .hud-logo-link {
+.content-wrapper {
   transition: filter 0.4s ease;
 }
 
@@ -1527,6 +1524,7 @@ body.scroll-up .garrafal-title .title-word {
   }
 
   #contato {
+    padding-top: 85px !important; /* Alinha o topo da seção 7 com o cabeçalho no desktop (85px) */
     padding-bottom: 40px !important; /* Movemos para o final do arquivo para sobrepor regras anteriores e manter alinhamento no desktop */
   }
 
