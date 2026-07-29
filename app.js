@@ -497,7 +497,7 @@ document.addEventListener('DOMContentLoaded', () => {
     animate3DSceneByScroll(currentScrollFraction);
   }
 
-  // LÓGICA DE ANIMAÇÃO DOS NÚMEROS DA SEÇÃO EMPRESA (QUEM SOMOS)
+  // LÓGICA DE ANIMAÇÃO DOS NÚMEROS DA SEÇÃO EMPRESA
   let statsAnimated = false;
   function animateCompanyStats() {
     const empresaSection = document.getElementById('empresa') || document.getElementById('quem-somos');
@@ -507,7 +507,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (isActive && !statsAnimated) {
       statsAnimated = true;
-      const statNumbers = quemSomosSection.querySelectorAll('.stat-number');
+      const statNumbers = empresaSection.querySelectorAll('.stat-number');
 
       statNumbers.forEach(stat => {
         let target = parseInt(stat.getAttribute('data-target'), 10);
@@ -563,7 +563,7 @@ document.addEventListener('DOMContentLoaded', () => {
     } else if (!isActive && statsAnimated) {
       // Reseta os números ao sair da seção para poder reanimar quando retornar
       statsAnimated = false;
-      const statNumbers = quemSomosSection.querySelectorAll('.stat-number');
+      const statNumbers = empresaSection.querySelectorAll('.stat-number');
       statNumbers.forEach(stat => {
         stat.textContent = '0';
       });
