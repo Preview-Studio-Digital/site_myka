@@ -10,10 +10,52 @@ document.addEventListener('DOMContentLoaded', () => {
     bgVideo.play().catch(err => console.log("Video playback initiated:", err));
   }
 
+  // Inicialização do Canvas para animação de scroll (Scrollytelling com Frames)
+  const scrollCanvas = document.getElementById('scroll-canvas');
+  const frameCount = 193; // Total de frames extraídos
+  const images = [];
+  let currentFrameIndex = 0;
+  let targetFrameIndex = 0;
+
+  if (scrollCanvas) {
+    const ctx = scrollCanvas.getContext('2d');
+    
+    // Pré-carrega as imagens do diretório scroll-frames
+    for (let i = 1; i <= frameCount; i++) {
+      const img = new Image();
+      const paddedNumber = String(i).padStart(4, '0');
+      img.src = `scroll-frames/frame_${paddedNumber}.jpg`;
+      images.push(img);
+    }
+    
+    // Quando a primeira imagem carregar, configura o canvas
+    images[0].onload = () => {
+      scrollCanvas.width = 1280;
+      scrollCanvas.height = 720;
+      ctx.drawImage(images[0], 0, 0, scrollCanvas.width, scrollCanvas.height);
+    };
+
+    // Loop de renderização suave
+    function renderScrollCanvas() {
+      currentFrameIndex += (targetFrameIndex - currentFrameIndex) * 0.15;
+      
+      const roundedIndex = Math.min(frameCount - 1, Math.max(0, Math.round(currentFrameIndex)));
+      if (images[roundedIndex] && images[roundedIndex].complete) {
+        ctx.drawImage(images[roundedIndex], 0, 0, scrollCanvas.width, scrollCanvas.height);
+      }
+      requestAnimationFrame(renderScrollCanvas);
+    }
+    requestAnimationFrame(renderScrollCanvas);
+  }
+
   // Lógica da Tela de Introdução (Intro/Splash Screen)
   const introScreen = document.getElementById('intro-screen');
   const introCounter = document.getElementById('intro-counter');
   if (introScreen) {
+    // DESATIVADO TEMPORARIAMENTE A PEDIDO DO USUÁRIO
+    introScreen.style.display = 'none';
+    
+    /*
     document.body.style.overflow = 'hidden';
     document.documentElement.style.overflow = 'hidden';
     
@@ -40,6 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
       document.body.style.overflow = '';
       document.documentElement.style.overflow = '';
     }, 3000); // Exibição total de 3 segundos (inclui fade-out com zoom)
+    */
   }
 
   // 1. INICIALIZAÇÃO DE ELEMENTOS DE INTERFACE
@@ -342,6 +385,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 3. ANIMAÇÃO DE SCROLL CONTÍNUA (SCROLLYTELLING)
   let scrollTimeout;
+  let softSnapTimeout;
+
   function onScroll() {
     const currentScrollY = window.scrollY;
     
@@ -351,6 +396,33 @@ document.addEventListener('DOMContentLoaded', () => {
     scrollTimeout = setTimeout(() => {
       document.body.classList.remove('is-scrolling');
     }, 70); // Foca rápido após parar a rolagem
+
+    // Soft Snap Inteligente: ajusta apenas se parar MUITO próximo do topo de uma seção (<= 90px)
+    clearTimeout(softSnapTimeout);
+    softSnapTimeout = setTimeout(() => {
+      const SNAP_THRESHOLD = 90; // Tolerância máxima em pixels para alinhar
+      const currentScroll = window.scrollY;
+      const sectionElements = document.querySelectorAll('.scrolly-section');
+      
+      let closestSectionTop = null;
+      let minDistance = Infinity;
+
+      sectionElements.forEach(section => {
+        const top = section.offsetTop;
+        const distance = Math.abs(currentScroll - top);
+        if (distance < minDistance) {
+          minDistance = distance;
+          closestSectionTop = top;
+        }
+      });
+
+      if (minDistance > 2 && minDistance <= SNAP_THRESHOLD && closestSectionTop !== null) {
+        window.scrollTo({
+          top: closestSectionTop,
+          behavior: 'smooth'
+        });
+      }
+    }, 250);
 
     // Detecta a direção do scroll
     if (currentScrollY > lastScrollY) {
@@ -364,6 +436,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
     currentScrollFraction = totalHeight <= 0 ? 0 : currentScrollY / totalHeight;
+
+    // Lógica de controle de frame por scroll (primeiro ao segundo slide) no Canvas
+    if (typeof scrollCanvas !== 'undefined' && scrollCanvas) {
+      const scrollRange = window.innerHeight; // Do slide 1 ao slide 2 (exatamente 1 altura de tela)
+      const progress = Math.min(1, Math.max(0, currentScrollY / scrollRange));
+      targetFrameIndex = progress * (frameCount - 1);
+    }
 
     // Atualiza barra de progresso HUD
     if (scrollProgress) {
