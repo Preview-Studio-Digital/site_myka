@@ -28,6 +28,39 @@ html {
   font-family: var(--font-body);
   overflow-x: hidden;
   scroll-snap-type: none; /* Desativado snap nativo do CSS para controle 100% livre via JS */
+  
+  /* Scrollbar Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent-blue) #070a11;
+}
+
+/* --- BARRA DE ROLAGEM CUSTOMIZADA (DESKTOP) --- */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+/* Trilho estático (fundo escuro/azul noturno) */
+::-webkit-scrollbar-track {
+  background: #070a11;
+  border-left: 1px solid rgba(0, 229, 255, 0.08);
+}
+
+/* Cursor/Thumb da barra de rolagem (estático: azul escuro HUD) */
+::-webkit-scrollbar-thumb {
+  background: rgba(11, 114, 255, 0.7); /* Azul escuro HUD */
+  border-radius: 4px;
+  border: 1px solid rgba(0, 229, 255, 0.2);
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Cursor/Thumb ao passar o mouse ou durante o scroll ativo (Ciano Neon brilhante) */
+::-webkit-scrollbar-thumb:hover,
+::-webkit-scrollbar-thumb:active,
+body.is-scrolling ::-webkit-scrollbar-thumb {
+  background: var(--accent-cyan) !important;
+  box-shadow: 0 0 12px rgba(0, 229, 255, 0.8) !important;
+  border-color: #00E5FF !important;
 }
 
 body {
@@ -78,7 +111,7 @@ body {
   height: 100%;
   object-fit: cover;
   z-index: 2;
-  opacity: 0.12;           /* Reduzido para 12% para um visual sutil e discreto */
+  opacity: 0.10;           /* Ajustado para 10% de opacidade */
   mix-blend-mode: screen;
 }
 
