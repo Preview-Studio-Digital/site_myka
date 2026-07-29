@@ -78,7 +78,7 @@ body {
   height: 100%;
   object-fit: cover;
   z-index: 2;
-  opacity: 0.25;           /* 25% de opacidade/iluminação */
+  opacity: 0.12;           /* Reduzido para 12% para um visual sutil e discreto */
   mix-blend-mode: screen;
 }
 
