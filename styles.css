@@ -104,6 +104,7 @@ body {
 
 /* --- VÍDEO DE FUNDO FIXO (Loop Overlay com Mesclagem) --- */
 #bg-video {
+  display: none;
   position: absolute;
   top: 0;
   left: 0;
@@ -124,7 +125,7 @@ body {
   height: 100%;
   object-fit: cover;
   z-index: 1;              /* Atrás do #bg-video */
-  opacity: 0.5;            /* 50% de opacidade nos frames */
+  opacity: 1;              /* 100% de opacidade nos frames */
 }
 
 /* --- HUD HEADER --- */

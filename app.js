@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Inicialização do Canvas para animação de scroll (Scrollytelling com Frames)
   const scrollCanvas = document.getElementById('scroll-canvas');
-  const frameCount = 193; // Total de frames extraídos
+  const frameCount = 120; // Total de frames extraídos (limitado a 120)
   const images = [];
   let currentFrameIndex = 0;
   let targetFrameIndex = 0;
@@ -437,11 +437,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
     currentScrollFraction = totalHeight <= 0 ? 0 : currentScrollY / totalHeight;
 
-    // Lógica de controle de frame por scroll (primeiro ao segundo slide) no Canvas
+    // Lógica de controle de frame por scroll (primeiro ao segundo slide, e reverso no próximo) no Canvas
     if (typeof scrollCanvas !== 'undefined' && scrollCanvas) {
       const empresaSection = document.getElementById('empresa') || document.getElementById('quem-somos');
-      const scrollRange = empresaSection ? empresaSection.offsetTop : window.innerHeight * 1.8;
-      const progress = Math.min(1, Math.max(0, currentScrollY / scrollRange));
+      const atividadesSection = document.getElementById('atividades') || document.getElementById('servicos');
+      
+      const midScroll = empresaSection ? empresaSection.offsetTop : window.innerHeight * 1.8;
+      const endScroll = atividadesSection ? atividadesSection.offsetTop : midScroll * 2;
+      
+      let progress = 0;
+      if (currentScrollY <= midScroll) {
+        progress = midScroll > 0 ? currentScrollY / midScroll : 0;
+        progress = Math.min(1, Math.max(0, progress));
+      } else {
+        const reverseProgress = (currentScrollY - midScroll) / (endScroll - midScroll);
+        const clampedReverse = Math.min(1, Math.max(0, reverseProgress));
+        progress = 1 - clampedReverse;
+      }
       targetFrameIndex = progress * (frameCount - 1);
     }
 
