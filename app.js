@@ -686,7 +686,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   watchButtons.forEach(btn => {
     btn.addEventListener('click', () => {
-      const videoKey = btn.getAttribute('data-video');
+      let videoKey = btn.getAttribute('data-video');
+      
+      // Normaliza as chaves do HTML para as chaves correspondentes aos vídeos/transmissões
+      if (videoKey === 'inicio') videoKey = 'hero';
+      if (videoKey === 'empresa') videoKey = 'quem-somos';
+      if (videoKey === 'atividades') videoKey = 'servicos';
+
       const info = videoTransmissions[videoKey] || videoTransmissions['hero'];
       
       stopAudio();
