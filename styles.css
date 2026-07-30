@@ -355,7 +355,7 @@ body.is-scrolling .content-wrapper {
 .scrolly-section {
   min-height: 100vh;
   padding: 75px 24px 32px 24px;
-  margin-bottom: 100vh; /* Exatamente 1 tela inteira de espaço de transição entre cada slide */
+  margin-bottom: 0; /* Removido espaço de transição de 1 tela */
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -1597,7 +1597,7 @@ body.scroll-up .garrafal-title .title-word {
     margin-top: 0 !important;
     margin-left: 0 !important;
     margin-right: 0 !important;
-    margin-bottom: 100vh !important; /* Exatamente 1 tela inteira de espaço de transição mantido no desktop */
+    margin-bottom: 0 !important; /* Removido espaço de transição de 1 tela no desktop */
     padding-top: 85px !important; /* Reduzido de 110px para liberar espaço central */
     padding-left: 80px !important; /* Alinha os textos e elementos com a logo do cabeçalho */
     padding-right: 80px !important; /* Respiro lateral direito simétrico */
