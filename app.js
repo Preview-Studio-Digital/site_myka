@@ -1046,6 +1046,6 @@ document.addEventListener('DOMContentLoaded', () => {
   // INICIALIZAÇÃO
   // init3D(); // Desativado temporariamente para remover o fundo 3D
   // render();
-  window.addEventListener('scroll', onScroll);
+  window.addEventListener('scroll', onScroll, { passive: true });
   onScroll(); // Executa para o estado inicial
 });
