@@ -585,9 +585,11 @@ body.is-scrolling .content-wrapper {
 /* Efeito sutil de surgimento palavra por palavra */
 .garrafal-title .title-word {
   display: inline-block;
-  opacity: 1 !important;
-  transform: none !important;
-  transition: none !important;
+  opacity: 0;
+  transform: translateY(20px) translateZ(0); /* Deslocamento de partida */
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: calc(0.35s + var(--word-index) * 0.12s); /* Delay em cascata por palavra com atraso inicial */
 }
 
 /* Escalonamento de tamanho das três palavras (efeito cascata visual) nas demais seções */
@@ -753,8 +755,8 @@ body.is-scrolling .content-wrapper {
 
 
 .scrolly-section.active .garrafal-title .title-word {
-  opacity: 1 !important;
-  transform: none !important;
+  opacity: 1;
+  transform: translateY(0) translateZ(0);
 }
 
 .section-desc {
@@ -801,16 +803,18 @@ body.is-scrolling .content-wrapper {
   margin-bottom: 8px; /* Reduzido de 14px */
   padding: 4px 0; /* Reduzido de 8px 0 */
   align-self: flex-start;
-  opacity: 1 !important;
-  transform: none !important;
-  transition: none !important;
-  pointer-events: auto !important;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  transition-delay: 0s;
+  pointer-events: none;
 }
 
 .scrolly-section.active .company-stats {
-  opacity: 1 !important;
-  transform: none !important;
-  pointer-events: auto !important;
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.3s;
+  pointer-events: auto;
 }
 
 .stat-item {
@@ -1133,16 +1137,20 @@ body.is-scrolling .content-wrapper {
   width: 100%;
   margin-bottom: 8px; /* Reduzido de 12px */
   margin-top: auto;
-  opacity: 1 !important;
-  transform: none !important;
-  transition: none !important;
-  pointer-events: auto !important;
+  
+  /* Escondido por padrão, surge com delay */
+  opacity: 0;
+  transform: translateY(15px);
+  transition: opacity 0.4s ease, transform 0.4s ease;
+  transition-delay: 0s;
+  pointer-events: none;
 }
 
 .scrolly-section.active .contact-card {
-  opacity: 1 !important;
-  transform: none !important;
-  pointer-events: auto !important;
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.5s; /* Surge 0.5s após a seção ficar ativa */
+  pointer-events: auto;
 }
 
 #empresa {

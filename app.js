@@ -35,25 +35,13 @@ document.addEventListener('DOMContentLoaded', () => {
       ctx.drawImage(images[0], 0, 0, scrollCanvas.width, scrollCanvas.height);
     };
 
-    let lastDrawnFrame = -1;
-
     // Loop de renderização fluida do canvas
     function renderScrollCanvas() {
       currentFrameIndex += (targetFrameIndex - currentFrameIndex) * 0.15;
       const roundedIndex = Math.min(frameCount - 1, Math.max(0, Math.round(currentFrameIndex)));
-      
-      if (images[roundedIndex]) {
-        if (images[roundedIndex].complete) {
-          if (roundedIndex !== lastDrawnFrame) {
-            ctx.drawImage(images[roundedIndex], 0, 0, scrollCanvas.width, scrollCanvas.height);
-            lastDrawnFrame = roundedIndex;
-          }
-        } else {
-          images[roundedIndex].onload = () => {
-            ctx.drawImage(images[roundedIndex], 0, 0, scrollCanvas.width, scrollCanvas.height);
-            lastDrawnFrame = roundedIndex;
-          };
-        }
+      const img = images[roundedIndex];
+      if (img && img.complete) {
+        ctx.drawImage(img, 0, 0, scrollCanvas.width, scrollCanvas.height);
       }
       requestAnimationFrame(renderScrollCanvas);
     }
