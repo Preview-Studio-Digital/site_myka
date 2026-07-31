@@ -89,12 +89,10 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, rgba(7, 10, 17, 0.98) 0%, rgba(7, 10, 17, 0.88) 25%, rgba(7, 10, 17, 0.5) 45%, rgba(7, 10, 17, 0) 65%);
+  background: linear-gradient(90deg, rgba(11, 20, 38, 1) 0%, rgba(11, 20, 38, 1) 10vw, rgba(11, 20, 38, 0) 50vw);
   z-index: 3;
   pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.3s cubic-bezier(0.25, 1, 0.5, 1);
-  will-change: opacity;
+  opacity: 1 !important; /* Mantém o esfumaçado sempre visível para esconder a emenda da margem esquerda */
 }
 
 /* --- CANVAS 3D BACKGROUND (REMOVIDO / PREPARADO PARA VÍDEO) --- */
@@ -120,7 +118,7 @@ body {
 #scroll-canvas {
   position: absolute;
   top: 0;
-  left: 0;
+  left: 10vw;              /* Desloca os frames 10% da largura da tela para a direita */
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -378,6 +376,42 @@ body.is-scrolling .content-wrapper {
   transform: translateY(0);
 }
 
+/* --- CAMADA DE BLUR DE FUNDO PARA TEXTO (Sem Alterar Layout) --- */
+.text-blur-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;             /* Fica acima do background-canvas mas atrás do texto */
+  opacity: 0;
+  transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  background: transparent;
+  will-change: opacity;
+}
+
+/* Quando o slide fica ativo, exibe o blur com fade in */
+.scrolly-section.active .text-blur-bg {
+  opacity: 1;
+}
+
+/* Garante que os elementos de texto fiquem acima do blur */
+.scrolly-section > *:not(.text-blur-bg) {
+  position: relative;
+  z-index: 2;
+}
+
+/* Ajuste específico para desktop (cobrindo apenas a área do texto no lado esquerdo) */
+@media (min-width: 1024px) {
+  .text-blur-bg {
+    width: 60%;
+    background: transparent;
+  }
+}
+
 /* Números gigantes em plano de fundo transparentes (REMOVIDOS) */
 .bg-section-number {
   display: none !important;
@@ -457,6 +491,34 @@ body.is-scrolling .content-wrapper {
   68% {
     text-shadow: 0 0 15px rgba(56, 189, 248, 0.7), 0 0 26px rgba(56, 189, 248, 0.4);
   }
+}
+
+@keyframes whiteGlowPulse {
+  0%, 100% {
+    text-shadow: none;
+  }
+  50% {
+    text-shadow: 0 0 6px currentColor, 0 0 12px currentColor;
+  }
+}
+
+.garrafal-title .brand-highlight,
+.garrafal-title .heart-highlight,
+.garrafal-title .industry-highlight {
+  animation: whiteGlowPulse 6s infinite ease-in-out;
+  animation-delay: calc(var(--word-index) * 1.2s); /* Atraso proporcional ao index para pulsar em sequência (uma por vez) */
+  will-change: text-shadow;
+}
+
+/* Sincronização e sequência perfeita das 3 palavras pulsantes do Slide 1 (MYKA - PULMÃO - INDÚSTRIA) */
+#inicio.active .garrafal-title .brand-highlight {
+  animation-delay: 0s !important;
+}
+#inicio.active .garrafal-title .heart-highlight {
+  animation-delay: 2s !important;
+}
+#inicio.active .garrafal-title .industry-highlight {
+  animation-delay: 4s !important;
 }
 
 /* Destaque de cor da marca (Ciano Neon) */
@@ -544,7 +606,7 @@ body.is-scrolling .content-wrapper {
   transform: translateY(20px) translateZ(0); /* Deslocamento de partida */
   transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
               transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-  transition-delay: calc(var(--word-index) * 0.12s); /* Delay em cascata por palavra */
+  transition-delay: calc(0.35s + var(--word-index) * 0.12s); /* Delay em cascata por palavra com atraso inicial */
 }
 
 /* Escalonamento de tamanho das três palavras (efeito cascata visual) nas demais seções */
@@ -625,12 +687,12 @@ body.scroll-up .garrafal-title .title-word {
   margin-top: auto; /* Empurra o bloco texto+botões para a base da seção flex */
   margin-bottom: 0 !important; /* Zerado para evitar espaço extra entre o texto e os botões */
   font-weight: 400;
-  width: calc(100% + 14px);
-  max-width: calc(100% + 14px);
+  width: 100%;
+  max-width: 100%;
   text-align: justify;
-  border-left: 2px solid rgba(0, 229, 255, 0.5); /* Indicador HUD ciano sutil */
-  padding-left: 12px;
-  margin-left: -14px;
+  border-left: none; /* Barra vertical esquerda removida */
+  padding-left: 0;
+  margin-left: 0;
   box-sizing: border-box;
 
   /* Leitura nítida via sombra de texto projetada (sem caixa ou balão de fundo) */
@@ -1172,9 +1234,9 @@ body.scroll-up .garrafal-title .title-word {
   box-sizing: border-box;
 }
 
-/* Espaçamento no topo reajustado para 95px para limpar o cabeçalho fixo */
+/* Espaçamento no topo reajustado para 100px para limpar o cabeçalho fixo */
 #contato {
-  padding-top: 75px !important; /* Igualado a 75px com os outros slides */
+  padding-top: 100px !important;
 }
 
 /* Compactações exclusivas da seção de contato para compensar a descida do topo */
@@ -1609,7 +1671,7 @@ body.scroll-up .garrafal-title .title-word {
   }
 
   #contato {
-    padding-top: 75px !important;
+    padding-top: 100px !important;
     padding-bottom: 50px !important; /* Espaço suficiente para os botões ficarem visíveis acima do rodapé fixo */
   }
 
@@ -1656,11 +1718,11 @@ body.scroll-up .garrafal-title .title-word {
 
   .section-desc {
     font-size: 0.95rem;
-    width: calc(50vw + 19px);
-    max-width: calc(50vw + 19px);
-    padding-left: 16px;
-    border-left-width: 3px;
-    margin-left: -19px;
+    width: 50vw;
+    max-width: 50vw;
+    padding-left: 0;
+    border-left-width: 0; /* Barra vertical esquerda removida no desktop */
+    margin-left: 0;
     margin-top: auto !important; /* Pushes the description text to the bottom on desktop */
   }
 

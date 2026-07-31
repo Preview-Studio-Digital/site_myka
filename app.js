@@ -10,6 +10,14 @@ document.addEventListener('DOMContentLoaded', () => {
     bgVideo.play().catch(err => console.log("Video playback initiated:", err));
   }
 
+  // Insere um div de desfoque de fundo (blur) em cada seção de forma dinâmica para legibilidade do texto
+  const textSections = document.querySelectorAll('.scrolly-section');
+  textSections.forEach(sec => {
+    const blurBg = document.createElement('div');
+    blurBg.className = 'text-blur-bg';
+    sec.insertBefore(blurBg, sec.firstChild);
+  });
+
   // Inicialização do Canvas para animação de scroll (Scrollytelling com Frames)
   const scrollCanvas = document.getElementById('scroll-canvas');
   const frameCount = 120; // Total de frames extraídos (limitado a 120)
@@ -437,23 +445,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
     currentScrollFraction = totalHeight <= 0 ? 0 : currentScrollY / totalHeight;
 
-    // Lógica de controle de frame por scroll (primeiro ao segundo slide, e reverso no próximo) no Canvas
+    // Lógica de controle de frame por scroll: rodar inteiramente até a metade do espaço total e reverso na outra metade
     if (typeof scrollCanvas !== 'undefined' && scrollCanvas) {
-      const empresaSection = document.getElementById('empresa') || document.getElementById('quem-somos');
-      const atividadesSection = document.getElementById('atividades') || document.getElementById('servicos');
-      
-      const midScroll = empresaSection ? empresaSection.offsetTop : window.innerHeight * 1.8;
-      const endScroll = atividadesSection ? atividadesSection.offsetTop : midScroll * 2;
-      
       let progress = 0;
-      if (currentScrollY <= midScroll) {
-        progress = midScroll > 0 ? currentScrollY / midScroll : 0;
-        progress = Math.min(1, Math.max(0, progress));
+      if (currentScrollFraction <= 0.5) {
+        progress = currentScrollFraction / 0.5;
       } else {
-        const reverseProgress = (currentScrollY - midScroll) / (endScroll - midScroll);
-        const clampedReverse = Math.min(1, Math.max(0, reverseProgress));
-        progress = 1 - clampedReverse;
+        progress = 1 - ((currentScrollFraction - 0.5) / 0.5);
       }
+      progress = Math.min(1, Math.max(0, progress));
       targetFrameIndex = progress * (frameCount - 1);
     }
 
