@@ -151,11 +151,11 @@ body {
   z-index: 2;
   pointer-events: none;
   background: 
-    /* Vinheta local dinâmica e suave baseada na cor de fundo do site (25% no mobile) */
-    linear-gradient(180deg, var(--bg-color) 0%, var(--bg-color) 5%, rgba(var(--bg-color-rgb), 0) 25%),
-    linear-gradient(0deg, var(--bg-color) 0%, var(--bg-color) 5%, rgba(var(--bg-color-rgb), 0) 25%),
-    linear-gradient(270deg, var(--bg-color) 0%, var(--bg-color) 5%, rgba(var(--bg-color-rgb), 0) 25%),
-    linear-gradient(90deg, var(--bg-color) 0%, var(--bg-color) 5%, rgba(var(--bg-color-rgb), 0) 25%);
+    /* Vinheta local dinâmica e suave baseada na cor de fundo do site (40% no mobile) */
+    linear-gradient(180deg, var(--bg-color) 0%, var(--bg-color) 5%, rgba(var(--bg-color-rgb), 0) 40%),
+    linear-gradient(0deg, var(--bg-color) 0%, var(--bg-color) 5%, rgba(var(--bg-color-rgb), 0) 40%),
+    linear-gradient(270deg, var(--bg-color) 0%, var(--bg-color) 5%, rgba(var(--bg-color-rgb), 0) 40%),
+    linear-gradient(90deg, var(--bg-color) 0%, var(--bg-color) 5%, rgba(var(--bg-color-rgb), 0) 40%);
 }
 
 /* --- HUD HEADER --- */
