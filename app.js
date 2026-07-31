@@ -475,6 +475,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // ANIMAÇÃO 3D CONTROLADA POR SCROLL (SCENARIOS & CAMERAS)
     animate3DSceneByScroll(currentScrollFraction);
+
+    isScrollingThrottled = false;
   }
 
   // LÓGICA DE ANIMAÇÃO DOS NÚMEROS DA SEÇÃO EMPRESA
