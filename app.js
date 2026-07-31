@@ -60,10 +60,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const introScreen = document.getElementById('intro-screen');
   const introCounter = document.getElementById('intro-counter');
   if (introScreen) {
-    // DESATIVADO TEMPORARIAMENTE A PEDIDO DO USUÁRIO
-    introScreen.style.display = 'none';
-    
-    /*
     document.body.style.overflow = 'hidden';
     document.documentElement.style.overflow = 'hidden';
     
@@ -90,7 +86,6 @@ document.addEventListener('DOMContentLoaded', () => {
       document.body.style.overflow = '';
       document.documentElement.style.overflow = '';
     }, 3000); // Exibição total de 3 segundos (inclui fade-out com zoom)
-    */
   }
 
   // 1. INICIALIZAÇÃO DE ELEMENTOS DE INTERFACE
