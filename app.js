@@ -10,13 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     bgVideo.play().catch(err => console.log("Video playback initiated:", err));
   }
 
-  // Insere um div de desfoque de fundo (blur) em cada seção de forma dinâmica para legibilidade do texto
-  const textSections = document.querySelectorAll('.scrolly-section');
-  textSections.forEach(sec => {
-    const blurBg = document.createElement('div');
-    blurBg.className = 'text-blur-bg';
-    sec.insertBefore(blurBg, sec.firstChild);
-  });
+
 
   // Inicialização do Canvas para animação de scroll (Scrollytelling com Frames)
   const scrollCanvas = document.getElementById('scroll-canvas');
@@ -54,43 +48,6 @@ document.addEventListener('DOMContentLoaded', () => {
       requestAnimationFrame(renderScrollCanvas);
     }
     requestAnimationFrame(renderScrollCanvas);
-  }
-
-  // Lógica da Tela de Introdução (Intro/Splash Screen)
-  const introScreen = document.getElementById('intro-screen');
-  const introCounter = document.getElementById('intro-counter');
-  if (introScreen) {
-    // DESATIVADO TEMPORARIAMENTE A PEDIDO DO USUÁRIO
-    introScreen.style.display = 'none';
-    
-    /*
-    document.body.style.overflow = 'hidden';
-    document.documentElement.style.overflow = 'hidden';
-    
-    // Contador progressivo rápido de 1 a 7 (concluído em 1.2 segundos)
-    if (introCounter) {
-      let count = 1;
-      introCounter.classList.add('pulse-number');
-      
-      const interval = setInterval(() => {
-        count++;
-        if (count <= 7) {
-          introCounter.textContent = count;
-          introCounter.classList.remove('pulse-number');
-          void introCounter.offsetWidth; // Força reflow para reiniciar animação
-          introCounter.classList.add('pulse-number');
-        } else {
-          clearInterval(interval);
-        }
-      }, 200); // Incrementa a cada 200ms
-    }
-    
-    setTimeout(() => {
-      introScreen.classList.add('fade-out');
-      document.body.style.overflow = '';
-      document.documentElement.style.overflow = '';
-    }, 3000); // Exibição total de 3 segundos (inclui fade-out com zoom)
-    */
   }
 
   // 1. INICIALIZAÇÃO DE ELEMENTOS DE INTERFACE
