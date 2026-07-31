@@ -10,17 +10,23 @@ document.addEventListener('DOMContentLoaded', () => {
     bgVideo.play().catch(err => console.log("Video playback initiated:", err));
   }
 
+  // Insere um div de desfoque de fundo (blur) em cada seção de forma dinâmica para legibilidade do texto
+  const textSections = document.querySelectorAll('.scrolly-section');
+  textSections.forEach(sec => {
+    const blurBg = document.createElement('div');
+    blurBg.className = 'text-blur-bg';
+    sec.insertBefore(blurBg, sec.firstChild);
+  });
 
-    // Inicialização do Canvas para animação de scroll (Scrollytelling com Frames)
+  // Inicialização do Canvas para animação de scroll (Scrollytelling com Frames)
   const scrollCanvas = document.getElementById('scroll-canvas');
   const frameCount = 120; // Total de frames extraídos (limitado a 120)
   const images = [];
   let currentFrameIndex = 0;
   let targetFrameIndex = 0;
+
   if (scrollCanvas) {
     const ctx = scrollCanvas.getContext('2d');
-    scrollCanvas.width = 1280;
-    scrollCanvas.height = 720;
     
     // Pré-carrega as imagens do diretório scroll-frames
     for (let i = 1; i <= frameCount; i++) {
@@ -30,22 +36,61 @@ document.addEventListener('DOMContentLoaded', () => {
       images.push(img);
     }
     
-    // Desenha a primeira imagem assim que carregar
+    // Quando a primeira imagem carregar, configura o canvas
     images[0].onload = () => {
+      scrollCanvas.width = 1280;
+      scrollCanvas.height = 720;
       ctx.drawImage(images[0], 0, 0, scrollCanvas.width, scrollCanvas.height);
     };
 
-    // Loop de renderização fluida do canvas
+    // Loop de renderização suave
     function renderScrollCanvas() {
       currentFrameIndex += (targetFrameIndex - currentFrameIndex) * 0.15;
+      
       const roundedIndex = Math.min(frameCount - 1, Math.max(0, Math.round(currentFrameIndex)));
-      const img = images[roundedIndex];
-      if (img && img.complete) {
-        ctx.drawImage(img, 0, 0, scrollCanvas.width, scrollCanvas.height);
+      if (images[roundedIndex] && images[roundedIndex].complete) {
+        ctx.drawImage(images[roundedIndex], 0, 0, scrollCanvas.width, scrollCanvas.height);
       }
       requestAnimationFrame(renderScrollCanvas);
     }
     requestAnimationFrame(renderScrollCanvas);
+  }
+
+  // Lógica da Tela de Introdução (Intro/Splash Screen)
+  const introScreen = document.getElementById('intro-screen');
+  const introCounter = document.getElementById('intro-counter');
+  if (introScreen) {
+    // DESATIVADO TEMPORARIAMENTE A PEDIDO DO USUÁRIO
+    introScreen.style.display = 'none';
+    
+    /*
+    document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
+    
+    // Contador progressivo rápido de 1 a 7 (concluído em 1.2 segundos)
+    if (introCounter) {
+      let count = 1;
+      introCounter.classList.add('pulse-number');
+      
+      const interval = setInterval(() => {
+        count++;
+        if (count <= 7) {
+          introCounter.textContent = count;
+          introCounter.classList.remove('pulse-number');
+          void introCounter.offsetWidth; // Força reflow para reiniciar animação
+          introCounter.classList.add('pulse-number');
+        } else {
+          clearInterval(interval);
+        }
+      }, 200); // Incrementa a cada 200ms
+    }
+    
+    setTimeout(() => {
+      introScreen.classList.add('fade-out');
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+    }, 3000); // Exibição total de 3 segundos (inclui fade-out com zoom)
+    */
   }
 
   // 1. INICIALIZAÇÃO DE ELEMENTOS DE INTERFACE
@@ -378,41 +423,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 3. ANIMAÇÃO DE SCROLL CONTÍNUA (SCROLLYTELLING)
 
-  let lastDirection = null;
-  let lastActiveStep = -1;
-  let latestScrollY = window.scrollY;
-  let isScrollingThrottled = false;
-
   function onScroll() {
-    latestScrollY = window.scrollY;
-    if (!isScrollingThrottled) {
-      isScrollingThrottled = true;
-      requestAnimationFrame(updateScrollData);
-    }
-  }
-
-  function updateScrollData() {
-    const currentScrollY = latestScrollY;
+    const currentScrollY = window.scrollY;
     
-    // Detecta a direção do scroll (só muda classList quando a direção de fato inverte)
-    const newDirection = currentScrollY > lastScrollY ? 'down' : (currentScrollY < lastScrollY ? 'up' : lastDirection);
-    if (newDirection && newDirection !== lastDirection) {
-      if (newDirection === 'down') {
-        document.body.classList.remove('scroll-up');
-        document.body.classList.add('scroll-down');
-      } else {
-        document.body.classList.remove('scroll-down');
-        document.body.classList.add('scroll-up');
-      }
-      lastDirection = newDirection;
+    // Detecta a direção do scroll
+    if (currentScrollY > lastScrollY) {
+      document.body.classList.remove('scroll-up');
+      document.body.classList.add('scroll-down');
+    } else if (currentScrollY < lastScrollY) {
+      document.body.classList.remove('scroll-down');
+      document.body.classList.add('scroll-up');
     }
     lastScrollY = currentScrollY;
 
     const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
     currentScrollFraction = totalHeight <= 0 ? 0 : currentScrollY / totalHeight;
 
-    // Lógica de controle de frame por scroll
-    if (scrollCanvas) {
+    // Lógica de controle de frame por scroll: rodar inteiramente até a metade do espaço total e reverso na outra metade
+    if (typeof scrollCanvas !== 'undefined' && scrollCanvas) {
       let progress = 0;
       if (currentScrollFraction <= 0.5) {
         progress = currentScrollFraction / 0.5;
@@ -428,7 +456,7 @@ document.addEventListener('DOMContentLoaded', () => {
       scrollProgress.style.setProperty('--scroll-height', `${Math.min(100, currentScrollFraction * 100)}%`);
     }
 
-    // Identifica seção ativa e calcula visibilidade
+    // Identifica seção ativa e calcula visibilidade continua para Fade In/Out do esfumacado
     let currentStep = 0;
     let maxSectionVisibility = 0;
     const windowH = window.innerHeight;
@@ -438,6 +466,8 @@ document.addEventListener('DOMContentLoaded', () => {
       if (rect.top <= windowH * 0.7 && rect.bottom >= windowH * 0.1) {
         currentStep = idx;
       }
+
+      // Calcula quanto da seção está presente na janela (de 0 a 1)
       const visibleHeight = Math.max(0, Math.min(rect.bottom, windowH) - Math.max(rect.top, 0));
       const visibility = visibleHeight / windowH;
       if (visibility > maxSectionVisibility) {
@@ -445,38 +475,31 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // Controla Fade In e Fade Out do esfumacado lateral
+    // Controla Fade In e Fade Out contínuo e ultra suave do esfumacado lateral
     if (bgGradientOverlay) {
       bgGradientOverlay.style.opacity = Math.min(1, Math.max(0, maxSectionVisibility * 1.3));
     }
 
-    // Só atualiza DOM das seções quando a seção ativa realmente muda
-    if (currentStep !== lastActiveStep) {
-      if (stepIndicator) {
-        stepIndicator.textContent = `0${currentStep + 1} / 07`;
-      }
-
-      sections.forEach((sec, idx) => {
-        const link = sectionLinks[sec.id];
-        if (idx === currentStep) {
-          sec.classList.add('active');
-          if (link) link.classList.add('active');
-        } else {
-          sec.classList.remove('active');
-          if (link) link.classList.remove('active');
-        }
-      });
-
-      lastActiveStep = currentStep;
+    if (stepIndicator) {
+      stepIndicator.textContent = `0${currentStep + 1} / 07`;
     }
+
+    sections.forEach((sec, idx) => {
+      const link = sectionLinks[sec.id];
+      if (idx === currentStep) {
+        sec.classList.add('active');
+        if (link) link.classList.add('active');
+      } else {
+        sec.classList.remove('active');
+        if (link) link.classList.remove('active');
+      }
+    });
 
     // Animação dos contadores da seção EMPRESA
     animateCompanyStats();
 
     // ANIMAÇÃO 3D CONTROLADA POR SCROLL (SCENARIOS & CAMERAS)
     animate3DSceneByScroll(currentScrollFraction);
-
-    isScrollingThrottled = false;
   }
 
   // LÓGICA DE ANIMAÇÃO DOS NÚMEROS DA SEÇÃO EMPRESA

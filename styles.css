@@ -69,6 +69,7 @@ body {
   position: relative;
   width: 100%;
   background-color: transparent; /* Permite ver os vídeos fixos atrás */
+  overflow-x: hidden;           /* Evita qualquer rolagem lateral */
 }
 
 /* --- CONTAINER DE FUNDO (Z-INDEX FIX) --- */
@@ -129,7 +130,7 @@ body {
   max-width: 100%;
   max-height: 100%;
   aspect-ratio: 16 / 9;    /* Força a proporção exata da animação 3D */
-  pointer-events: none;    /* Deve ser none para não interceptar scroll/wheel do mouse */
+  pointer-events: auto;
 }
 
 #scroll-canvas {
@@ -379,21 +380,25 @@ body.is-scrolling .content-wrapper {
   position: relative;
   z-index: 10;
   width: 100%;
+  transition: filter 0.15s ease;
+  will-change: filter;
 }
 
 .scrolly-section {
   min-height: 100vh;
   padding: 75px 24px 32px 24px;
-  margin-bottom: 0;
+  margin-bottom: 0; /* Removido espaço de transição de 1 tela */
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
   width: 100%;
   max-width: none;
-  opacity: 1;
-  transform: none;
+  opacity: 0.4;
+  transform: translateY(20px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
   position: relative;
+  overflow: hidden;
 }
 
 .scrolly-section:last-child {
@@ -402,12 +407,29 @@ body.is-scrolling .content-wrapper {
 
 .scrolly-section.active {
   opacity: 1;
-  transform: none;
+  transform: translateY(0);
 }
 
-/* --- CAMADA DE BLUR DE FUNDO PARA TEXTO (DESATIVADA PARA EVITAR CAMADAS SOBREPOSTAS) --- */
+/* --- CAMADA DE BLUR DE FUNDO PARA TEXTO (Sem Alterar Layout) --- */
 .text-blur-bg {
-  display: none !important;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;             /* Fica acima do background-canvas mas atrás do texto */
+  opacity: 0;
+  transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  background: transparent;
+  will-change: opacity;
+}
+
+/* Quando o slide fica ativo, exibe o blur com fade in */
+.scrolly-section.active .text-blur-bg {
+  opacity: 1;
 }
 
 /* Garante que os elementos de texto fiquem acima do blur */
@@ -753,6 +775,11 @@ body.is-scrolling .content-wrapper {
 }
 
 
+
+/* Quando rola para cima, a cascata de delay também pode ser ligeiramente deslocada */
+body.scroll-up .garrafal-title .title-word {
+  transform: translateY(-20px) translateZ(0);
+}
 
 .scrolly-section.active .garrafal-title .title-word {
   opacity: 1;
@@ -1365,7 +1392,6 @@ body.is-scrolling .content-wrapper {
 .modal-overlay.hidden {
   opacity: 0;
   pointer-events: none;
-  display: none !important;
 }
 
 .modal-video {
@@ -1842,7 +1868,7 @@ body.is-scrolling .content-wrapper {
   align-items: center;
   opacity: 1;
   transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), visibility 0.8s;
-  pointer-events: none; /* Sempre none para não bloquear eventos de scroll/mouse */
+  pointer-events: auto;
   overflow: hidden;
 }
 
@@ -2062,7 +2088,7 @@ body.is-scrolling .content-wrapper {
 
 .loader-overlay.active {
   opacity: 1;
-  pointer-events: none; /* Sempre none pois é puramente visual e evita bloquear scroll */
+  pointer-events: auto;
 }
 
 .loader-overlay:not(.hidden) {
