@@ -58,44 +58,6 @@ document.addEventListener('DOMContentLoaded', () => {
     requestAnimationFrame(renderScrollCanvas);
   }
 
-  // Lógica da Tela de Introdução (Intro/Splash Screen)
-  const introScreen = document.getElementById('intro-screen');
-  const introCounter = document.getElementById('intro-counter');
-  if (introScreen) {
-    document.body.style.overflow = 'hidden';
-    document.documentElement.style.overflow = 'hidden';
-    
-    // Contador progressivo rápido de 1 a 7 (concluído em 1.2 segundos)
-    if (introCounter) {
-      let count = 1;
-      introCounter.classList.add('pulse-number');
-      
-      const interval = setInterval(() => {
-        count++;
-        if (count <= 7) {
-          introCounter.textContent = count;
-          introCounter.classList.remove('pulse-number');
-          void introCounter.offsetWidth; // Força reflow para reiniciar animação
-          introCounter.classList.add('pulse-number');
-        } else {
-          clearInterval(interval);
-        }
-      }, 200); // Incrementa a cada 200ms
-    }
-    
-    setTimeout(() => {
-      introScreen.classList.add('fade-out');
-      // Desbloqueia scroll e remove interação imediatamente (sem esperar a transição CSS de 0.8s)
-      introScreen.style.pointerEvents = 'none';
-      document.body.style.overflow = '';
-      document.documentElement.style.overflow = '';
-      // Remove o overlay do DOM após a transição visual completar
-      setTimeout(() => {
-        introScreen.remove();
-      }, 1000);
-    }, 3000);
-  }
-
   // 1. INICIALIZAÇÃO DE ELEMENTOS DE INTERFACE
   const canvas = document.getElementById('bg-canvas');
   const sections = document.querySelectorAll('.scrolly-section');
