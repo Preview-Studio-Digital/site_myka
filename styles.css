@@ -151,11 +151,11 @@ body {
   z-index: 2;
   pointer-events: none;
   background: 
-    /* Vinheta local dinâmica e suave baseada na cor de fundo do site */
-    linear-gradient(180deg, var(--bg-color) 0%, var(--bg-color) 5%, rgba(var(--bg-color-rgb), 0) 50%),
-    linear-gradient(0deg, var(--bg-color) 0%, var(--bg-color) 5%, rgba(var(--bg-color-rgb), 0) 50%),
-    linear-gradient(270deg, var(--bg-color) 0%, var(--bg-color) 5%, rgba(var(--bg-color-rgb), 0) 50%),
-    linear-gradient(90deg, var(--bg-color) 0%, var(--bg-color) 5%, rgba(var(--bg-color-rgb), 0) 50%);
+    /* Vinheta local dinâmica e suave baseada na cor de fundo do site (25% no mobile) */
+    linear-gradient(180deg, var(--bg-color) 0%, var(--bg-color) 5%, rgba(var(--bg-color-rgb), 0) 25%),
+    linear-gradient(0deg, var(--bg-color) 0%, var(--bg-color) 5%, rgba(var(--bg-color-rgb), 0) 25%),
+    linear-gradient(270deg, var(--bg-color) 0%, var(--bg-color) 5%, rgba(var(--bg-color-rgb), 0) 25%),
+    linear-gradient(90deg, var(--bg-color) 0%, var(--bg-color) 5%, rgba(var(--bg-color-rgb), 0) 25%);
 }
 
 /* --- HUD HEADER --- */
@@ -1621,6 +1621,15 @@ body.scroll-up .garrafal-title .title-word {
     left: 15vw !important;
     width: 90% !important;
     height: 90% !important;
+  }
+
+  #scroll-canvas-vignette {
+    background: 
+      /* Vinheta local dinâmica e suave baseada na cor de fundo do site (50% no desktop) */
+      linear-gradient(180deg, var(--bg-color) 0%, var(--bg-color) 5%, rgba(var(--bg-color-rgb), 0) 50%),
+      linear-gradient(0deg, var(--bg-color) 0%, var(--bg-color) 5%, rgba(var(--bg-color-rgb), 0) 50%),
+      linear-gradient(270deg, var(--bg-color) 0%, var(--bg-color) 5%, rgba(var(--bg-color-rgb), 0) 50%),
+      linear-gradient(90deg, var(--bg-color) 0%, var(--bg-color) 5%, rgba(var(--bg-color-rgb), 0) 50%) !important;
   }
 
   .hud-header .brand-text {
