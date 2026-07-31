@@ -804,17 +804,8 @@ body.scroll-up .garrafal-title .title-word {
   /* Leitura nítida via sombra de texto projetada (sem caixa ou balão de fundo) */
   text-shadow: none;
 
-  /* Sincronizado com os botões: invisível por padrão, surge e desaparece com a ação da seção */
-  opacity: 0;
-  transform: translateY(15px);
-  transition: opacity 0.4s ease, transform 0.4s ease;
-  transition-delay: 0s; /* Dispare o desaparecimento imediato ao sair da seção */
-}
-
-.scrolly-section.active .section-desc {
   opacity: 1;
-  transform: translateY(0);
-  transition-delay: 0.5s; /* Surge simultaneamente com os botões (0.5s após a seção ficar ativa) */
+  transform: none;
 }
 
 /* bottom-group: agrupa ícones + texto + botões; flex:1 no mobile para preencher espaço vertical */
@@ -1028,18 +1019,8 @@ body.scroll-up .garrafal-title .title-word {
   flex-wrap: nowrap; /* Impede quebra de linha para manter lado a lado */
   margin: 12px 0 0 0 !important; /* Espaçamento superior igual ao preenchimento lateral dos botões mobile (12px) */
   
-  /* Escondido por padrão, surge com delay */
-  opacity: 0;
-  transform: translateY(15px);
-  transition: opacity 0.4s ease, transform 0.4s ease;
-  transition-delay: 0s; /* Some imediatamente quando a seção perde o foco */
-  pointer-events: none;
-}
-
-.scrolly-section.active .action-buttons {
   opacity: 1;
-  transform: translateY(0);
-  transition-delay: 0.5s; /* Surge 0.5s após a seção ficar ativa */
+  transform: none;
   pointer-events: auto;
 }
 
