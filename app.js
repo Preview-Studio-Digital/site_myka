@@ -202,7 +202,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         setTimeout(() => {
-          const targetTop = targetElement.getBoundingClientRect().top + window.pageYOffset;
+          const targetTop = targetElement.offsetTop;
           window.scrollTo({
             top: targetTop,
             behavior: 'smooth'

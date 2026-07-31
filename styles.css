@@ -392,8 +392,7 @@ body.is-scrolling .content-wrapper {
   width: 100%;
   max-width: none;
   opacity: 1;
-  transform: translateY(20px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
+  transform: none;
   position: relative;
 }
 
@@ -403,7 +402,7 @@ body.is-scrolling .content-wrapper {
 
 .scrolly-section.active {
   opacity: 1;
-  transform: translateY(0);
+  transform: none;
 }
 
 /* --- CAMADA DE BLUR DE FUNDO PARA TEXTO (DESATIVADA) --- */
