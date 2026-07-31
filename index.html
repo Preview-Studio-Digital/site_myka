@@ -39,7 +39,12 @@
   <!-- CONTAINER DE FUNDO (Resolve problema de z-index) -->
   <div id="bg-container">
     <!-- NOVO VÍDEO DE FUNDO EM FRAMES (Controlado por scroll) -->
-    <canvas id="scroll-canvas"></canvas>
+    <div id="scroll-canvas-wrapper">
+      <div id="scroll-canvas-inner">
+        <canvas id="scroll-canvas"></canvas>
+        <div id="scroll-canvas-vignette"></div>
+      </div>
+    </div>
 
     <!-- VÍDEO DE FUNDO DO SITE (Loop Overlay) -->
     <video id="bg-video" autoplay muted loop playsinline>
