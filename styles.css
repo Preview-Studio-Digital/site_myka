@@ -1266,9 +1266,9 @@ body.scroll-up .garrafal-title .title-word {
   box-sizing: border-box;
 }
 
-/* Espaçamento no topo reajustado para 100px para limpar o cabeçalho fixo */
+/* Espaçamento no topo igualado aos outros slides no mobile para alinhar título e badge */
 #contato {
-  padding-top: 100px !important;
+  padding-top: 75px !important;
 }
 
 /* Compactações exclusivas da seção de contato para compensar a descida do topo */
