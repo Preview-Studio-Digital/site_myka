@@ -234,21 +234,23 @@ document.addEventListener('DOMContentLoaded', () => {
       if (targetElement) {
         e.preventDefault();
         
-        // Fecha o menu mobile se estiver aberto
-        if (menuToggleBtn && hudNavigation) {
+        let scrollDelay = 0;
+        
+        // Fecha o menu mobile se estiver aberto e define o delay
+        if (menuToggleBtn && hudNavigation && hudNavigation.classList.contains('open')) {
           menuToggleBtn.classList.remove('open');
           hudNavigation.classList.remove('open');
           document.body.classList.remove('menu-active');
+          scrollDelay = 150; // Somente aguarda o delay se o menu de fato estiver aberto
         }
 
-        // Aguarda um pequeno delay para que o menu termine de fechar e o layout se estabilize
         setTimeout(() => {
           const targetTop = targetElement.getBoundingClientRect().top + window.pageYOffset;
           window.scrollTo({
             top: targetTop,
             behavior: 'smooth'
           });
-        }, 150); // Delay de 150ms para sincronizar com a fechada do menu e posicionar com precisão cirúrgica
+        }, scrollDelay);
       }
     });
   });
