@@ -10,13 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     bgVideo.play().catch(err => console.log("Video playback initiated:", err));
   }
 
-  // Insere um div de desfoque de fundo (blur) em cada seção de forma dinâmica para legibilidade do texto
-  const textSections = document.querySelectorAll('.scrolly-section');
-  textSections.forEach(sec => {
-    const blurBg = document.createElement('div');
-    blurBg.className = 'text-blur-bg';
-    sec.insertBefore(blurBg, sec.firstChild);
-  });
+
     // Inicialização do Canvas para animação de scroll (Scrollytelling com Frames)
   const scrollCanvas = document.getElementById('scroll-canvas');
   const frameCount = 120; // Total de frames extraídos (limitado a 120)
