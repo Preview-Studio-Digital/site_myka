@@ -17,16 +17,17 @@ document.addEventListener('DOMContentLoaded', () => {
     blurBg.className = 'text-blur-bg';
     sec.insertBefore(blurBg, sec.firstChild);
   });
-
-  // Inicialização do Canvas para animação de scroll (Scrollytelling com Frames)
+    // Inicialização do Canvas para animação de scroll (Scrollytelling com Frames)
   const scrollCanvas = document.getElementById('scroll-canvas');
   const frameCount = 120; // Total de frames extraídos (limitado a 120)
   const images = [];
   let currentFrameIndex = 0;
   let targetFrameIndex = 0;
+  let isCanvasRendering = false;
+  let canvasCtx = null;
 
   if (scrollCanvas) {
-    const ctx = scrollCanvas.getContext('2d');
+    canvasCtx = scrollCanvas.getContext('2d');
     
     // Pré-carrega as imagens do diretório scroll-frames
     for (let i = 1; i <= frameCount; i++) {
@@ -40,22 +41,38 @@ document.addEventListener('DOMContentLoaded', () => {
     images[0].onload = () => {
       scrollCanvas.width = 1280;
       scrollCanvas.height = 720;
-      ctx.drawImage(images[0], 0, 0, scrollCanvas.width, scrollCanvas.height);
+      canvasCtx.drawImage(images[0], 0, 0, scrollCanvas.width, scrollCanvas.height);
     };
+  }
 
-    // Loop de renderização suave (só redesenha quando o frame muda)
-    let lastDrawnFrame = -1;
-    function renderScrollCanvas() {
-      currentFrameIndex += (targetFrameIndex - currentFrameIndex) * 0.15;
-      
-      const roundedIndex = Math.min(frameCount - 1, Math.max(0, Math.round(currentFrameIndex)));
-      if (roundedIndex !== lastDrawnFrame && images[roundedIndex] && images[roundedIndex].complete) {
-        ctx.drawImage(images[roundedIndex], 0, 0, scrollCanvas.width, scrollCanvas.height);
-        lastDrawnFrame = roundedIndex;
-      }
-      requestAnimationFrame(renderScrollCanvas);
+  // Desenha o frame atual no canvas
+  function drawCanvasFrame(index) {
+    if (!scrollCanvas || !canvasCtx) return;
+    const roundedIndex = Math.min(frameCount - 1, Math.max(0, Math.round(index)));
+    if (images[roundedIndex] && images[roundedIndex].complete) {
+      canvasCtx.drawImage(images[roundedIndex], 0, 0, scrollCanvas.width, scrollCanvas.height);
     }
-    requestAnimationFrame(renderScrollCanvas);
+  }
+
+  // Loop de interpolação suave do canvas (só roda enquanto está se movendo)
+  function updateCanvasFrameLoop() {
+    const diff = targetFrameIndex - currentFrameIndex;
+    if (Math.abs(diff) > 0.05) {
+      currentFrameIndex += diff * 0.15;
+      drawCanvasFrame(currentFrameIndex);
+      requestAnimationFrame(updateCanvasFrameLoop);
+    } else {
+      currentFrameIndex = targetFrameIndex;
+      drawCanvasFrame(currentFrameIndex);
+      isCanvasRendering = false; // Desliga o loop
+    }
+  }
+
+  function triggerCanvasRender() {
+    if (!isCanvasRendering) {
+      isCanvasRendering = true;
+      requestAnimationFrame(updateCanvasFrameLoop);
+    }
   }
 
   // 1. INICIALIZAÇÃO DE ELEMENTOS DE INTERFACE
@@ -390,9 +407,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
   let lastDirection = null;
   let lastActiveStep = -1;
+  let latestScrollY = window.scrollY;
+  let isScrollingThrottled = false;
 
   function onScroll() {
-    const currentScrollY = window.scrollY;
+    latestScrollY = window.scrollY;
+    if (!isScrollingThrottled) {
+      isScrollingThrottled = true;
+      requestAnimationFrame(updateScrollData);
+    }
+  }
+
+  function updateScrollData() {
+    const currentScrollY = latestScrollY;
     
     // Detecta a direção do scroll (só muda classList quando a direção de fato inverte)
     const newDirection = currentScrollY > lastScrollY ? 'down' : (currentScrollY < lastScrollY ? 'up' : lastDirection);
@@ -412,7 +439,7 @@ document.addEventListener('DOMContentLoaded', () => {
     currentScrollFraction = totalHeight <= 0 ? 0 : currentScrollY / totalHeight;
 
     // Lógica de controle de frame por scroll
-    if (typeof scrollCanvas !== 'undefined' && scrollCanvas) {
+    if (scrollCanvas) {
       let progress = 0;
       if (currentScrollFraction <= 0.5) {
         progress = currentScrollFraction / 0.5;
@@ -421,6 +448,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       progress = Math.min(1, Math.max(0, progress));
       targetFrameIndex = progress * (frameCount - 1);
+      triggerCanvasRender();
     }
 
     // Atualiza barra de progresso HUD
