@@ -743,13 +743,7 @@ body.is-scrolling .content-wrapper {
     margin-top: 6px !important;
   }
 
-  #empresa {
-    padding-top: 85px !important;
-  }
 
-  #contato {
-    padding-top: 85px !important;
-  }
 }
 
 
@@ -1158,9 +1152,7 @@ body.scroll-up .garrafal-title .title-word {
   pointer-events: auto;
 }
 
-#empresa {
-  padding-top: 75px !important;
-}
+
 
 #contato .contact-card.minimal.vertical {
   display: flex !important;
@@ -1306,25 +1298,7 @@ body.scroll-up .garrafal-title .title-word {
   box-sizing: border-box;
 }
 
-/* Espaçamento no topo igualado aos outros slides no mobile para alinhar título e badge */
-#contato {
-  padding-top: 75px !important;
-}
 
-/* Compactações exclusivas da seção de contato para compensar a descida do topo */
-#contato .section-badge {
-  margin-bottom: 12px !important; /* Igualado a 12px com os outros slides */
-}
-
-#contato .garrafal-title {
-  font-size: 1.5rem !important; /* Ligeiramente menor para economizar espaço vertical */
-  margin-bottom: 8px !important;
-}
-
-#contato .section-desc {
-  margin-top: auto !important; /* Empurra todo o conjunto (texto + botão + cards) o máximo para a base */
-  margin-bottom: 0 !important; /* Zerado para evitar desalinhamento vertical dos botões */
-}
 
 
 #contato .contact-card {
@@ -1759,19 +1733,9 @@ body.scroll-up .garrafal-title .title-word {
     margin-bottom: 0 !important;
   }
 
-  #contato {
-    padding-top: 100px !important;
-    padding-bottom: 50px !important; /* Espaço suficiente para os botões ficarem visíveis acima do rodapé fixo */
-  }
-
   #contato .contact-icon-btn {
     width: 32px !important;
     height: 32px !important;
-  }
-
-  #contato .garrafal-title {
-    font-size: 1.4rem !important;
-    margin-bottom: 6px !important;
   }
 
   .footer-info {
