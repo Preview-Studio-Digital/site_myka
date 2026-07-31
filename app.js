@@ -17,11 +17,10 @@ document.addEventListener('DOMContentLoaded', () => {
   const images = [];
   let currentFrameIndex = 0;
   let targetFrameIndex = 0;
-  let isCanvasRendering = false;
-  let canvasCtx = null;
-
   if (scrollCanvas) {
-    canvasCtx = scrollCanvas.getContext('2d');
+    const ctx = scrollCanvas.getContext('2d');
+    scrollCanvas.width = 1280;
+    scrollCanvas.height = 720;
     
     // Pré-carrega as imagens do diretório scroll-frames
     for (let i = 1; i <= frameCount; i++) {
@@ -31,42 +30,34 @@ document.addEventListener('DOMContentLoaded', () => {
       images.push(img);
     }
     
-    // Quando a primeira imagem carregar, configura o canvas
+    // Desenha a primeira imagem assim que carregar
     images[0].onload = () => {
-      scrollCanvas.width = 1280;
-      scrollCanvas.height = 720;
-      canvasCtx.drawImage(images[0], 0, 0, scrollCanvas.width, scrollCanvas.height);
+      ctx.drawImage(images[0], 0, 0, scrollCanvas.width, scrollCanvas.height);
     };
-  }
 
-  // Desenha o frame atual no canvas
-  function drawCanvasFrame(index) {
-    if (!scrollCanvas || !canvasCtx) return;
-    const roundedIndex = Math.min(frameCount - 1, Math.max(0, Math.round(index)));
-    if (images[roundedIndex] && images[roundedIndex].complete) {
-      canvasCtx.drawImage(images[roundedIndex], 0, 0, scrollCanvas.width, scrollCanvas.height);
-    }
-  }
+    let lastDrawnFrame = -1;
 
-  // Loop de interpolação suave do canvas (só roda enquanto está se movendo)
-  function updateCanvasFrameLoop() {
-    const diff = targetFrameIndex - currentFrameIndex;
-    if (Math.abs(diff) > 0.05) {
-      currentFrameIndex += diff * 0.15;
-      drawCanvasFrame(currentFrameIndex);
-      requestAnimationFrame(updateCanvasFrameLoop);
-    } else {
-      currentFrameIndex = targetFrameIndex;
-      drawCanvasFrame(currentFrameIndex);
-      isCanvasRendering = false; // Desliga o loop
+    // Loop de renderização fluida do canvas
+    function renderScrollCanvas() {
+      currentFrameIndex += (targetFrameIndex - currentFrameIndex) * 0.15;
+      const roundedIndex = Math.min(frameCount - 1, Math.max(0, Math.round(currentFrameIndex)));
+      
+      if (images[roundedIndex]) {
+        if (images[roundedIndex].complete) {
+          if (roundedIndex !== lastDrawnFrame) {
+            ctx.drawImage(images[roundedIndex], 0, 0, scrollCanvas.width, scrollCanvas.height);
+            lastDrawnFrame = roundedIndex;
+          }
+        } else {
+          images[roundedIndex].onload = () => {
+            ctx.drawImage(images[roundedIndex], 0, 0, scrollCanvas.width, scrollCanvas.height);
+            lastDrawnFrame = roundedIndex;
+          };
+        }
+      }
+      requestAnimationFrame(renderScrollCanvas);
     }
-  }
-
-  function triggerCanvasRender() {
-    if (!isCanvasRendering) {
-      isCanvasRendering = true;
-      requestAnimationFrame(updateCanvasFrameLoop);
-    }
+    requestAnimationFrame(renderScrollCanvas);
   }
 
   // 1. INICIALIZAÇÃO DE ELEMENTOS DE INTERFACE
@@ -442,7 +433,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       progress = Math.min(1, Math.max(0, progress));
       targetFrameIndex = progress * (frameCount - 1);
-      triggerCanvasRender();
     }
 
     // Atualiza barra de progresso HUD
