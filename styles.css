@@ -130,7 +130,7 @@ body {
   max-width: 100%;
   max-height: 100%;
   aspect-ratio: 16 / 9;    /* Força a proporção exata da animação 3D */
-  pointer-events: auto;
+  pointer-events: none;    /* Deve ser none para não interceptar scroll/wheel do mouse */
 }
 
 #scroll-canvas {
@@ -1392,6 +1392,7 @@ body.scroll-up .garrafal-title .title-word {
 .modal-overlay.hidden {
   opacity: 0;
   pointer-events: none;
+  display: none !important;
 }
 
 .modal-video {
@@ -1868,7 +1869,7 @@ body.scroll-up .garrafal-title .title-word {
   align-items: center;
   opacity: 1;
   transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), visibility 0.8s;
-  pointer-events: auto;
+  pointer-events: none; /* Sempre none para não bloquear eventos de scroll/mouse */
   overflow: hidden;
 }
 
@@ -2088,7 +2089,7 @@ body.scroll-up .garrafal-title .title-word {
 
 .loader-overlay.active {
   opacity: 1;
-  pointer-events: auto;
+  pointer-events: none; /* Sempre none pois é puramente visual e evita bloquear scroll */
 }
 
 .loader-overlay:not(.hidden) {
