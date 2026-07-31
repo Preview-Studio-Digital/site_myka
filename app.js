@@ -83,9 +83,15 @@ document.addEventListener('DOMContentLoaded', () => {
     
     setTimeout(() => {
       introScreen.classList.add('fade-out');
+      // Desbloqueia scroll e remove interação imediatamente (sem esperar a transição CSS de 0.8s)
+      introScreen.style.pointerEvents = 'none';
       document.body.style.overflow = '';
       document.documentElement.style.overflow = '';
-    }, 3000); // Exibição total de 3 segundos (inclui fade-out com zoom)
+      // Remove o overlay do DOM após a transição visual completar
+      setTimeout(() => {
+        introScreen.remove();
+      }, 1000);
+    }, 3000);
   }
 
   // 1. INICIALIZAÇÃO DE ELEMENTOS DE INTERFACE
