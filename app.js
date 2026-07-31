@@ -43,13 +43,15 @@ document.addEventListener('DOMContentLoaded', () => {
       ctx.drawImage(images[0], 0, 0, scrollCanvas.width, scrollCanvas.height);
     };
 
-    // Loop de renderização suave
+    // Loop de renderização suave (só redesenha quando o frame muda)
+    let lastDrawnFrame = -1;
     function renderScrollCanvas() {
       currentFrameIndex += (targetFrameIndex - currentFrameIndex) * 0.15;
       
       const roundedIndex = Math.min(frameCount - 1, Math.max(0, Math.round(currentFrameIndex)));
-      if (images[roundedIndex] && images[roundedIndex].complete) {
+      if (roundedIndex !== lastDrawnFrame && images[roundedIndex] && images[roundedIndex].complete) {
         ctx.drawImage(images[roundedIndex], 0, 0, scrollCanvas.width, scrollCanvas.height);
+        lastDrawnFrame = roundedIndex;
       }
       requestAnimationFrame(renderScrollCanvas);
     }
@@ -424,23 +426,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 3. ANIMAÇÃO DE SCROLL CONTÍNUA (SCROLLYTELLING)
 
+  let lastDirection = null;
+  let lastActiveStep = -1;
+
   function onScroll() {
     const currentScrollY = window.scrollY;
     
-    // Detecta a direção do scroll
-    if (currentScrollY > lastScrollY) {
-      document.body.classList.remove('scroll-up');
-      document.body.classList.add('scroll-down');
-    } else if (currentScrollY < lastScrollY) {
-      document.body.classList.remove('scroll-down');
-      document.body.classList.add('scroll-up');
+    // Detecta a direção do scroll (só muda classList quando a direção de fato inverte)
+    const newDirection = currentScrollY > lastScrollY ? 'down' : (currentScrollY < lastScrollY ? 'up' : lastDirection);
+    if (newDirection && newDirection !== lastDirection) {
+      if (newDirection === 'down') {
+        document.body.classList.remove('scroll-up');
+        document.body.classList.add('scroll-down');
+      } else {
+        document.body.classList.remove('scroll-down');
+        document.body.classList.add('scroll-up');
+      }
+      lastDirection = newDirection;
     }
     lastScrollY = currentScrollY;
 
     const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
     currentScrollFraction = totalHeight <= 0 ? 0 : currentScrollY / totalHeight;
 
-    // Lógica de controle de frame por scroll: rodar inteiramente até a metade do espaço total e reverso na outra metade
+    // Lógica de controle de frame por scroll
     if (typeof scrollCanvas !== 'undefined' && scrollCanvas) {
       let progress = 0;
       if (currentScrollFraction <= 0.5) {
@@ -457,7 +466,7 @@ document.addEventListener('DOMContentLoaded', () => {
       scrollProgress.style.setProperty('--scroll-height', `${Math.min(100, currentScrollFraction * 100)}%`);
     }
 
-    // Identifica seção ativa e calcula visibilidade continua para Fade In/Out do esfumacado
+    // Identifica seção ativa e calcula visibilidade
     let currentStep = 0;
     let maxSectionVisibility = 0;
     const windowH = window.innerHeight;
@@ -467,8 +476,6 @@ document.addEventListener('DOMContentLoaded', () => {
       if (rect.top <= windowH * 0.7 && rect.bottom >= windowH * 0.1) {
         currentStep = idx;
       }
-
-      // Calcula quanto da seção está presente na janela (de 0 a 1)
       const visibleHeight = Math.max(0, Math.min(rect.bottom, windowH) - Math.max(rect.top, 0));
       const visibility = visibleHeight / windowH;
       if (visibility > maxSectionVisibility) {
@@ -476,25 +483,30 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // Controla Fade In e Fade Out contínuo e ultra suave do esfumacado lateral
+    // Controla Fade In e Fade Out do esfumacado lateral
     if (bgGradientOverlay) {
       bgGradientOverlay.style.opacity = Math.min(1, Math.max(0, maxSectionVisibility * 1.3));
     }
 
-    if (stepIndicator) {
-      stepIndicator.textContent = `0${currentStep + 1} / 07`;
-    }
-
-    sections.forEach((sec, idx) => {
-      const link = sectionLinks[sec.id];
-      if (idx === currentStep) {
-        sec.classList.add('active');
-        if (link) link.classList.add('active');
-      } else {
-        sec.classList.remove('active');
-        if (link) link.classList.remove('active');
+    // Só atualiza DOM das seções quando a seção ativa realmente muda
+    if (currentStep !== lastActiveStep) {
+      if (stepIndicator) {
+        stepIndicator.textContent = `0${currentStep + 1} / 07`;
       }
-    });
+
+      sections.forEach((sec, idx) => {
+        const link = sectionLinks[sec.id];
+        if (idx === currentStep) {
+          sec.classList.add('active');
+          if (link) link.classList.add('active');
+        } else {
+          sec.classList.remove('active');
+          if (link) link.classList.remove('active');
+        }
+      });
+
+      lastActiveStep = currentStep;
+    }
 
     // Animação dos contadores da seção EMPRESA
     animateCompanyStats();
