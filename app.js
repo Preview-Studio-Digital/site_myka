@@ -109,6 +109,15 @@ document.addEventListener('DOMContentLoaded', () => {
   const hudNavigation = document.getElementById('hud-navigation');
   const navLinks = document.querySelectorAll('#hud-navigation a');
 
+  // Cache de elementos do DOM para melhorar a performance de rolagem
+  const bgGradientOverlay = document.getElementById('bg-gradient-overlay');
+  const empresaSection = document.getElementById('empresa') || document.getElementById('quem-somos');
+  const statNumbers = empresaSection ? empresaSection.querySelectorAll('.stat-number') : [];
+  const sectionLinks = {};
+  sections.forEach(sec => {
+    sectionLinks[sec.id] = document.querySelector(`#hud-navigation a[href="#${sec.id}"]`);
+  });
+
   // Separar os títulos das seções em blocos de palavras/linhas para efeito em cascata
   const titleElements = document.querySelectorAll('.garrafal-title');
   titleElements.forEach(title => {
@@ -216,12 +225,31 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.classList.toggle('menu-active', isOpen);
   });
 
-  // Fechar o menu ao clicar em qualquer link (mobile)
-  navLinks.forEach(link => {
-    link.addEventListener('click', () => {
-      menuToggleBtn.classList.remove('open');
-      hudNavigation.classList.remove('open');
-      document.body.classList.remove('menu-active');
+  // Rolagem suave para todos os links internos (ancoragem) e fechamento do menu mobile
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      const targetId = this.getAttribute('href');
+      if (targetId === '#') return;
+      const targetElement = document.querySelector(targetId);
+      if (targetElement) {
+        e.preventDefault();
+        
+        // Fecha o menu mobile se estiver aberto
+        if (menuToggleBtn && hudNavigation) {
+          menuToggleBtn.classList.remove('open');
+          hudNavigation.classList.remove('open');
+          document.body.classList.remove('menu-active');
+        }
+
+        // Aguarda um pequeno delay para que o menu termine de fechar e o layout se estabilize
+        setTimeout(() => {
+          const targetTop = targetElement.getBoundingClientRect().top + window.pageYOffset;
+          window.scrollTo({
+            top: targetTop,
+            behavior: 'smooth'
+          });
+        }, 150); // Delay de 150ms para sincronizar com a fechada do menu e posicionar com precisão cirúrgica
+      }
     });
   });
 
@@ -392,46 +420,10 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // 3. ANIMAÇÃO DE SCROLL CONTÍNUA (SCROLLYTELLING)
-  let scrollTimeout;
-  let softSnapTimeout;
 
   function onScroll() {
     const currentScrollY = window.scrollY;
     
-    // Adiciona classe para efeito de desfoque de movimento
-    document.body.classList.add('is-scrolling');
-    clearTimeout(scrollTimeout);
-    scrollTimeout = setTimeout(() => {
-      document.body.classList.remove('is-scrolling');
-    }, 70); // Foca rápido após parar a rolagem
-
-    // Soft Snap Inteligente: ajusta apenas se parar MUITO próximo do topo de uma seção (<= 90px)
-    clearTimeout(softSnapTimeout);
-    softSnapTimeout = setTimeout(() => {
-      const SNAP_THRESHOLD = 90; // Tolerância máxima em pixels para alinhar
-      const currentScroll = window.scrollY;
-      const sectionElements = document.querySelectorAll('.scrolly-section');
-      
-      let closestSectionTop = null;
-      let minDistance = Infinity;
-
-      sectionElements.forEach(section => {
-        const top = section.offsetTop;
-        const distance = Math.abs(currentScroll - top);
-        if (distance < minDistance) {
-          minDistance = distance;
-          closestSectionTop = top;
-        }
-      });
-
-      if (minDistance > 2 && minDistance <= SNAP_THRESHOLD && closestSectionTop !== null) {
-        window.scrollTo({
-          top: closestSectionTop,
-          behavior: 'smooth'
-        });
-      }
-    }, 250);
-
     // Detecta a direção do scroll
     if (currentScrollY > lastScrollY) {
       document.body.classList.remove('scroll-up');
@@ -482,7 +474,6 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Controla Fade In e Fade Out contínuo e ultra suave do esfumacado lateral
-    const bgGradientOverlay = document.getElementById('bg-gradient-overlay');
     if (bgGradientOverlay) {
       bgGradientOverlay.style.opacity = Math.min(1, Math.max(0, maxSectionVisibility * 1.3));
     }
@@ -492,7 +483,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     sections.forEach((sec, idx) => {
-      const link = document.querySelector(`#hud-navigation a[href="#${sec.id}"]`);
+      const link = sectionLinks[sec.id];
       if (idx === currentStep) {
         sec.classList.add('active');
         if (link) link.classList.add('active');
@@ -512,14 +503,12 @@ document.addEventListener('DOMContentLoaded', () => {
   // LÓGICA DE ANIMAÇÃO DOS NÚMEROS DA SEÇÃO EMPRESA
   let statsAnimated = false;
   function animateCompanyStats() {
-    const empresaSection = document.getElementById('empresa') || document.getElementById('quem-somos');
     if (!empresaSection) return;
 
     const isActive = empresaSection.classList.contains('active');
 
     if (isActive && !statsAnimated) {
       statsAnimated = true;
-      const statNumbers = empresaSection.querySelectorAll('.stat-number');
 
       statNumbers.forEach(stat => {
         let target = parseInt(stat.getAttribute('data-target'), 10);
@@ -575,7 +564,6 @@ document.addEventListener('DOMContentLoaded', () => {
     } else if (!isActive && statsAnimated) {
       // Reseta os números ao sair da seção para poder reanimar quando retornar
       statsAnimated = false;
-      const statNumbers = empresaSection.querySelectorAll('.stat-number');
       statNumbers.forEach(stat => {
         stat.textContent = '0';
       });

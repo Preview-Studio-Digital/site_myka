@@ -32,7 +32,7 @@ html {
   
   /* Scrollbar Firefox */
   scrollbar-width: thin;
-  scrollbar-color: var(--accent-blue) #070a11;
+  scrollbar-color: var(--accent-blue) var(--bg-color);
 }
 
 /* --- BARRA DE ROLAGEM CUSTOMIZADA (DESKTOP) --- */
@@ -43,8 +43,8 @@ html {
 
 /* Trilho estático (fundo escuro/azul noturno) */
 ::-webkit-scrollbar-track {
-  background: #070a11;
-  border-left: 1px solid rgba(0, 229, 255, 0.08);
+  background: var(--bg-color);
+  border-left: none;
 }
 
 /* Cursor/Thumb da barra de rolagem (estático: azul escuro HUD) */
@@ -69,6 +69,7 @@ body {
   position: relative;
   width: 100%;
   background-color: transparent; /* Permite ver os vídeos fixos atrás */
+  overflow-x: hidden;           /* Evita qualquer rolagem lateral */
 }
 
 /* --- CONTAINER DE FUNDO (Z-INDEX FIX) --- */
@@ -81,6 +82,7 @@ body {
   background-color: var(--bg-color); /* Fundo escuro do site fica na base do container */
   z-index: 0;             /* Fica acima da página mas atrás da .content-wrapper (z-index: 10) */
   pointer-events: none;
+  overflow: hidden;       /* Corta qualquer transbordo dos frames para evitar vazamentos na margem direita */
 }
 
 /* Esfumacado gradiente lateral desativado para usar a vinheta local */
@@ -572,35 +574,6 @@ body.is-scrolling .content-wrapper {
   text-shadow: none;
 }
 
-/* Alinhamento pelo topo: todas as palavras da linha COM A MYKA. ficam retas no topo */
-#contato .garrafal-title .title-line {
-  align-items: flex-start !important;
-}
-
-/* Cada palavra-bloco da linha alinha pela linha de base — garante que o ponto final assente junto com MYKA */
-#contato .garrafal-title .title-word {
-  display: flex !important;
-  align-items: baseline !important; /* Baseline alinha o ponto final na mesma linha de escrita que MYKA */
-}
-
-/* Ampliação da palavra MYKA na seção de contato */
-#contato .garrafal-title .brand-highlight {
-  font-size: 1.85em;
-  line-height: 1;          /* Line-height natural — remove o gap fantasma do 0.72 */
-  display: inline-block;
-  vertical-align: top;
-}
-
-/* Ponto final alinha pelo topo junto com MYKA, ficando na mesma altura dela */
-#contato .garrafal-title .brand-punctuation {
-  font-size: 1.85em;       /* Mesma escala de MYKA */
-  font-family: var(--font-garrafal);
-  color: var(--text-primary) !important;
-  line-height: 1;
-  display: inline-block;
-  vertical-align: top;     /* Cola no topo junto com MYKA */
-}
-
 /* Ampliação da palavra MYKA na seção inicial (Início/Hero) para alto contraste */
 #inicio .garrafal-title .brand-highlight,
 #hero .garrafal-title .brand-highlight {
@@ -676,20 +649,89 @@ body.is-scrolling .content-wrapper {
 }
 
 @media (max-width: 767px) {
+  /* --- AJUSTE DE ESCALA DOS TÍTULOS PARA OCUPAR A LARGURA DA TELA (MOBILE) --- */
+  
+  /* Slide 1 (Início) - A MYKA NO / PULMÃO DA SUA / INDÚSTRIA */
   #inicio .garrafal-title .title-line:nth-child(1),
-  #hero .garrafal-title .title-line:nth-child(1),
-  #contato .garrafal-title .title-line:nth-child(1) {
-    font-size: 1.25em;
+  #hero .garrafal-title .title-line:nth-child(1) {
+    font-size: 10vw !important;
   }
   #inicio .garrafal-title .title-line:nth-child(2),
-  #hero .garrafal-title .title-line:nth-child(2),
-  #contato .garrafal-title .title-line:nth-child(2) {
-    font-size: 1.1em;
+  #hero .garrafal-title .title-line:nth-child(2) {
+    font-size: 8vw !important;
   }
   #inicio .garrafal-title .title-line:nth-child(3),
-  #hero .garrafal-title .title-line:nth-child(3),
+  #hero .garrafal-title .title-line:nth-child(3) {
+    font-size: 6vw !important;
+  }
+
+  /* Slide 2 (Empresa) - RESPONSABILIDADE. / PROFISSIONALISMO. / EXPERIÊNCIA. */
+  #empresa .garrafal-title .title-line:nth-child(1) {
+    font-size: 11.5vw !important;
+  }
+  #empresa .garrafal-title .title-line:nth-child(2) {
+    font-size: 6.5vw !important;
+  }
+  #empresa .garrafal-title .title-line:nth-child(3) {
+    font-size: 4.9vw !important;
+  }
+
+  /* Slide 3 (Atividades) - MANUTENÇÃO. / LOCAÇÃO. / VENDA. */
+  #atividades .garrafal-title .title-line:nth-child(1),
+  #servicos .garrafal-title .title-line:nth-child(1) {
+    font-size: 15vw !important;
+  }
+  #atividades .garrafal-title .title-line:nth-child(2),
+  #servicos .garrafal-title .title-line:nth-child(2) {
+    font-size: 10vw !important;
+  }
+  #atividades .garrafal-title .title-line:nth-child(3),
+  #servicos .garrafal-title .title-line:nth-child(3) {
+    font-size: 7.5vw !important;
+  }
+
+  /* Slide 4 (Manutenção) - PREVENÇÃO. / PREDIÇÃO. / CORREÇÃO. */
+  #manutencao .garrafal-title .title-line:nth-child(1) {
+    font-size: 17vw !important;
+  }
+  #manutencao .garrafal-title .title-line:nth-child(2) {
+    font-size: 10.8vw !important;
+  }
+  #manutencao .garrafal-title .title-line:nth-child(3) {
+    font-size: 8.1vw !important;
+  }
+
+  /* Slide 5 (Locação) - DISPONIBILIDADE. / FLEXIBILIDADE. / AGILIDADE. */
+  #locacao .garrafal-title .title-line:nth-child(1) {
+    font-size: 12.5vw !important;
+  }
+  #locacao .garrafal-title .title-line:nth-child(2) {
+    font-size: 7vw !important;
+  }
+  #locacao .garrafal-title .title-line:nth-child(3) {
+    font-size: 5.3vw !important;
+  }
+
+  /* Slide 6 (Venda) - PROCEDÊNCIA. / VARIEDADE. / PREÇO. */
+  #venda .garrafal-title .title-line:nth-child(1) {
+    font-size: 16vw !important;
+  }
+  #venda .garrafal-title .title-line:nth-child(2) {
+    font-size: 9.2vw !important;
+  }
+  #venda .garrafal-title .title-line:nth-child(3) {
+    font-size: 6.9vw !important;
+  }
+
+  /* Slide 7 (Contato) - CREDIBILIDADE. / CONFIANÇA. / PROTEÇÃO. */
+  #contato .garrafal-title .title-line:nth-child(1) {
+    font-size: 14vw !important;
+  }
+  #contato .garrafal-title .title-line:nth-child(2) {
+    font-size: 8vw !important;
+  }
   #contato .garrafal-title .title-line:nth-child(3) {
-    font-size: 0.75em;
+    font-size: 6vw !important;
   }
 
   .footer-info {
@@ -697,7 +739,39 @@ body.is-scrolling .content-wrapper {
     padding: 4px 10px !important;
   }
 
+  /* Ajustes finos de espaçamento para garantir que todos os slides caibam na tela 100vh sem cortar topo ou base */
+  .scrolly-section {
+    padding-top: 85px !important;
+    padding-bottom: 48px !important;
+    padding-left: 24px !important;
+    padding-right: 24px !important;
+    transform: none !important; /* Desativa transformações de transição no mobile para evitar erros de cálculo do scroll */
+    transition: opacity 0.4s ease !important;
+  }
 
+  .section-badge {
+    margin-bottom: 6px !important;
+  }
+
+  .garrafal-title {
+    margin-bottom: 6px !important;
+  }
+
+  .garrafal-title .title-line:not(:last-child) {
+    margin-bottom: 0.1em !important; /* Compactação entre as linhas do próprio título */
+  }
+
+  .action-buttons {
+    margin-top: 6px !important;
+  }
+
+  #empresa {
+    padding-top: 85px !important;
+  }
+
+  #contato {
+    padding-top: 85px !important;
+  }
 }
 
 
@@ -879,6 +953,7 @@ body.scroll-up .garrafal-title .title-word {
   /* Botões na mesma posição dos outros slides (mesmo padding inferior) */
   #empresa,
   #quem-somos {
+    padding-top: 85px !important;
     padding-bottom: 40px !important;
   }
 
@@ -1124,6 +1199,10 @@ body.scroll-up .garrafal-title .title-word {
   pointer-events: auto;
 }
 
+#empresa {
+  padding-top: 75px !important;
+}
+
 #contato .contact-card.minimal.vertical {
   display: flex !important;
   flex-direction: column !important;
@@ -1138,7 +1217,7 @@ body.scroll-up .garrafal-title .title-word {
   width: 100% !important;
   max-width: 100% !important;
   position: relative !important;
-  gap: 2px !important; /* Espaço reduzido para caber na tela */
+  gap: 8px 16px !important; /* Espaço reduzido para caber na tela */
 }
 
 .contact-item-row {
@@ -1155,6 +1234,8 @@ body.scroll-up .garrafal-title .title-word {
 
 
   #contato .contact-card.minimal.vertical {
+    display: flex !important;
+    flex-direction: column !important;
     width: 50vw !important;
     max-width: 50vw !important; /* Exata largura dos botões superiores e texto no desktop */
     margin-top: 0 !important;
