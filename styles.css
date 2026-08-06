@@ -839,8 +839,8 @@ body.modal-active:not(.video-playing) .garrafal-title {
     position: relative !important;
     bottom: auto !important;
     right: auto !important;
-    width: 50px !important;
-    height: 50px !important;
+    width: auto !important;
+    height: auto !important;
     margin: 0 !important;
     opacity: 0;
     transform: translateY(12px) !important; /* Deslocado para baixo quando inativo */
@@ -1175,15 +1175,17 @@ body.scroll-up .garrafal-title .title-word {
   position: fixed;
   bottom: 44px; /* Mantém igual ao original no desktop */
   right: 24px;
-  width: 50px;
-  height: 50px;
+  width: auto;
+  height: auto;
   background: transparent;
   color: var(--accent-cyan); /* Segue a cor ciano do botão Play */
   border: none;
   box-shadow: none; /* Remove o círculo e a sombra ao redor */
   display: flex;
+  flex-direction: column; /* Empilha ícone acima do texto */
   align-items: center;
   justify-content: center;
+  gap: 6px;
   z-index: 999;
   cursor: pointer;
   transition: opacity 0.5s ease, transform 0.5s ease, color 0.3s ease;
@@ -1192,6 +1194,10 @@ body.scroll-up .garrafal-title .title-word {
   opacity: 0;
   transform: translateY(12px);
   pointer-events: none;
+}
+
+.whatsapp-btn-text {
+  display: none; /* Oculto no mobile */
 }
 
 .scrolly-section.active .btn-whatsapp-local {
@@ -1211,8 +1217,8 @@ body.scroll-up .garrafal-title .title-word {
 }
 
 .whatsapp-btn-icon {
-  width: 40px; /* Aumentado de 24px para 40px */
-  height: 40px; /* Aumentado de 24px para 40px */
+  width: 18px; /* Sincronizado com play-icon base (mobile) */
+  height: 18px;
   fill: currentColor;
   filter: drop-shadow(0 0 8px rgba(0, 229, 255, 0.45)); /* Brilho ciano suave padrão */
 }
@@ -2035,6 +2041,31 @@ body.scroll-up .garrafal-title .title-word {
   .watch-btn .play-icon {
     width: 26px !important; /* Triângulo maior no desktop */
     height: 26px !important;
+  }
+
+  .btn-whatsapp-local {
+    bottom: 40px !important; /* Alinhamento com o play-btn */
+    width: auto !important;
+    height: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 8px !important;
+  }
+
+  .btn-whatsapp-local .whatsapp-btn-icon {
+    width: 26px !important;
+    height: 26px !important;
+  }
+
+  .whatsapp-btn-text {
+    display: block !important;
+    font-family: 'Black Ops One', sans-serif !important;
+    font-size: 1.15rem !important;
+    color: var(--accent-cyan) !important;
+    text-shadow: var(--glow-cyan) !important;
+    white-space: nowrap !important;
+    letter-spacing: 1.5px !important;
   }
 
   .bottom-group {
