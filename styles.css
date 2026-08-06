@@ -1957,7 +1957,7 @@ body.scroll-up .garrafal-title .title-word {
     border-left-width: 0; /* Barra vertical esquerda removida no desktop */
     margin-left: 0;
     margin-top: 0 !important; /* Deixa o fluxo normal atuar, pois bottom-group já é margin-top: auto */
-    margin-bottom: 24px !important;
+    margin-bottom: 0 !important;
   }
 
   .action-buttons {
