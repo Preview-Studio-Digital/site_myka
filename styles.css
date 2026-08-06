@@ -1178,7 +1178,7 @@ body.scroll-up .garrafal-title .title-word {
   width: 50px;
   height: 50px;
   background: transparent;
-  color: #25D366; /* Ícone com a cor verde original do WhatsApp */
+  color: var(--accent-cyan); /* Segue a cor ciano do botão Play */
   border: none;
   box-shadow: none; /* Remove o círculo e a sombra ao redor */
   display: flex;
@@ -1204,16 +1204,17 @@ body.scroll-up .garrafal-title .title-word {
 .btn-whatsapp-local:hover,
 .btn-whatsapp-local:active {
   background: transparent !important;
-  color: #20ba5a !important; /* Verde ligeiramente mais escuro no hover */
+  color: #ffffff !important; /* Branco no hover */
   transform: translateY(0) scale(1.1); /* Mantém na posição e aumenta no desktop */
   box-shadow: none !important;
+  filter: drop-shadow(0 0 8px rgba(0, 229, 255, 0.85)); /* Glow ciano no hover */
 }
 
 .whatsapp-btn-icon {
   width: 40px; /* Aumentado de 24px para 40px */
   height: 40px; /* Aumentado de 24px para 40px */
   fill: currentColor;
-  filter: drop-shadow(0 2px 8px rgba(37, 211, 102, 0.4)); /* Glow verde sutil no próprio ícone */
+  filter: drop-shadow(0 0 8px rgba(0, 229, 255, 0.45)); /* Brilho ciano suave padrão */
 }
 
 /* Assistir: Apenas ícone de Play centralizado nos frames de animação */
@@ -1251,6 +1252,7 @@ body.scroll-up .garrafal-title .title-word {
   pointer-events: none;
   letter-spacing: 1px;
   text-transform: uppercase;
+  transition: color 0.3s ease, text-shadow 0.3s ease, transform 0.3s ease;
 }
 
 .scrolly-section.active .watch-btn {
@@ -1260,10 +1262,14 @@ body.scroll-up .garrafal-title .title-word {
   transition-delay: 0.3s, 0.3s, 0s, 0s, 0s; /* Sincroniza delay com company-stats */
 }
 
-.watch-btn:hover,
-.watch-btn:active {
+.watch-btn:hover .play-icon {
+  transform: scale(1.1) translateY(-2px); /* Triângulo dá zoom e sobe de leve */
+  filter: drop-shadow(0 0 8px rgba(0, 229, 255, 0.95)); /* Brilha mais */
+}
+
+.watch-btn:hover .watch-btn-text {
   color: #ffffff !important;
-  transform: translate(-50%, -50%) scale(1.08);
+  text-shadow: 0 0 10px rgba(0, 229, 255, 0.85) !important;
 }
 
 .play-icon {
@@ -1271,6 +1277,7 @@ body.scroll-up .garrafal-title .title-word {
   height: 18px;
   fill: currentColor;
   filter: drop-shadow(0 0 5px rgba(0, 229, 255, 0.6));
+  transition: transform 0.3s ease, filter 0.3s ease; /* Transições suaves */
 }
 
 /* PILLS DE SERVIÇO */
