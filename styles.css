@@ -827,8 +827,8 @@ body.modal-active:not(.video-playing) .garrafal-title {
     transform: translate(-50%, calc(-50% + 12px)) !important; /* Deslocado para baixo quando inativo */
     margin: 0 !important;
     z-index: 10 !important;
-    width: 40px !important;
-    height: 40px !important;
+    width: 32px !important;
+    height: 32px !important;
   }
 
   .scrolly-section.active .watch-btn {
@@ -1242,6 +1242,10 @@ body.scroll-up .garrafal-title .title-word {
   pointer-events: none;
 }
 
+.watch-btn-text {
+  display: none; /* Escondido por padrão no mobile */
+}
+
 .scrolly-section.active .watch-btn {
   opacity: 1;
   transform: translate(-50%, -50%);
@@ -1255,7 +1259,7 @@ body.scroll-up .garrafal-title .title-word {
   color: #000 !important;
   border-color: transparent !important;
   box-shadow: var(--glow-cyan) !important;
-  transform: translate(-50%, -52%) scale(1.08);
+  transform: translate(-50%, -50%) scale(1.08);
 }
 
 .play-icon {
@@ -1979,15 +1983,35 @@ body.scroll-up .garrafal-title .title-word {
     position: fixed !important;
     top: auto !important;
     left: auto !important;
-    right: 84px !important; /* Posiciona à esquerda do WhatsApp (que fica a 24px, 50px de largura + 10px de espaço) */
-    bottom: 44px !important; /* Mesma linha vertical do WhatsApp */
+    right: 84px !important; /* Posiciona à esquerda do WhatsApp */
+    bottom: 44px !important;
     width: 50px !important;
     height: 50px !important;
-    transform: translateY(12px) !important; /* Animação de surgir idêntica */
+    transform: translateY(12px) !important;
   }
 
   .scrolly-section.active .watch-btn {
     transform: translateY(0) !important;
+  }
+
+  .watch-btn:hover,
+  .watch-btn:active {
+    transform: scale(1.08) !important; /* Evita que pule no hover de desktop */
+  }
+
+  .watch-btn-text {
+    display: block !important;
+    position: absolute !important;
+    right: calc(100% + 14px) !important; /* À esquerda do círculo */
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    font-family: 'Black Ops One', sans-serif !important; /* Fonte igual à do logo */
+    font-size: 0.85rem !important;
+    color: var(--accent-cyan) !important;
+    text-shadow: var(--glow-cyan) !important;
+    white-space: nowrap !important;
+    pointer-events: none !important;
+    letter-spacing: 1px !important;
   }
 
   .bottom-group {
