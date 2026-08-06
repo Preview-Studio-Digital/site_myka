@@ -780,12 +780,14 @@ body.modal-active:not(.video-playing) .garrafal-title {
     transition: opacity 0.4s ease !important;
   }
 
-  .section-badge {
+  .garrafal-title {
+    order: 1 !important;
     margin-bottom: 6px !important;
   }
 
-  .garrafal-title {
-    margin-bottom: 6px !important;
+  .section-badge {
+    order: 2 !important;
+    margin-bottom: 12px !important;
   }
 
   .garrafal-title .title-line:not(:last-child) {
@@ -1198,7 +1200,7 @@ body.scroll-up .garrafal-title .title-word {
 }
 
 .whatsapp-btn-text {
-  display: none; /* Oculto no mobile */
+  display: block; /* Visível por padrão no mobile */
   text-decoration: none !important;
 }
 
