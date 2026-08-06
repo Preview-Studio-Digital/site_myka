@@ -1808,11 +1808,23 @@ body.scroll-up .garrafal-title .title-word {
   }
 
   #scroll-canvas-wrapper {
-    top: 5% !important;
-    bottom: auto !important;
-    left: 15vw !important;
-    width: 90% !important;
-    height: 90% !important;
+    top: 80px !important;    /* Alinha com a parte inferior do cabeçalho no desktop (80px) */
+    bottom: 40px !important; /* Alinha com o topo do rodapé no desktop (40px) */
+    left: 0 !important;
+    width: 100vw !important;
+    height: calc(100vh - 120px) !important; /* Altura total subtraindo cabeçalho (80px) e rodapé (40px) */
+  }
+
+  #scroll-canvas-inner {
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none !important;
+    max-height: none !important;
+    aspect-ratio: auto !important;
+  }
+
+  #scroll-canvas {
+    object-fit: cover !important; /* Preenche toda a área sem esticar, recortando se necessário */
   }
 
   #scroll-canvas-vignette {
