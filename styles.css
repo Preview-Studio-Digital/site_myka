@@ -1083,6 +1083,7 @@ body.scroll-up .garrafal-title .title-word {
     flex-direction: column;
     align-items: center !important;
     text-align: center !important;
+    width: max-content !important;
     gap: 8px;
     padding: 0;
     border: none;
