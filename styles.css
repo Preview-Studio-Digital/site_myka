@@ -1042,7 +1042,7 @@ body.scroll-up .garrafal-title .title-word {
     flex-direction: column !important;
     height: 100vh !important;
     padding-top: 85px !important;
-    padding-bottom: 50px !important;
+    padding-bottom: 40px !important;
     box-sizing: border-box !important;
   }
 
@@ -1906,7 +1906,7 @@ body.scroll-up .garrafal-title .title-word {
     padding-top: 85px !important;
     padding-left: 80px !important;
     padding-right: 80px !important;
-    padding-bottom: 50px !important;
+    padding-bottom: 40px !important;
   }
 
   .scrolly-section:last-child {
