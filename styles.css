@@ -995,7 +995,7 @@ body.scroll-up .garrafal-title .title-word {
 }
 
 .stat-label {
-  font-family: var(--font-body);
+  font-family: var(--font-garrafal);
   font-size: 0.58rem; /* Reduzido de 0.68rem */
   font-weight: 600;
   letter-spacing: 1px;
