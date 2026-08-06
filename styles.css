@@ -1081,7 +1081,8 @@ body.scroll-up .garrafal-title .title-word {
   .stat-item {
     flex: 0 0 auto;
     flex-direction: column;
-    align-items: flex-start;
+    align-items: center !important;
+    text-align: center !important;
     gap: 8px;
     padding: 0;
     border: none;
@@ -1089,6 +1090,7 @@ body.scroll-up .garrafal-title .title-word {
 
   .stat-header-row {
     gap: 12px !important;
+    justify-content: center !important;
   }
 
   .stat-icon {
