@@ -2024,12 +2024,17 @@ body.scroll-up .garrafal-title .title-word {
     position: static !important; /* Alinhamento estático no fluxo flex vertical */
     transform: none !important;
     font-family: 'Black Ops One', sans-serif !important; /* Fonte igual à do logo */
-    font-size: 0.85rem !important; /* Fonte maior no desktop */
+    font-size: 1.15rem !important; /* Aumentado no desktop para maior destaque */
     color: var(--accent-cyan) !important;
     text-shadow: var(--glow-cyan) !important;
     white-space: nowrap !important;
     pointer-events: none !important;
-    letter-spacing: 1px !important;
+    letter-spacing: 1.5px !important;
+  }
+
+  .watch-btn .play-icon {
+    width: 26px !important; /* Triângulo maior no desktop */
+    height: 26px !important;
   }
 
   .bottom-group {
