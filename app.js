@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Inicialização do Canvas para animação de scroll (Scrollytelling com Frames)
   const scrollCanvas = document.getElementById('scroll-canvas');
-  const frameCount = 120; // Total de frames extraídos (limitado a 120)
+  const frameCount = 122; // Total de frames extraídos do novo vídeo (122)
   const images = [];
   let currentFrameIndex = 0;
   let targetFrameIndex = 0;
@@ -455,15 +455,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
     currentScrollFraction = totalHeight <= 0 ? 0 : currentScrollY / totalHeight;
 
-    // Lógica de controle de frame por scroll: rodar inteiramente até a metade do espaço total e reverso na outra metade
+    // Lógica de controle de frame por scroll: rodar inteiramente do 1º slide ao último slide
     if (typeof scrollCanvas !== 'undefined' && scrollCanvas) {
-      let progress = 0;
-      if (currentScrollFraction <= 0.5) {
-        progress = currentScrollFraction / 0.5;
-      } else {
-        progress = 1 - ((currentScrollFraction - 0.5) / 0.5);
-      }
-      progress = Math.min(1, Math.max(0, progress));
+      let progress = Math.min(1, Math.max(0, currentScrollFraction));
       targetFrameIndex = progress * (frameCount - 1);
     }
 
