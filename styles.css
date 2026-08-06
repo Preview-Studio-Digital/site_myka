@@ -1194,10 +1194,12 @@ body.scroll-up .garrafal-title .title-word {
   opacity: 0;
   transform: translateY(12px);
   pointer-events: none;
+  text-decoration: none !important; /* Remove sublinhado */
 }
 
 .whatsapp-btn-text {
   display: none; /* Oculto no mobile */
+  text-decoration: none !important;
 }
 
 .scrolly-section.active .btn-whatsapp-local {
@@ -1214,6 +1216,7 @@ body.scroll-up .garrafal-title .title-word {
   transform: translateY(0) scale(1.1); /* Mantém na posição e aumenta no desktop */
   box-shadow: none !important;
   filter: drop-shadow(0 0 8px rgba(0, 229, 255, 0.85)); /* Glow ciano no hover */
+  text-decoration: none !important;
 }
 
 .whatsapp-btn-icon {
@@ -1259,6 +1262,7 @@ body.scroll-up .garrafal-title .title-word {
   letter-spacing: 1px;
   text-transform: uppercase;
   transition: color 0.3s ease, text-shadow 0.3s ease, transform 0.3s ease;
+  text-decoration: none !important;
 }
 
 .scrolly-section.active .watch-btn {
@@ -2058,7 +2062,7 @@ body.scroll-up .garrafal-title .title-word {
     height: 26px !important;
   }
 
-  .whatsapp-btn-text {
+  .btn-whatsapp-local .whatsapp-btn-text {
     display: block !important;
     font-family: 'Black Ops One', sans-serif !important;
     font-size: 1.15rem !important;
@@ -2066,6 +2070,7 @@ body.scroll-up .garrafal-title .title-word {
     text-shadow: var(--glow-cyan) !important;
     white-space: nowrap !important;
     letter-spacing: 1.5px !important;
+    text-decoration: none !important;
   }
 
   .bottom-group {
