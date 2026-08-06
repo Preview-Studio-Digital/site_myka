@@ -53,6 +53,54 @@ document.addEventListener('DOMContentLoaded', () => {
   // 1. INICIALIZAÇÃO DE ELEMENTOS DE INTERFACE
   const canvas = document.getElementById('bg-canvas');
   const sections = document.querySelectorAll('.scrolly-section');
+
+  // Restruturar dinamicamente os botões de ação e ícones para mobile/desktop
+  sections.forEach(section => {
+    const bottomGroup = section.querySelector('.bottom-group');
+    if (!bottomGroup) return;
+
+    // Criar o container da linha de cabeçalho do bottom group
+    const headerRow = document.createElement('div');
+    headerRow.className = 'bottom-header-row';
+
+    // 1. Elemento da esquerda (Ícone/Stat ou placeholder)
+    const companyStats = bottomGroup.querySelector('.company-stats');
+    if (companyStats) {
+      headerRow.appendChild(companyStats);
+    } else {
+      const placeholder = document.createElement('div');
+      placeholder.className = 'stats-placeholder';
+      headerRow.appendChild(placeholder);
+    }
+
+    // 2. Elemento do meio (Botão de Play / Watch)
+    const watchBtn = section.querySelector('.watch-btn');
+    if (watchBtn) {
+      headerRow.appendChild(watchBtn);
+    }
+
+    // 3. Elemento da direita (Botão de WhatsApp local)
+    const whatsappBtn = document.createElement('a');
+    whatsappBtn.href = "https://api.whatsapp.com/send?phone=5515991899160&text=Ol%C3%A1!%20Vim%20pelo%20site%20e%20gostaria%20de%20falar%20com%20um%20atendente!";
+    whatsappBtn.target = "_blank";
+    whatsappBtn.className = "btn-whatsapp-local";
+    whatsappBtn.setAttribute("aria-label", "Fale conosco no WhatsApp");
+    whatsappBtn.innerHTML = `
+      <svg class="whatsapp-btn-icon" viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+        <path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-11.2-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/>
+      </svg>
+    `;
+    headerRow.appendChild(whatsappBtn);
+
+    // Inserir imediatamente antes do texto explicativo (section-desc) para manter a mesma posição em todos os slides
+    const sectionDesc = bottomGroup.querySelector('.section-desc');
+    if (sectionDesc) {
+      bottomGroup.insertBefore(headerRow, sectionDesc);
+    } else {
+      bottomGroup.appendChild(headerRow);
+    }
+  });
+
   const scrollProgress = document.getElementById('scroll-progress');
   const stepIndicator = document.getElementById('step-indicator');
   const modal = document.getElementById('video-modal');
@@ -87,11 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
     titleElements.forEach(title => {
       let htmlContent = title.getAttribute('data-original-html');
       if (title.closest('#inicio') || title.closest('#hero')) {
-        if (isMobile) {
-          htmlContent = 'A MYKA NO<br>PULMÃO DA SUA<br>INDÚSTRIA.';
-        } else {
-          htmlContent = 'A MYKA NO PULMÃO<br>DA SUA INDÚSTRIA.';
-        }
+        htmlContent = 'A MYKA NO<br>PULMÃO DA SUA<br>INDÚSTRIA.';
       }
       
       const lines = htmlContent.split(/<br\s*\/?>/i);
@@ -187,27 +231,42 @@ document.addEventListener('DOMContentLoaded', () => {
     anchor.addEventListener('click', function (e) {
       const targetId = this.getAttribute('href');
       if (targetId === '#') return;
+      
       const targetElement = document.querySelector(targetId);
       if (targetElement) {
         e.preventDefault();
         
-        let scrollDelay = 0;
-        
-        // Fecha o menu mobile se estiver aberto e define o delay
-        if (menuToggleBtn && hudNavigation && hudNavigation.classList.contains('open')) {
-          menuToggleBtn.classList.remove('open');
-          hudNavigation.classList.remove('open');
-          document.body.classList.remove('menu-active');
-          scrollDelay = 150; // Somente aguarda o delay se o menu de fato estiver aberto
+        // Se o modal de vídeo estiver aberto, fecha o vídeo e para o áudio
+        if (modal && !modal.classList.contains('hidden')) {
+          stopAudio();
+          unlockScroll();
+          modal.classList.add('hidden');
         }
+        
+        // Descobre o índice da seção destino
+        const sectionArray = Array.from(sections);
+        const targetIndex = sectionArray.indexOf(targetElement);
+        if (targetIndex !== -1) {
+          const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+          // Posição de scroll correspondente ao centro da fatia da seção
+          const stepSize = totalHeight / (sectionArray.length - 1);
+          const targetTop = targetIndex * stepSize;
+          
+          let scrollDelay = 0;
+          if (menuToggleBtn && hudNavigation && hudNavigation.classList.contains('open')) {
+            menuToggleBtn.classList.remove('open');
+            hudNavigation.classList.remove('open');
+            document.body.classList.remove('menu-active');
+            scrollDelay = 150;
+          }
 
-        setTimeout(() => {
-          const targetTop = targetElement.offsetTop;
-          window.scrollTo({
-            top: targetTop,
-            behavior: 'smooth'
-          });
-        }, scrollDelay);
+          setTimeout(() => {
+            window.scrollTo({
+              top: targetTop,
+              behavior: 'smooth'
+            });
+          }, scrollDelay);
+        }
       }
     });
   });
@@ -413,24 +472,16 @@ document.addEventListener('DOMContentLoaded', () => {
       scrollProgress.style.setProperty('--scroll-height', `${Math.min(100, currentScrollFraction * 100)}%`);
     }
 
-    // Identifica seção ativa e calcula visibilidade continua para Fade In/Out do esfumacado
-    let currentStep = 0;
-    let maxSectionVisibility = 0;
-    const windowH = window.innerHeight;
-
-    sections.forEach((sec, idx) => {
-      const rect = sec.getBoundingClientRect();
-      if (rect.top <= windowH * 0.7 && rect.bottom >= windowH * 0.1) {
-        currentStep = idx;
-      }
-
-      // Calcula quanto da seção está presente na janela (de 0 a 1)
-      const visibleHeight = Math.max(0, Math.min(rect.bottom, windowH) - Math.max(rect.top, 0));
-      const visibility = visibleHeight / windowH;
-      if (visibility > maxSectionVisibility) {
-        maxSectionVisibility = visibility;
-      }
-    });
+    // Identifica seção ativa e calcula visibilidade continua para Fade In/Out do esfumacado baseado no scroll fraction
+    const totalSteps = sections.length;
+    let currentStep = Math.min(totalSteps - 1, Math.floor(currentScrollFraction * totalSteps));
+    
+    // Fallback de segurança se der NaN ou valor fora do limite
+    if (isNaN(currentStep) || currentStep < 0) {
+      currentStep = 0;
+    }
+    
+    let maxSectionVisibility = 1;
 
     // Controla Fade In e Fade Out contínuo e ultra suave do esfumacado lateral
     if (bgGradientOverlay) {
@@ -460,73 +511,71 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // LÓGICA DE ANIMAÇÃO DOS NÚMEROS DA SEÇÃO EMPRESA
-  let statsAnimated = false;
+  // LÓGICA DE ANIMAÇÃO DOS NÚMEROS DAS SEÇÕES (EMPRESA, ATIVIDADES, MANUTENÇÃO, LOCAÇÃO, VENDA)
+  const animatedStatsMap = new Set();
   function animateCompanyStats() {
-    if (!empresaSection) return;
+    sections.forEach(sec => {
+      const isActive = sec.classList.contains('active');
+      const stats = sec.querySelectorAll('.stat-number');
+      if (!stats.length) return;
 
-    const isActive = empresaSection.classList.contains('active');
+      if (isActive) {
+        if (!animatedStatsMap.has(sec.id)) {
+          animatedStatsMap.add(sec.id);
+          stats.forEach(stat => {
+            let target = parseInt(stat.getAttribute('data-target'), 10);
+            const startYear = parseInt(stat.getAttribute('data-start-year'), 10);
+            const isMonthlyGrowth = stat.hasAttribute('data-monthly-growth');
+            const isWeeklyGrowth = stat.hasAttribute('data-weekly-growth');
+            const now = new Date();
+            const currentYear = now.getFullYear();
+            const currentMonth = now.getMonth();
 
-    if (isActive && !statsAnimated) {
-      statsAnimated = true;
+            if (isWeeklyGrowth && !isNaN(startYear)) {
+              const weeklyRate = parseInt(stat.getAttribute('data-weekly-growth'), 10) || 4;
+              const startDate = new Date(startYear, 0, 1);
+              const diffInDays = Math.floor((now.getTime() - startDate.getTime()) / (1000 * 3600 * 24));
+              const elapsedWeeks = Math.floor(diffInDays / 7);
+              target = elapsedWeeks * weeklyRate;
+            } else if (isMonthlyGrowth && !isNaN(startYear)) {
+              const monthlyRate = parseInt(stat.getAttribute('data-monthly-growth'), 10) || 1;
+              const elapsedMonths = (currentYear - startYear) * 12 + (currentMonth + 1);
+              target = elapsedMonths * monthlyRate;
+            } else if (!isNaN(startYear)) {
+              target = Math.max(1, currentYear - startYear);
+            }
 
-      statNumbers.forEach(stat => {
-        let target = parseInt(stat.getAttribute('data-target'), 10);
-        const startYear = parseInt(stat.getAttribute('data-start-year'), 10);
-        const isMonthlyGrowth = stat.hasAttribute('data-monthly-growth');
+            if (isNaN(target)) return;
 
-        const now = new Date();
-        const currentYear = now.getFullYear();
-        const currentMonth = now.getMonth(); // 0 = Jan, 6 = Jul, etc.
+            const duration = 1600;
+            const startTime = performance.now();
 
-        const isWeeklyGrowth = stat.hasAttribute('data-weekly-growth');
+            function updateNumber(currentTime) {
+              const elapsed = currentTime - startTime;
+              const progress = Math.min(elapsed / duration, 1);
+              const easeProgress = 1 - Math.pow(1 - progress, 3);
+              const currentVal = Math.floor(easeProgress * target);
 
-        if (isWeeklyGrowth && !isNaN(startYear)) {
-          // 4 novos contratos a cada semana decorrida desde o ano inicial (startYear)
-          const weeklyRate = parseInt(stat.getAttribute('data-weekly-growth'), 10) || 4;
-          const startDate = new Date(startYear, 0, 1);
-          const diffInDays = Math.floor((now.getTime() - startDate.getTime()) / (1000 * 3600 * 24));
-          const elapsedWeeks = Math.floor(diffInDays / 7);
-          target = elapsedWeeks * weeklyRate;
-        } else if (isMonthlyGrowth && !isNaN(startYear)) {
-          // Calcula com base no ritmo mensal customizado (ex: 2 clientes/mês)
-          const monthlyRate = parseInt(stat.getAttribute('data-monthly-growth'), 10) || 1;
-          const elapsedMonths = (currentYear - startYear) * 12 + (currentMonth + 1);
-          target = elapsedMonths * monthlyRate;
-        } else if (!isNaN(startYear)) {
-          // Anos de experiência (incrementa a cada virada de ano)
-          target = Math.max(1, currentYear - startYear);
-        }
+              stat.textContent = currentVal.toLocaleString('pt-BR');
 
-        if (isNaN(target)) return;
-
-        const duration = 1600; // Duração de 1.6 segundos
-        const startTime = performance.now();
-
-        function updateNumber(currentTime) {
-          const elapsed = currentTime - startTime;
-          const progress = Math.min(elapsed / duration, 1);
-          // Easing cubic out para desaceleraçã̃o suave no final
-          const easeProgress = 1 - Math.pow(1 - progress, 3);
-          const currentVal = Math.floor(easeProgress * target);
-
-          stat.textContent = currentVal.toLocaleString('pt-BR');
-
-          if (progress < 1) {
+              if (progress < 1) {
+                requestAnimationFrame(updateNumber);
+              } else {
+                stat.textContent = target.toLocaleString('pt-BR');
+              }
+            }
             requestAnimationFrame(updateNumber);
-          } else {
-            stat.textContent = target.toLocaleString('pt-BR');
-          }
+          });
         }
-
-        requestAnimationFrame(updateNumber);
-      });
-    } else if (!isActive && statsAnimated) {
-      // Reseta os números ao sair da seção para poder reanimar quando retornar
-      statsAnimated = false;
-      statNumbers.forEach(stat => {
-        stat.textContent = '0';
-      });
-    }
+      } else {
+        if (animatedStatsMap.has(sec.id)) {
+          animatedStatsMap.delete(sec.id);
+          stats.forEach(stat => {
+            stat.textContent = '0';
+          });
+        }
+      }
+    });
   }
 
   function animate3DSceneByScroll(progress) {
@@ -641,6 +690,8 @@ document.addEventListener('DOMContentLoaded', () => {
   function unlockScroll() {
     document.body.style.overflow = '';
     document.documentElement.style.overflow = '';
+    document.body.classList.remove('modal-active');
+    document.body.classList.remove('video-playing');
   }
 
   watchButtons.forEach(btn => {
@@ -666,6 +717,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // Trava scroll da página ao abrir modal
       document.body.style.overflow = 'hidden';
       document.documentElement.style.overflow = 'hidden';
+      document.body.classList.add('modal-active');
 
       // Pausa o vídeo de fundo para economizar recursos (CPU/GPU) e evitar lentidão
       const bgVideoElement = document.getElementById('bg-video');
@@ -701,6 +753,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         // Show modal and loader overlay
         modal.classList.remove('hidden');
+        modal.classList.add('loading'); // Adiciona fundo sólido durante o carregamento
         loaderOverlay.classList.remove('hidden');
         
         // Trigger reflow
@@ -760,11 +813,7 @@ document.addEventListener('DOMContentLoaded', () => {
           videoLoaded = true;
         }
 
-        // Animação fade out da palavra (começa em 1.5s, leva 0.8s)
-        setTimeout(() => {
-          loaderWordText.classList.remove('fade-in');
-          loaderWordText.classList.add('fade-out');
-        }, 1500);
+        // A palavra permanece visível até o loader inteiro sumir (fade junto com a tela)
 
         // Tempo mínimo de exibição do loader (2.3 segundos)
         setTimeout(() => {
@@ -774,47 +823,40 @@ document.addEventListener('DOMContentLoaded', () => {
 
         function checkAndStart() {
           if (videoLoaded && animationDone) {
-            // Inicia a execução correspondente primeiro, tornando-a visível por baixo do overlay
+            // Vídeo já carregou suficientemente — começa a tocar agora (ainda oculto atrás do loader)
             if (videoKey === 'hero' || videoKey === 'quem-somos' || videoKey === 'servicos' || videoKey === 'manutencao' || videoKey === 'locacao' || videoKey === 'venda' || videoKey === 'contato') {
               if (robotSimulation) robotSimulation.style.display = 'none';
               if (modalVideo) {
                 modalVideo.classList.remove('hidden');
                 modalVideo.play().catch(err => console.log("Video playback initiated with error:", err));
               }
-              if (videoVignette) {
-                videoVignette.classList.remove('hidden');
-              }
-              if (modalCloseBtn) {
-                modalCloseBtn.classList.remove('hidden');
-              }
+              if (videoVignette) videoVignette.classList.remove('hidden');
+              if (modalCloseBtn) modalCloseBtn.classList.remove('hidden');
               if (playPauseBtn) playPauseBtn.style.display = 'none';
               waves.forEach(w => w.style.display = 'none');
             } else {
-              if (modalVideo) {
-                modalVideo.classList.add('hidden');
-                modalVideo.src = '';
-              }
-              if (videoVignette) {
-                videoVignette.classList.add('hidden');
-              }
-              if (modalCloseBtn) {
-                modalCloseBtn.classList.add('hidden');
-              }
+              if (modalVideo) { modalVideo.classList.add('hidden'); modalVideo.src = ''; }
+              if (videoVignette) videoVignette.classList.add('hidden');
+              if (modalCloseBtn) modalCloseBtn.classList.add('hidden');
               if (robotSimulation) robotSimulation.style.display = 'flex';
               if (playPauseBtn) playPauseBtn.style.display = 'none';
               waves.forEach(w => w.style.display = 'none');
             }
 
-            // Agora removemos a classe 'active' para fazer o fade out do overlay diretamente por cima do conteúdo ativo
+            modal.classList.remove('loading');
+            document.body.classList.add('video-playing');
+
+            // Assim que o vídeo estiver pronto, fade-out da tela e da palavra juntos em 1s
             loaderOverlay.classList.remove('active');
             setTimeout(() => {
               loaderOverlay.classList.add('hidden');
-            }, 500);
+            }, 1000);
           }
         }
       } else {
         // Fallback caso os elementos do loader não existam
         modal.classList.remove('hidden');
+        modal.classList.remove('loading');
         if (videoKey === 'hero' || videoKey === 'quem-somos' || videoKey === 'servicos' || videoKey === 'manutencao' || videoKey === 'locacao' || videoKey === 'venda' || videoKey === 'contato') {
           if (robotSimulation) robotSimulation.style.display = 'none';
           if (modalVideo) {
