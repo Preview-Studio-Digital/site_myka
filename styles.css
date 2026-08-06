@@ -1041,7 +1041,7 @@ body.scroll-up .garrafal-title .title-word {
     display: flex !important;
     flex-direction: column !important;
     height: 100vh !important;
-    padding-top: 105px !important;
+    padding-top: 80px !important;
     padding-bottom: 40px !important;
     box-sizing: border-box !important;
   }
@@ -1918,7 +1918,7 @@ body.scroll-up .garrafal-title .title-word {
     margin-left: 0 !important;
     margin-right: 0 !important;
     margin-bottom: 0 !important;
-    padding-top: 105px !important;
+    padding-top: 80px !important;
     padding-left: 80px !important;
     padding-right: 80px !important;
     padding-bottom: 40px !important;
@@ -1957,11 +1957,26 @@ body.scroll-up .garrafal-title .title-word {
   .garrafal-title,
   #contato .garrafal-title {
     font-size: 3.5rem !important;
+    order: 1 !important;
+    margin-top: 0 !important;
+    margin-bottom: 16px !important; /* Espaço entre o título e a tag abaixo */
   }
 
   .section-badge {
     font-size: 0.88rem !important;
-    margin-bottom: 25px !important; /* Ajustado no desktop para afastar o mesmo tanto do cabeçalho */
+    order: 2 !important;
+    margin-top: 0 !important;
+    margin-bottom: 24px !important; /* Espaço abaixo da tag */
+    align-self: flex-start !important;
+    width: max-content !important;
+  }
+
+  .watch-btn {
+    order: 3 !important;
+  }
+
+  .bottom-group {
+    order: 4 !important;
   }
 
   .section-desc {
