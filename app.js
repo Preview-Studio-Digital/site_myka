@@ -809,11 +809,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // A palavra permanece visível até o loader inteiro sumir (fade junto com a tela)
 
-        // Tempo mínimo de exibição do loader (2.3 segundos)
+        // Tempo mínimo de exibição do loader (1.5 segundos)
         setTimeout(() => {
           animationDone = true;
           checkAndStart();
-        }, 2300);
+        }, 1500);
 
         function checkAndStart() {
           if (videoLoaded && animationDone) {
