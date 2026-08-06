@@ -76,6 +76,30 @@ document.addEventListener('DOMContentLoaded', () => {
     // 2. Elemento do meio (Botão de Play / Watch)
     const watchBtn = section.querySelector('.watch-btn');
     if (watchBtn) {
+      const sectionKeywords = {
+        'inicio': 'ATUAÇÃO',
+        'hero': 'ATUAÇÃO',
+        'empresa': 'EMPRESA',
+        'quem-somos': 'EMPRESA',
+        'atividades': 'ATIVIDADES',
+        'servicos': 'ATIVIDADES',
+        'manutencao': 'MANUTENÇÃO',
+        'locacao': 'LOCAÇÃO',
+        'venda': 'VENDA',
+        'vendas': 'VENDA',
+        'contato': 'CONTATO'
+      };
+      const sectionKey = section.id;
+      const word = sectionKeywords[sectionKey] || 'MYKA';
+      
+      let btnText = watchBtn.querySelector('.watch-btn-text');
+      if (!btnText) {
+        btnText = document.createElement('span');
+        btnText.className = 'watch-btn-text';
+        watchBtn.appendChild(btnText);
+      }
+      btnText.textContent = word;
+      
       headerRow.appendChild(watchBtn);
     }
 
