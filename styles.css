@@ -96,16 +96,19 @@ body {
 
 /* --- VÍDEO DE FUNDO FIXO (Loop Overlay com Mesclagem) --- */
 #bg-video {
-  display: none;
+  display: block;
   position: absolute;
   top: 0;
-  left: 0;
-  width: 100%;
+  right: 0;
+  width: 50%;
   height: 100%;
   object-fit: cover;
   z-index: 2;
-  opacity: 0.10;           /* Ajustado para 10% de opacidade */
+  opacity: 0.15;           /* Suave overlay */
   mix-blend-mode: screen;
+  pointer-events: none;
+  mask-image: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 100%);
+  -webkit-mask-image: linear-gradient(to right, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 100%);
 }
 
 /* --- WRAPPER E VINHETA LOCALIZADA DO CANVAS DE ANIMACAO --- */
