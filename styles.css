@@ -1059,7 +1059,7 @@ body.scroll-up .garrafal-title .title-word {
 
   .company-stats {
     position: absolute !important;
-    bottom: calc(100% - 10px) !important; /* Posiciona logo acima da descrição base */
+    bottom: calc(100% + 15px) !important; /* Posiciona logo acima da descrição base */
     left: 0 !important;
     display: flex !important;
     flex-direction: column !important;
