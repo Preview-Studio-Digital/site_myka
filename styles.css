@@ -65,7 +65,7 @@ body.is-scrolling ::-webkit-scrollbar-thumb {
 }
 
 body {
-  min-height: 100vh;
+  height: 700vh; /* Altura virtual (7 slides * 100vh) para permitir o scroll do navegador */
   position: relative;
   width: 100%;
   background-color: transparent; /* Permite ver os vídeos fixos atrás */
@@ -120,6 +120,11 @@ body {
   justify-content: center;
   align-items: center;     /* Centraliza vertical e horizontalmente */
   pointer-events: none;
+  transition: filter 0.4s ease;
+}
+
+body.menu-active #scroll-canvas-wrapper {
+  filter: blur(8px);
 }
 
 #scroll-canvas-inner {
@@ -167,13 +172,17 @@ body {
   width: 100%;
   box-sizing: border-box;
   padding: 16px calc(4vw + 16px);
-  z-index: 100;
+  z-index: 1100; /* Aumentado para ficar por cima do modal de vídeo */
   display: flex;
   justify-content: space-between;
   align-items: center; /* Garante que logo e hambúrguer ficam na mesma linha vertical */
   background: linear-gradient(180deg, rgba(var(--bg-color-rgb), 0.9) 0%, rgba(var(--bg-color-rgb), 0) 100%);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+body.modal-active .hud-header {
+  border-bottom: 1px solid transparent !important;
 }
 
 .hud-logo-link {
@@ -228,7 +237,7 @@ body {
   background: transparent;
   border: none;
   cursor: pointer;
-  z-index: 150;
+  z-index: 1250; /* Aumentado para ficar por cima do hud-nav e modal */
   padding: 0;
   margin: 0;
 }
@@ -257,11 +266,11 @@ body {
 /* Navegação Mobile (Padrão) */
 .hud-nav {
   position: fixed;
-  top: 0;
+  top: 74px; /* Começa exatamente abaixo do cabeçalho */
   right: -100%;
   width: 50vw;
   max-width: 240px;
-  height: 100vh;
+  height: calc(100vh - 74px); /* Ocupa apenas o espaço abaixo do cabeçalho */
   background: rgba(7, 10, 17, 0.95);
   border-left: 1px solid var(--border-hud);
   display: flex;
@@ -270,7 +279,7 @@ body {
   align-items: center;
   gap: 24px;
   transition: right 0.4s cubic-bezier(0.77, 0.2, 0.05, 1.0);
-  z-index: 120;
+  z-index: 1200; /* Aumentado para abrir por cima do modal */
 }
 
 /* Blur no fundo do wrapper do site quando o menu está aberto */
@@ -374,35 +383,65 @@ body.is-scrolling .content-wrapper {
   letter-spacing: 2px;
 }
 
-/* --- CONTENT WRAPPER --- */
 .content-wrapper {
-  position: relative;
-  z-index: 10;
+  position: fixed;
+  top: 0;
+  left: 0;
   width: 100%;
+  height: 100vh;
+  z-index: 10;
+  pointer-events: none;
+}
+
+body.modal-active .content-wrapper {
+  z-index: 1020; /* Fica acima do modal-overlay (1000) */
+}
+
+body.modal-active .scrolly-section {
+  pointer-events: none !important;
+}
+
+body.modal-active .bottom-group {
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Oculta título e tag durante o player de vídeo */
+body.modal-active .section-badge,
+body.modal-active .garrafal-title {
+  opacity: 0 !important;
+  transition: opacity 0.3s ease !important;
+}
+
+/* Garante que durante o loading o badge e título fiquem invisíveis */
+body.modal-active:not(.video-playing) .section-badge,
+body.modal-active:not(.video-playing) .garrafal-title {
+  opacity: 0 !important;
+  transition: opacity 0.3s ease !important;
 }
 
 .scrolly-section {
-  min-height: 100vh;
-  padding: 75px 24px 32px 24px;
-  margin-bottom: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  padding: 75px 24px 36px 24px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: flex-start;
-  width: 100%;
-  max-width: none;
-  opacity: 1;
-  transform: none;
-  position: relative;
-}
-
-.scrolly-section:last-child {
-  margin-bottom: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.8s;
+  pointer-events: none;
+  box-sizing: border-box;
 }
 
 .scrolly-section.active {
   opacity: 1;
-  transform: none;
+  visibility: visible;
+  pointer-events: auto;
 }
 
 /* --- CAMADA DE BLUR DE FUNDO PARA TEXTO (DESATIVADA) --- */
@@ -429,17 +468,28 @@ body.is-scrolling .content-wrapper {
   display: none !important;
 }
 
+/* Badge do Slide: Aparece e desaparece com fade in/out na troca de slides */
 .section-badge {
   font-family: var(--font-garrafal);
-  font-size: 0.75rem; /* Aumentado de 0.58rem para melhor destaque */
-  letter-spacing: 1.5px; /* Aumentado espaçamento para melhorar leitura em fonte menor */
+  font-size: 0.75rem;
+  letter-spacing: 1.5px;
   color: var(--accent-cyan);
-  background: rgba(0, 229, 255, 0.06); /* Ligeiramente mais transparente */
-  border: 1px solid rgba(0, 229, 255, 0.15); /* Borda mais fina */
-  padding: 4px 10px; /* Ajustado levemente para acompanhar o tamanho da fonte */
-  border-radius: 4px; /* Formato HUD retangular com cantos suaves */
-  margin-bottom: 12px; /* Reduzido de 24px para liberar espaço vertical */
+  background: rgba(0, 229, 255, 0.06);
+  border: 1px solid rgba(0, 229, 255, 0.15);
+  padding: 4px 10px;
+  border-radius: 4px;
+  margin-bottom: 12px;
   text-transform: uppercase;
+  
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.scrolly-section.active .section-badge {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.2s;
 }
 
 /* LETRAS GARRAFAIS ESTILIZADAS COM ANTON */
@@ -555,10 +605,10 @@ body.is-scrolling .content-wrapper {
 /* Ampliação da palavra MYKA na seção inicial (Início/Hero) para alto contraste */
 #inicio .garrafal-title .brand-highlight,
 #hero .garrafal-title .brand-highlight {
-  font-size: 2.1em; /* Aumentado de 1.5em para 2.1em para destacar massivamente na página inicial */
-  line-height: 0.75; /* Evita que o tamanho gigante empurre a linha para cima */
-  display: inline-block; /* Reativado como inline-block para suportar a correção de deslocamento do line-height */
-  vertical-align: bottom; /* Alinha precisamente a base do bloco com a linha de escrita das demais */
+  font-size: 2.1em;
+  line-height: 0.75;
+  display: inline-block;
+  vertical-align: bottom;
 }
 
 /* Estrutura das linhas do título garrafal para suportar quebras com <br> */
@@ -567,18 +617,18 @@ body.is-scrolling .content-wrapper {
   flex-wrap: wrap;
   column-gap: 8px;
   width: 100%;
-  align-items: baseline; /* Garante que todas as palavras de tamanhos diferentes se alinhem perfeitamente pela base da escrita */
+  align-items: baseline;
 }
 
 .garrafal-title .title-line:not(:last-child) {
-  margin-bottom: 0.22em; /* Aumenta o espaçamento vertical entre as linhas do título */
+  margin-bottom: 0.22em;
 }
 
 /* Destaque azul profundo ampliado para a palavra INDÚSTRIA */
 .garrafal-title .industry-highlight {
-  font-size: 1.45em; /* Aumentado ainda mais para 1.45em */
+  font-size: 1.45em;
   color: #00B0FF !important;
-  letter-spacing: 1px; /* Estilização de espaçamento */
+  letter-spacing: 1px;
   text-shadow: none;
 }
 
@@ -720,7 +770,7 @@ body.is-scrolling .content-wrapper {
   /* Ajustes finos de espaçamento para garantir que todos os slides caibam na tela 100vh sem cortar topo ou base */
   .scrolly-section {
     padding-top: 85px !important;
-    padding-bottom: 48px !important;
+    padding-bottom: 36px !important;
     padding-left: 24px !important;
     padding-right: 24px !important;
     transform: none !important; /* Desativa transformações de transição no mobile para evitar erros de cálculo do scroll */
@@ -743,7 +793,63 @@ body.is-scrolling .content-wrapper {
     margin-top: 6px !important;
   }
 
+  /* Alinhamento dos botões Play e WhatsApp no mobile */
+  .bottom-header-row {
+    position: relative !important;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    width: 100% !important;
+    min-height: 50px !important;
+    margin-bottom: 8px !important;
+  }
+  
+  .company-stats {
+    width: auto !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+  }
 
+  .stats-placeholder {
+    width: 32px !important; /* largura do ícone estatística */
+    height: 32px !important;
+    visibility: hidden;
+  }
+
+  .watch-btn {
+    position: absolute !important;
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, calc(-50% + 12px)) !important; /* Deslocado para baixo quando inativo */
+    margin: 0 !important;
+    z-index: 10 !important;
+    width: 40px !important;
+    height: 40px !important;
+  }
+
+  .scrolly-section.active .watch-btn {
+    transform: translate(-50%, -50%) !important; /* Retorna ao centro quando ativo */
+  }
+  
+  .btn-whatsapp-local {
+    position: relative !important;
+    bottom: auto !important;
+    right: auto !important;
+    width: 50px !important;
+    height: 50px !important;
+    margin: 0 !important;
+    opacity: 0;
+    transform: translateY(12px) !important; /* Deslocado para baixo quando inativo */
+    pointer-events: none;
+    z-index: 10 !important;
+  }
+
+  .scrolly-section.active .btn-whatsapp-local {
+    opacity: 1 !important;
+    transform: translateY(0) !important; /* Retorna ao topo quando ativo */
+    pointer-events: auto !important;
+  }
 }
 
 
@@ -758,48 +864,65 @@ body.scroll-up .garrafal-title .title-word {
   transform: translateY(0) translateZ(0);
 }
 
+/* bottom-group: agrupa ícones + texto; flex:1 no mobile para preencher espaço vertical */
+.bottom-group {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  width: 100%;
+  max-width: 480px;
+  margin-top: auto; /* Empurra todo o grupo para a base */
+}
+
+/* O slide CONTATO precisa preencher o espaço vertical para distribuir os ícones */
+#contato .bottom-group {
+  flex: 1;
+  margin-top: 24px; /* Substitui o auto para garantir que comece logo abaixo do título */
+  justify-content: space-between; /* Distribui entre o card de contato e o texto */
+}
+
+/* Exibe o botão assistir centralizado na tela apenas quando a seção ativa o contiver */
+.scrolly-section.active .watch-btn {
+  opacity: 1;
+  pointer-events: auto;
+}
+
 .section-desc {
   font-size: 0.8rem;
   line-height: 1.65;
   color: #FFFFFF;
-  margin-top: auto; /* Empurra o bloco texto+botões para a base da seção flex */
-  margin-bottom: 0 !important; /* Zerado para evitar espaço extra entre o texto e os botões */
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
   font-weight: 400;
   width: 100%;
   max-width: 100%;
   text-align: justify;
-  border-left: none; /* Barra vertical esquerda removida */
+  border-left: none;
   padding-left: 0;
   margin-left: 0;
   box-sizing: border-box;
-
-  /* Leitura nítida via sombra de texto projetada (sem caixa ou balão de fundo) */
-  text-shadow: none;
-
-  opacity: 1;
-  transform: none;
+  
+  opacity: 1; /* Mantém 100% visível para não piscar */
+  filter: blur(10px); /* Começa desfocado */
+  transition: filter 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* bottom-group: agrupa ícones + texto + botões; flex:1 no mobile para preencher espaço vertical */
-.bottom-group {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  width: 100%;
-  max-width: 480px;
+.scrolly-section.active .section-desc {
+  opacity: 1;
+  filter: blur(0);
+  transition-delay: 0.35s; /* Ajustado para sincronizar com o surgimento do título */
 }
 
 /* --- ESTATÍSTICAS DA EMPRESA (DISTRIBUÍDAS VERTICALMENTE ENTRE TÍTULO E TEXTO) --- */
 .company-stats {
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly;
-  flex: 1;
+  justify-content: flex-start;
   gap: 8px; /* Reduzido de 16px */
   width: 100%;
   max-width: 480px;
   margin-top: 8px; /* Reduzido de 14px */
-  margin-bottom: 8px; /* Reduzido de 14px */
+  margin-bottom: 24px; /* Aumentado para mover para cima, aproveitando o espaço abaixo do título */
   padding: 4px 0; /* Reduzido de 8px 0 */
   align-self: flex-start;
   opacity: 0;
@@ -913,84 +1036,83 @@ body.scroll-up .garrafal-title .title-word {
 
   /* --- DESKTOP: 3 ícones em linha horizontal, logo acima do texto --- */
 
-  /* Botões na mesma posição dos outros slides (mesmo padding inferior) */
   #empresa,
   #quem-somos {
-    padding-top: 85px !important;
-    padding-bottom: 40px !important;
-  }
-
-  /* bottom-group: largura natural do fluxo, expandindo para preencher a tela */
-  #empresa .bottom-group,
-  #quem-somos .bottom-group,
-  #contato .bottom-group {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    max-width: 100%;
-    margin-left: 0;
-    margin-top: 0 !important; /* Permite expansão vertical total a partir do título */
-    gap: 6px;   /* espaço mínimo entre ícones e texto */
-    flex: 1 !important;    /* Permite expansão vertical para alinhar botões na base */
-  }
-
-  @media (min-width: 768px) {
-    #empresa .bottom-group,
-    #quem-somos .bottom-group,
-    #contato .bottom-group {
-      gap: 0 !important; /* Remove gap no desktop para evitar empurrar botões para baixo */
-    }
-  }
-
-  /* 3 ícones dividem o espaço vertical igualmente (repetindo alinhamento mobile) */
-  #empresa .company-stats,
-  #quem-somos .company-stats {
-    display: flex;
+    display: flex !important;
     flex-direction: column !important;
-    justify-content: space-evenly !important;
-    align-items: flex-start;
-    flex: 1 !important;
-    width: 100%;
-    max-width: none;
-    gap: 0 !important;
+    height: 100vh !important;
+    padding-top: 85px !important;
+    padding-bottom: 50px !important;
+    box-sizing: border-box !important;
+  }
+
+  .bottom-group {
+    position: relative !important;
+    display: flex !important;
+    flex-direction: column !important;
+    width: 50vw;
+    max-width: 50vw;
+    margin-left: 0;
+    margin-top: auto !important;
+    min-height: 180px !important; /* Altura mínima garantida para acomodar o bloco */
+  }
+
+  .company-stats {
+    position: absolute !important;
+    bottom: calc(100% - 10px) !important; /* Posiciona logo acima da descrição base */
+    left: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    width: 100% !important;
+    max-width: 100% !important;
     margin: 0 !important;
     padding: 0 !important;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+  }
+
+  .scrolly-section.active .company-stats {
     opacity: 1 !important;
-    transform: none !important;
     pointer-events: auto !important;
   }
 
-  /* Cada ícone em coluna vertical, sem borda lateral */
-  #empresa .stat-item,
-  #quem-somos .stat-item {
+  .stat-item {
     flex: 0 0 auto;
     flex-direction: column;
     align-items: flex-start;
-    gap: 4px;
+    gap: 8px;
     padding: 0;
     border: none;
   }
 
-  #empresa .stat-number-wrapper,
-  #quem-somos .stat-number-wrapper {
-    font-size: 1.1rem; /* Reduzido de 1.4rem */
+  .stat-header-row {
+    gap: 12px !important;
   }
 
-  #empresa .stat-label,
-  #quem-somos .stat-label {
-    font-size: 0.52rem; /* Reduzido de 0.65rem */
-    letter-spacing: 1px;
+  .stat-icon {
+    width: 44px !important;
+    height: 44px !important;
+  }
+
+  .stat-number-wrapper {
+    font-size: 2.8rem !important;
+  }
+
+  .stat-label {
+    font-size: 0.95rem !important;
+    letter-spacing: 1.5px;
+    font-weight: 700;
   }
 }
 
-/* BUTTONS */
 .action-buttons {
   display: flex;
   gap: 12px;
   width: 100%;
-  flex-wrap: nowrap; /* Impede quebra de linha para manter lado a lado */
-  margin: 12px 0 0 0 !important; /* Espaçamento superior igual ao preenchimento lateral dos botões mobile (12px) */
-  
+  flex-wrap: nowrap;
+  margin: 12px 0 0 0 !important;
   opacity: 1;
   transform: none;
   pointer-events: auto;
@@ -1010,8 +1132,8 @@ body.scroll-up .garrafal-title .title-word {
   letter-spacing: 1px;
   transition: all 0.3s ease;
   border: none;
-  flex: 1 1 0; /* Garante que ambos tenham exatamente a mesma largura */
-  min-width: 0; /* Evita que o conteúdo empurre o tamanho */
+  flex: 1 1 0;
+  min-width: 0;
 }
 
 .btn-primary,
@@ -1023,60 +1145,116 @@ body.scroll-up .garrafal-title .title-word {
   backdrop-filter: blur(10px);
 }
 
+/* WhatsApp: Escondido no mobile/desktop porque agora usamos os locais por slide */
 .btn-whatsapp {
-  background: rgba(37, 211, 102, 0.08);
-  color: #25D366;
-  border: 1px solid rgba(37, 211, 102, 0.25);
-  box-shadow: none;
-  backdrop-filter: blur(10px);
+  display: none !important;
 }
 
-.btn-primary:hover,
-.btn-primary:active,
-.btn-secondary:hover,
-.btn-secondary:active {
-  background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-blue) 100%) !important;
-  color: #000 !important;
-  border-color: transparent !important;
-  box-shadow: var(--glow-cyan);
-  transform: translateY(-2px);
+/* Novo layout para linha de botões de ação na base de cada slide */
+.bottom-header-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  position: relative;
 }
 
-.btn-whatsapp:hover,
-.btn-whatsapp:active {
-  background: #25D366 !important;
-  color: #000 !important;
-  border-color: transparent !important;
-  box-shadow: 0 0 15px rgba(37, 211, 102, 0.4);
-  transform: translateY(-2px);
+.stats-placeholder {
+  width: 100px;
+  height: 1px;
+}
+
+.btn-whatsapp-local {
+  position: fixed;
+  bottom: 44px; /* Mantém igual ao original no desktop */
+  right: 24px;
+  width: 50px;
+  height: 50px;
+  background: transparent;
+  color: #25D366; /* Ícone com a cor verde original do WhatsApp */
+  border: none;
+  box-shadow: none; /* Remove o círculo e a sombra ao redor */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  cursor: pointer;
+  transition: opacity 0.5s ease, transform 0.5s ease, color 0.3s ease;
+  transition-delay: 0s;
+  flex: none;
+  opacity: 0;
+  transform: translateY(12px);
+  pointer-events: none;
+}
+
+.scrolly-section.active .btn-whatsapp-local {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+  transition-delay: 0.3s, 0.3s, 0s, 0s, 0s; /* Sincroniza com o company-stats */
+}
+
+.btn-whatsapp-local:hover,
+.btn-whatsapp-local:active {
+  background: transparent !important;
+  color: #20ba5a !important; /* Verde ligeiramente mais escuro no hover */
+  transform: translateY(0) scale(1.1); /* Mantém na posição e aumenta no desktop */
+  box-shadow: none !important;
 }
 
 .whatsapp-btn-icon {
-  width: 14px;
-  height: 14px;
+  width: 40px; /* Aumentado de 24px para 40px */
+  height: 40px; /* Aumentado de 24px para 40px */
   fill: currentColor;
+  filter: drop-shadow(0 2px 8px rgba(37, 211, 102, 0.4)); /* Glow verde sutil no próprio ícone */
 }
 
+/* Assistir: Apenas ícone de Play centralizado nos frames de animação */
 .watch-btn {
-  background: rgba(255, 0, 0, 0.08) !important;
-  color: #ff0000 !important;
-  border: 1px solid rgba(255, 0, 0, 0.25) !important;
-  box-shadow: none !important;
-  backdrop-filter: blur(10px);
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -30%); /* Começa deslocado para surgir deslizando */
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1) !important;
+  color: var(--accent-cyan) !important;
+  border: 1px solid rgba(0, 229, 255, 0.3) !important;
+  box-shadow: 0 0 15px rgba(0, 229, 255, 0.2) !important;
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50; /* Abaixo do HUD mas acima do canvas */
+  cursor: pointer;
+  transition: opacity 0.5s ease, transform 0.5s ease, background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+  transition-delay: 0s;
+  flex: none;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.scrolly-section.active .watch-btn {
+  opacity: 1;
+  transform: translate(-50%, -50%);
+  pointer-events: auto;
+  transition-delay: 0.3s, 0.3s, 0s, 0s, 0s; /* Sincroniza delay com company-stats */
 }
 
 .watch-btn:hover,
 .watch-btn:active {
-  background: #ff0000 !important;
-  color: #fff !important;
+  background: var(--accent-cyan) !important;
+  color: #000 !important;
   border-color: transparent !important;
-  box-shadow: 0 0 15px rgba(255, 0, 0, 0.5) !important;
-  transform: translateY(-2px);
+  box-shadow: var(--glow-cyan) !important;
+  transform: translate(-50%, -52%) scale(1.08);
 }
 
 .play-icon {
-  width: 14px;
-  height: 14px;
+  width: 16px;
+  height: 16px;
   fill: currentColor;
 }
 
@@ -1157,7 +1335,7 @@ body.scroll-up .garrafal-title .title-word {
 #contato .contact-card.minimal.vertical {
   display: flex !important;
   flex-direction: column !important;
-  justify-content: space-evenly !important;
+  justify-content: space-evenly !important; /* Retorna para space-evenly para distribuição idêntica de espaços */
   align-items: flex-start !important;
   flex: 1 !important;
   margin-top: 0 !important; /* Removido margin extra para padronizar com action-buttons */
@@ -1285,7 +1463,7 @@ body.scroll-up .garrafal-title .title-word {
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 99;
+  z-index: 1100; /* Aumentado para ficar por cima do modal de vídeo */
   font-family: var(--font-body);
   font-size: 0.55rem; /* Reduzido para 0.55rem */
   color: var(--text-secondary);
@@ -1327,18 +1505,22 @@ body.scroll-up .garrafal-title .title-word {
 /* --- MODAL VÍDEO FUTURISTA --- */
 .modal-overlay {
   position: fixed;
-  top: 0;
+  top: 74px; /* Ajustado para 74px para overlap do border-bottom do cabeçalho */
   left: 0;
   width: 100vw;
-  height: 100vh;
-  background: #070a11;
+  height: calc(100vh - 106px); /* Altura correspondente descontando cabeçalho (74px) + rodapé (32px) */
+  background: #070a11; /* Fundo sólido original restaurado */
   z-index: 1000;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0;
   opacity: 1;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.3s ease, background 0.5s ease;
+}
+
+.modal-overlay.loading {
+  background: #050814 !important; /* Fundo totalmente sólido durante a tela de carregamento */
 }
 
 .modal-overlay.hidden {
@@ -1350,9 +1532,10 @@ body.scroll-up .garrafal-title .title-word {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  background: #000;
+  background: transparent;
   border: none;
   z-index: 1;
+  opacity: 0.75; /* Vídeo com 75% de opacidade para poder ver o site por trás dele */
 }
 
 .modal-video.hidden {
@@ -1360,15 +1543,7 @@ body.scroll-up .garrafal-title .title-word {
 }
 
 .video-vignette {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  pointer-events: none;
-  background: radial-gradient(circle, rgba(0, 0, 0, 0) 25%, rgba(0, 0, 0, 1) 100%);
-  z-index: 2;
-  transition: opacity 0.3s ease;
+  display: none !important; /* Escondido para usarmos máscara de transparência real no container */
 }
 
 .video-vignette.hidden {
@@ -1397,12 +1572,12 @@ body.scroll-up .garrafal-title .title-word {
 }
 
 .modal-content {
-  background: #070a11;
+  background: transparent; /* Torna o fundo transparente para revelar a página por baixo */
   border: none;
   box-shadow: none;
   width: 100vw;
-  height: 100dvh;
-  max-height: 100dvh;
+  height: 100%;
+  max-height: 100%;
   max-width: 100vw;
   padding: 0;
   margin: 0;
@@ -1718,15 +1893,20 @@ body.scroll-up .garrafal-title .title-word {
   /* Seção em tela cheia no desktop para suportar os números em tela cheia no canto direito */
   .scrolly-section {
     max-width: none !important;
-    width: auto !important;
+    width: 100% !important;
+    height: 100vh !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-between !important;
+    box-sizing: border-box !important;
     margin-top: 0 !important;
     margin-left: 0 !important;
     margin-right: 0 !important;
-    margin-bottom: 0 !important; /* Removido espaço de transição de 1 tela no desktop */
-    padding-top: 85px !important; /* Reduzido de 110px para liberar espaço central */
-    padding-left: 80px !important; /* Alinha os textos e elementos com a logo do cabeçalho */
-    padding-right: 80px !important; /* Respiro lateral direito simétrico */
-    padding-bottom: 40px !important; /* Reduzido de 64px para 40px para diminuir o espaço */
+    margin-bottom: 0 !important;
+    padding-top: 85px !important;
+    padding-left: 80px !important;
+    padding-right: 80px !important;
+    padding-bottom: 50px !important;
   }
 
   .scrolly-section:last-child {
@@ -1776,21 +1956,12 @@ body.scroll-up .garrafal-title .title-word {
     padding-left: 0;
     border-left-width: 0; /* Barra vertical esquerda removida no desktop */
     margin-left: 0;
-    margin-top: auto !important; /* Pushes the description text to the bottom on desktop */
+    margin-top: 0 !important; /* Deixa o fluxo normal atuar, pois bottom-group já é margin-top: auto */
+    margin-bottom: 24px !important;
   }
 
   .action-buttons {
-    max-width: 50vw;
-    width: 50vw;
-    margin: 24px 0 0 0 !important; /* Reduzido de 80px para 24px para aproximar os botões do texto */
-    gap: 16px;
-  }
-
-  .btn {
-    flex: 1;
-    padding: 14px 24px; /* Botões maiores no desktop */
-    font-size: 0.85rem;
-    min-width: 0;
+    display: none !important;
   }
 }
 
@@ -1809,7 +1980,7 @@ body.scroll-up .garrafal-title .title-word {
   justify-content: center;
   align-items: center;
   opacity: 1;
-  transition: opacity 0.8s cubic-bezier(0.25, 1, 0.5, 1), visibility 0.8s;
+  transition: opacity 1s cubic-bezier(0.25, 1, 0.5, 1), visibility 1s;
   pointer-events: auto;
   overflow: hidden;
 }
@@ -1971,14 +2142,15 @@ body.scroll-up .garrafal-title .title-word {
   .modal-content {
     border-radius: 0;
     border: none;
-    height: 100dvh;
-    max-height: 100dvh;
+    height: 100%;
+    max-height: 100%;
     max-width: 100vw;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     padding: 0;
     box-sizing: border-box;
+    background: transparent !important;
   }
 
   .video-container {
@@ -2018,13 +2190,13 @@ body.scroll-up .garrafal-title .title-word {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: #050814; /* Tom de azul escuro profundo para casar perfeitamente com o vídeo de fundo */
+  background-color: #050814;
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 100;
   opacity: 0;
-  transition: opacity 0.5s ease-in-out;
+  transition: opacity 1s ease-in-out;
   pointer-events: none;
 }
 
