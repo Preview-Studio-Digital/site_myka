@@ -1995,7 +1995,7 @@ body.scroll-up .garrafal-title .title-word {
     position: fixed !important;
     top: auto !important;
     left: auto !important;
-    right: 84px !important; /* Lado esquerdo do WhatsApp */
+    right: 22vw !important; /* Lado esquerdo do WhatsApp */
     bottom: 40px !important; /* Alinhado horizontalmente */
     width: auto !important;
     height: auto !important;
