@@ -1225,10 +1225,10 @@ body.scroll-up .garrafal-title .title-word {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.1) !important;
+  background: transparent !important;
   color: var(--accent-cyan) !important;
-  border: 1px solid rgba(0, 229, 255, 0.3) !important;
-  box-shadow: 0 0 15px rgba(0, 229, 255, 0.2) !important;
+  border: 2px solid rgba(0, 229, 255, 0.5) !important;
+  box-shadow: 0 0 15px rgba(0, 229, 255, 0.15) !important;
   backdrop-filter: blur(8px);
   display: flex;
   align-items: center;
@@ -1976,6 +1976,18 @@ body.scroll-up .garrafal-title .title-word {
 
   .watch-btn {
     order: 3 !important;
+    position: fixed !important;
+    top: auto !important;
+    left: auto !important;
+    right: 84px !important; /* Posiciona à esquerda do WhatsApp (que fica a 24px, 50px de largura + 10px de espaço) */
+    bottom: 44px !important; /* Mesma linha vertical do WhatsApp */
+    width: 50px !important;
+    height: 50px !important;
+    transform: translateY(12px) !important; /* Animação de surgir idêntica */
+  }
+
+  .scrolly-section.active .watch-btn {
+    transform: translateY(0) !important;
   }
 
   .bottom-group {
