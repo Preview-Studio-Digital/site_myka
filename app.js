@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Inicialização do Canvas para animação de scroll (Scrollytelling com Frames)
   const scrollCanvas = document.getElementById('scroll-canvas');
-  const frameCount = 122; // Total de frames extraídos do novo vídeo (122)
+  const frameCount = 288; // Total de frames extraídos a 24 FPS (288 frames em 12s)
   const images = [];
   let currentFrameIndex = 0;
   let targetFrameIndex = 0;
