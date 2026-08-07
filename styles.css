@@ -1069,14 +1069,16 @@ body.scroll-up .garrafal-title .title-word {
   }
 
   .company-stats {
-    position: absolute !important;
-    bottom: calc(100% + 15px) !important; /* Posiciona logo acima da descrição base */
-    left: 0 !important;
+    position: fixed !important;
+    top: auto !important;
+    bottom: 40px !important; /* Mesma linha horizontal dos botões */
+    left: 52vw !important; /* Posiciona logo após o fim da descrição (50vw) */
     display: flex !important;
-    flex-direction: column !important;
-    align-items: flex-start !important;
-    width: 100% !important;
-    max-width: 100% !important;
+    flex-direction: row !important; /* Ícones em linha */
+    align-items: center !important;
+    gap: 24px !important;
+    width: auto !important;
+    max-width: none !important;
     margin: 0 !important;
     padding: 0 !important;
     opacity: 0;
