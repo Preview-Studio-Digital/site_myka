@@ -827,10 +827,10 @@ body.modal-active:not(.video-playing) .garrafal-title {
   }
 
   .watch-btn {
-    position: absolute !important;
-    left: 50% !important;
-    top: 50% !important;
-    transform: translate(-50%, calc(-50% + 12px)) !important; /* Deslocado para baixo quando inativo */
+    position: relative !important;
+    left: auto !important;
+    top: auto !important;
+    transform: translateY(12px) !important; /* Deslocado para baixo quando inativo */
     margin: 0 !important;
     z-index: 10 !important;
     width: auto !important;
@@ -838,7 +838,7 @@ body.modal-active:not(.video-playing) .garrafal-title {
   }
 
   .scrolly-section.active .watch-btn {
-    transform: translate(-50%, -50%) !important; /* Retorna ao centro quando ativo */
+    transform: translateY(0) !important; /* Retorna à posição original */
   }
   
   .btn-whatsapp-local {
