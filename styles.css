@@ -1205,7 +1205,7 @@ body.scroll-up .garrafal-title .title-word {
 
 .whatsapp-btn-text {
   display: block; /* Visível por padrão no mobile */
-  font-family: 'Black Ops One', sans-serif;
+  font-family: var(--font-garrafal);
   font-size: 0.6rem; /* Tamanho de fonte móvel */
   color: var(--accent-cyan);
   text-shadow: var(--glow-cyan);
@@ -1268,7 +1268,7 @@ body.scroll-up .garrafal-title .title-word {
 
 .watch-btn-text {
   display: block; /* Visível por padrão */
-  font-family: 'Black Ops One', sans-serif;
+  font-family: var(--font-garrafal);
   font-size: 0.6rem; /* Tamanho de fonte móvel */
   color: var(--accent-cyan);
   text-shadow: var(--glow-cyan);
@@ -2048,7 +2048,7 @@ body.scroll-up .garrafal-title .title-word {
     display: block !important;
     position: static !important; /* Alinhamento estático no fluxo flex vertical */
     transform: none !important;
-    font-family: 'Black Ops One', sans-serif !important; /* Fonte igual à do logo */
+    font-family: var(--font-garrafal) !important; /* Fonte igual à da tag */
     font-size: 1.15rem !important; /* Aumentado no desktop para maior destaque */
     color: var(--accent-cyan) !important;
     text-shadow: var(--glow-cyan) !important;
@@ -2079,7 +2079,7 @@ body.scroll-up .garrafal-title .title-word {
 
   .btn-whatsapp-local .whatsapp-btn-text {
     display: block !important;
-    font-family: 'Black Ops One', sans-serif !important;
+    font-family: var(--font-garrafal) !important;
     font-size: 1.15rem !important;
     color: var(--accent-cyan) !important;
     text-shadow: var(--glow-cyan) !important;
