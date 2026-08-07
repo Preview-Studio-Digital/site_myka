@@ -1005,9 +1005,11 @@ body.scroll-up .garrafal-title .title-word {
   letter-spacing: 1px;
   color: var(--accent-cyan);
   text-transform: uppercase;
-  line-height: 1.3;
+  line-height: 1.2 !important; /* Altura de linha padronizada */
   text-align: center; /* Centraliza as linhas de texto entre si */
   white-space: nowrap !important; /* Texto em uma única linha */
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 @media (min-width: 768px) {
@@ -1218,6 +1220,9 @@ body.scroll-up .garrafal-title .title-word {
   text-transform: uppercase;
   transition: color 0.3s ease, text-shadow 0.3s ease, transform 0.3s ease;
   text-decoration: none !important;
+  line-height: 1.2 !important; /* Altura de linha padronizada */
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 .scrolly-section.active .btn-whatsapp-local {
@@ -1281,6 +1286,9 @@ body.scroll-up .garrafal-title .title-word {
   text-transform: uppercase;
   transition: color 0.3s ease, text-shadow 0.3s ease, transform 0.3s ease;
   text-decoration: none !important;
+  line-height: 1.2 !important; /* Altura de linha padronizada */
+  margin: 0 !important;
+  padding: 0 !important;
 }
 
 .scrolly-section.active .watch-btn {
