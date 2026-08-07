@@ -956,6 +956,8 @@ body.scroll-up .garrafal-title .title-word {
   width: 100%;
   background: transparent;
   border: none;
+  padding: 0 !important; /* Reseta padding */
+  margin: 0 !important;  /* Reseta margin */
   padding-bottom: 0;
 }
 
@@ -1206,6 +1208,8 @@ body.scroll-up .garrafal-title .title-word {
   transform: translateY(12px);
   pointer-events: none;
   text-decoration: none !important; /* Remove sublinhado */
+  padding: 0 !important; /* Reseta padding padrão */
+  margin: 0 !important;  /* Reseta margin padrão */
 }
 
 .whatsapp-btn-text {
@@ -1268,6 +1272,8 @@ body.scroll-up .garrafal-title .title-word {
   z-index: 50; /* Abaixo do HUD mas acima do canvas */
   cursor: pointer;
   transition: opacity 0.5s ease, transform 0.5s ease, color 0.3s ease;
+  padding: 0 !important; /* Reseta padding padrão */
+  margin: 0 !important;  /* Reseta margin padrão */
   transition-delay: 0s;
   flex: none;
   opacity: 0;
