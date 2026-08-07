@@ -1002,7 +1002,7 @@ body.scroll-up .garrafal-title .title-word {
 
 .stat-label {
   font-family: var(--font-garrafal);
-  font-size: 0.58rem; /* Reduzido de 0.68rem */
+  font-size: 0.75rem; /* Sincronizado com o badge no mobile */
   font-weight: 600;
   letter-spacing: 1px;
   color: var(--accent-cyan);
@@ -1039,7 +1039,7 @@ body.scroll-up .garrafal-title .title-word {
   }
 
   .stat-label {
-    font-size: 0.85rem;
+    font-size: 0.88rem !important; /* Sincronizado com o badge no desktop */
     letter-spacing: 1.5px;
   }
 
@@ -1113,7 +1113,7 @@ body.scroll-up .garrafal-title .title-word {
   }
 
   .stat-label {
-    font-size: 0.95rem !important;
+    font-size: 0.88rem !important; /* Sincronizado com o badge no desktop */
     letter-spacing: 1.5px;
     font-weight: 700;
   }
@@ -1206,7 +1206,7 @@ body.scroll-up .garrafal-title .title-word {
 .whatsapp-btn-text {
   display: block; /* Visível por padrão no mobile */
   font-family: var(--font-garrafal);
-  font-size: 0.6rem; /* Tamanho de fonte móvel */
+  font-size: 0.75rem; /* Sincronizado com o badge no mobile */
   color: var(--accent-cyan);
   text-shadow: var(--glow-cyan);
   white-space: nowrap;
@@ -1269,7 +1269,7 @@ body.scroll-up .garrafal-title .title-word {
 .watch-btn-text {
   display: block; /* Visível por padrão */
   font-family: var(--font-garrafal);
-  font-size: 0.6rem; /* Tamanho de fonte móvel */
+  font-size: 0.75rem; /* Sincronizado com o badge no mobile */
   color: var(--accent-cyan);
   text-shadow: var(--glow-cyan);
   white-space: nowrap;
@@ -2049,7 +2049,7 @@ body.scroll-up .garrafal-title .title-word {
     position: static !important; /* Alinhamento estático no fluxo flex vertical */
     transform: none !important;
     font-family: var(--font-garrafal) !important; /* Fonte igual à da tag */
-    font-size: 1.15rem !important; /* Aumentado no desktop para maior destaque */
+    font-size: 0.88rem !important; /* Sincronizado com o badge no desktop */
     color: var(--accent-cyan) !important;
     text-shadow: var(--glow-cyan) !important;
     white-space: nowrap !important;
@@ -2080,7 +2080,7 @@ body.scroll-up .garrafal-title .title-word {
   .btn-whatsapp-local .whatsapp-btn-text {
     display: block !important;
     font-family: var(--font-garrafal) !important;
-    font-size: 1.15rem !important;
+    font-size: 0.88rem !important; /* Sincronizado com o badge no desktop */
     color: var(--accent-cyan) !important;
     text-shadow: var(--glow-cyan) !important;
     white-space: nowrap !important;
