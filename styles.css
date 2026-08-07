@@ -1043,6 +1043,7 @@ body.scroll-up .garrafal-title .title-word {
   .stat-label {
     font-size: 0.88rem !important; /* Sincronizado com o badge no desktop */
     letter-spacing: 1.5px;
+    white-space: nowrap !important; /* Texto em uma única linha */
   }
 
   /* --- DESKTOP: 3 ícones em linha horizontal, logo acima do texto --- */
@@ -1072,7 +1073,7 @@ body.scroll-up .garrafal-title .title-word {
     position: fixed !important;
     top: auto !important;
     bottom: 40px !important; /* Mesma linha horizontal dos botões */
-    left: 52vw !important; /* Posiciona logo após o fim da descrição (50vw) */
+    left: 58vw !important; /* Posiciona um pouco mais para a direita do fim da descrição */
     display: flex !important;
     flex-direction: row !important; /* Ícones em linha */
     align-items: center !important;
@@ -1120,6 +1121,7 @@ body.scroll-up .garrafal-title .title-word {
     font-size: 0.88rem !important; /* Sincronizado com o badge no desktop */
     letter-spacing: 1.5px;
     font-weight: 700;
+    white-space: nowrap !important; /* Texto em uma única linha */
   }
 }
 
