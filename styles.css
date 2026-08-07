@@ -2,6 +2,7 @@
    MYKA COMPRESSORES - DARK MINIMALIST INDUSTRIAL STYLESHEET (MOBILE-FIRST)
    ========================================================================== */
 
+
 :root {
   --bg-color-rgb: 14, 22, 36; /* Azul marinho escuro ligeiramente mais claro para mesclar com as imagens */
   --bg-color: rgb(var(--bg-color-rgb));
@@ -890,6 +891,7 @@ body.modal-active:not(.video-playing) .garrafal-title {
   .scrolly-section.active .stat-item {
     opacity: 1 !important;
     transform: translateY(0) !important;
+    transition-delay: 0.3s !important;
   }
 
   .stats-placeholder {
@@ -1457,7 +1459,8 @@ body.scroll-up .garrafal-title .title-word {
 }
 
 /* CARD DE CONTATO */
-.contact-card {
+.contact-card,
+.contact-cols-container {
   display: flex;
   flex-direction: column;
   gap: 6px; /* Reduzido de 8px para compactar na vertical */
@@ -1473,7 +1476,8 @@ body.scroll-up .garrafal-title .title-word {
   pointer-events: none;
 }
 
-.scrolly-section.active .contact-card {
+.scrolly-section.active .contact-card,
+.scrolly-section.active .contact-cols-container {
   opacity: 1;
   transform: translateY(0);
   transition-delay: 0.5s; /* Surge 0.5s após a seção ficar ativa */
@@ -1482,7 +1486,7 @@ body.scroll-up .garrafal-title .title-word {
 
 
 
-#contato .contact-card.minimal.vertical {
+#contato .contact-card-col {
   display: flex !important;
   flex-direction: column !important;
   justify-content: space-evenly !important; /* Retorna para space-evenly para distribuição idêntica de espaços */
@@ -1512,13 +1516,25 @@ body.scroll-up .garrafal-title .title-word {
 @media (min-width: 768px) {
 
 
-  #contato .contact-card.minimal.vertical {
+  #contato .contact-cols-container {
     display: flex !important;
     flex-direction: column !important;
     width: 50vw !important;
     max-width: 50vw !important; /* Exata largura dos botões superiores e texto no desktop */
     margin-top: 0 !important;
     margin-bottom: 0 !important;
+    gap: 8px !important;
+  }
+
+  #contato .contact-card-col {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+    align-items: flex-start !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    gap: 8px !important;
+    flex: none !important;
   }
 }
 
@@ -1629,9 +1645,75 @@ body.scroll-up .garrafal-title .title-word {
 
 
 
-#contato .contact-card {
+#contato .contact-cols-container {
   margin-top: 0 !important; /* Encostado logo abaixo do botão ASSISTA */
   margin-bottom: 0 !important; /* Rebaixa o último card o máximo possível rente ao rodapé */
+  flex: 1 !important;
+}
+
+/* Regras mobile para as duas colunas independentes de contato */
+@media (max-width: 767px) {
+  #contato .contact-cols-container {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    align-items: stretch !important;
+    width: 100% !important;
+    flex: 1 !important;
+    position: static !important;
+    transform: none !important;
+    padding-bottom: 60px !important; /* Empurra os ícones para cima dentro do frame */
+  }
+
+  #contato .contact-card-col {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: space-evenly !important;
+    width: auto !important;
+    max-width: 48% !important;
+    flex: 1 !important;
+    gap: 8px !important;
+  }
+
+  #contato #contact-icons-col-left {
+    align-items: flex-start !important;
+  }
+
+  #contato #contact-icons-col-right {
+    align-items: flex-end !important;
+  }
+
+  #contato .contact-item-row {
+    position: relative !important;
+  }
+
+  #contato #contact-icons-col-right .contact-item-row {
+    flex-direction: row-reverse !important;
+    justify-content: flex-start !important;
+  }
+
+  #contato .inline-info-banner {
+    position: absolute !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    width: max-content !important;
+    z-index: 100 !important;
+  }
+
+  #contato #contact-icons-col-left .inline-info-banner {
+    left: 44px !important;
+  }
+
+  #contato #contact-icons-col-right .inline-info-banner {
+    right: 44px !important;
+  }
+
+  #contato .inline-info-banner.active {
+    max-width: 70vw !important;
+    opacity: 1 !important;
+    padding: 8px 12px !important;
+    border-width: 1.5px !important;
+  }
 }
 
 .footer-info .copy {
