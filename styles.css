@@ -816,8 +816,8 @@ body.modal-active:not(.video-playing) .garrafal-title {
   
   .company-stats {
     width: auto !important;
-    margin-top: 0 !important;
-    margin-bottom: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
   }
 
   .stats-placeholder {
@@ -972,7 +972,7 @@ body.scroll-up .garrafal-title .title-word {
   justify-content: center !important; /* Centraliza ícone e número na linha */
   gap: 8px !important;
   width: 100% !important;
-  height: 28px !important; /* Altura padronizada no mobile */
+  height: 30px !important; /* Altura padronizada no mobile */
   margin: 0 !important;
 }
 
@@ -1249,12 +1249,12 @@ body.scroll-up .garrafal-title .title-word {
 }
 
 .whatsapp-btn-icon {
-  width: 18px !important; /* Sincronizado com play-icon base (mobile) */
-  height: 18px !important;
+  width: 24px !important; /* Aumentado no mobile para melhor visibilidade */
+  height: 24px !important;
   fill: currentColor;
   filter: drop-shadow(0 0 8px rgba(0, 229, 255, 0.45)); /* Brilho ciano suave padrão */
-  margin-top: 5px !important;
-  margin-bottom: 5px !important;
+  margin-top: 3px !important;
+  margin-bottom: 3px !important;
   display: block !important;
 }
 
@@ -1320,11 +1320,11 @@ body.scroll-up .garrafal-title .title-word {
 }
 
 .play-icon {
-  width: 18px !important; /* Triângulo ligeiramente maior */
-  height: 18px !important;
+  width: 24px !important; /* Aumentado no mobile para melhor visibilidade */
+  height: 24px !important;
   fill: currentColor;
-  margin-top: 5px !important;
-  margin-bottom: 5px !important;
+  margin-top: 3px !important;
+  margin-bottom: 3px !important;
   display: block !important;
   filter: drop-shadow(0 0 5px rgba(0, 229, 255, 0.6));
   transition: transform 0.3s ease, filter 0.3s ease; /* Transições suaves */
