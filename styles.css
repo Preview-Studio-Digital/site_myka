@@ -966,12 +966,14 @@ body.scroll-up .garrafal-title .title-word {
 }
 
 .stat-header-row {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center; /* Centraliza ícone e número na linha */
-  gap: 8px;
-  width: 100%;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: center !important; /* Centraliza ícone e número na linha */
+  gap: 8px !important;
+  width: 100% !important;
+  height: 28px !important; /* Altura padronizada no mobile */
+  margin: 0 !important;
 }
 
 .stat-icon {
@@ -1247,10 +1249,13 @@ body.scroll-up .garrafal-title .title-word {
 }
 
 .whatsapp-btn-icon {
-  width: 18px; /* Sincronizado com play-icon base (mobile) */
-  height: 18px;
+  width: 18px !important; /* Sincronizado com play-icon base (mobile) */
+  height: 18px !important;
   fill: currentColor;
   filter: drop-shadow(0 0 8px rgba(0, 229, 255, 0.45)); /* Brilho ciano suave padrão */
+  margin-top: 5px !important;
+  margin-bottom: 5px !important;
+  display: block !important;
 }
 
 /* Assistir: Apenas ícone de Play centralizado nos frames de animação */
@@ -1315,9 +1320,12 @@ body.scroll-up .garrafal-title .title-word {
 }
 
 .play-icon {
-  width: 18px; /* Triângulo ligeiramente maior */
-  height: 18px;
+  width: 18px !important; /* Triângulo ligeiramente maior */
+  height: 18px !important;
   fill: currentColor;
+  margin-top: 5px !important;
+  margin-bottom: 5px !important;
+  display: block !important;
   filter: drop-shadow(0 0 5px rgba(0, 229, 255, 0.6));
   transition: transform 0.3s ease, filter 0.3s ease; /* Transições suaves */
 }
@@ -2089,9 +2097,19 @@ body.scroll-up .garrafal-title .title-word {
     gap: 8px !important;
   }
 
+  .stat-header-row {
+    height: 48px !important; /* Altura padronizada no desktop */
+    gap: 12px !important;
+    justify-content: center !important;
+    margin: 0 !important;
+  }
+
+  .watch-btn .play-icon,
   .btn-whatsapp-local .whatsapp-btn-icon {
-    width: 26px !important;
+    width: 26px !important; /* Triângulo e WhatsApp maiores no desktop */
     height: 26px !important;
+    margin-top: 11px !important;
+    margin-bottom: 11px !important;
   }
 
   .btn-whatsapp-local .whatsapp-btn-text {
