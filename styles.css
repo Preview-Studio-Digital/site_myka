@@ -815,9 +815,26 @@ body.modal-active:not(.video-playing) .garrafal-title {
   }
   
   .company-stats {
+    display: contents !important;
+  }
+
+  .stat-item {
+    position: relative !important;
+    opacity: 0;
+    transform: translateY(12px) !important;
+    transition: opacity 0.5s ease, transform 0.5s ease !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 4px !important;
     width: auto !important;
-    margin: 0 !important;
-    padding: 0 !important;
+    height: auto !important;
+  }
+
+  .scrolly-section.active .stat-item {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
   }
 
   .stats-placeholder {
