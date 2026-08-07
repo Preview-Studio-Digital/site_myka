@@ -2093,15 +2093,14 @@ body.scroll-up .garrafal-title .title-word {
     font-family: var(--font-garrafal) !important; /* Fonte igual à da tag */
     font-size: 0.88rem !important; /* Sincronizado com o badge no desktop */
     color: var(--accent-cyan) !important;
-    text-shadow: var(--glow-cyan) !important;
     white-space: nowrap !important;
     pointer-events: none !important;
     letter-spacing: 1.5px !important;
   }
 
   .watch-btn .play-icon {
-    width: 26px !important; /* Triângulo maior no desktop */
-    height: 26px !important;
+    width: 44px !important; /* Aumentado no desktop para compatibilidade com os ícones das estatísticas */
+    height: 44px !important;
   }
 
   .btn-whatsapp-local {
@@ -2123,10 +2122,10 @@ body.scroll-up .garrafal-title .title-word {
 
   .watch-btn .play-icon,
   .btn-whatsapp-local .whatsapp-btn-icon {
-    width: 26px !important; /* Triângulo e WhatsApp maiores no desktop */
-    height: 26px !important;
-    margin-top: 11px !important;
-    margin-bottom: 11px !important;
+    width: 44px !important; /* Tamanho idêntico ao .stat-icon */
+    height: 44px !important;
+    margin-top: 2px !important;
+    margin-bottom: 2px !important;
   }
 
   .btn-whatsapp-local .whatsapp-btn-text {
@@ -2134,7 +2133,6 @@ body.scroll-up .garrafal-title .title-word {
     font-family: var(--font-garrafal) !important;
     font-size: 0.88rem !important; /* Sincronizado com o badge no desktop */
     color: var(--accent-cyan) !important;
-    text-shadow: var(--glow-cyan) !important;
     white-space: nowrap !important;
     letter-spacing: 1.5px !important;
     text-decoration: none !important;
