@@ -1041,7 +1041,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (banner && banner.classList.contains('inline-info-banner')) {
         const textSpan = banner.querySelector('.inline-info-text');
         if (textSpan) {
-          textSpan.innerHTML = `<strong style="color: var(--accent-cyan); font-weight: 600;">${titleText}:</strong> ${infoText}`;
+          textSpan.innerHTML = infoText;
         }
         
         btn.classList.add('active-banner-icon');
