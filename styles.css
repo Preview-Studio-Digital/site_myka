@@ -790,6 +790,10 @@ body.modal-active:not(.video-playing) .garrafal-title {
     margin-bottom: 12px !important;
   }
 
+  .bottom-group {
+    order: 3 !important;
+  }
+
   .garrafal-title .title-line:not(:last-child) {
     margin-bottom: 0.1em !important; /* Compactação entre as linhas do próprio título */
   }
