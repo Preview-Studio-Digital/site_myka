@@ -117,8 +117,8 @@ body {
   position: absolute;
   top: 62px;               /* Alinha com a parte inferior do cabeçalho no mobile */
   bottom: 32px;            /* Alinha com o topo do rodapé no mobile */
-  left: -20vw;             /* Expande 20% para fora na borda esquerda */
-  width: 140vw;            /* Ocupa 140% para cobrir o transbordo de 20% de cada lado */
+  left: -40vw;             /* Expande 40% para fora na borda esquerda */
+  width: 180vw;            /* Ocupa 180% para cobrir o transbordo de 40% de cada lado */
   z-index: 1;              /* Atrás do #bg-video */
   display: flex;
   justify-content: center;
@@ -166,6 +166,34 @@ body.menu-active #scroll-canvas-wrapper {
     linear-gradient(0deg, var(--bg-color) 0%, var(--bg-color) 5%, rgba(var(--bg-color-rgb), 0) 40%),
     linear-gradient(270deg, var(--bg-color) 0%, var(--bg-color) 5%, rgba(var(--bg-color-rgb), 0) 40%),
     linear-gradient(90deg, var(--bg-color) 0%, var(--bg-color) 5%, rgba(var(--bg-color-rgb), 0) 40%);
+}
+
+/* --- IDENTIFICADOR DE SLIDE DINÂMICO --- */
+#slide-identifier-hud {
+  position: absolute;
+  /* MOBILE: Centralizado horizontalmente na base do canvas, logo acima do bloco de descrição */
+  top: auto;
+  bottom: 235px;
+  left: 50%;
+  right: auto;
+  transform: translate(-50%, 12px); /* Começa ligeiramente deslocado para cima na transição */
+  font-family: 'Black Ops One', sans-serif;
+  font-size: 2.4rem; /* Tamanho da fonte aumentado no mobile */
+  color: var(--accent-cyan);
+  pointer-events: none;
+  letter-spacing: 2px;
+  text-shadow: 0 0 10px rgba(0, 229, 255, 0.4);
+  
+  /* Animação suave igual aos ícones */
+  opacity: 0;
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+  transition-delay: 0.3s; /* Mesma sincronia dos outros ícones */
+  z-index: 15 !important; /* Fica acima da .content-wrapper (z-index 10) e do bg-container (z-index 0) */
+}
+
+#slide-identifier-hud.active {
+  opacity: 0.15; /* Mais transparente (85% transparente / 15% visível) */
+  transform: translate(-50%, 0); /* Estado ativo centralizado horizontalmente */
 }
 
 /* --- HUD HEADER --- */
@@ -473,20 +501,7 @@ body.modal-active:not(.video-playing) .garrafal-title {
 
 /* Badge do Slide: Aparece e desaparece com fade in/out na troca de slides */
 .section-badge {
-  font-family: var(--font-garrafal);
-  font-size: 0.75rem;
-  letter-spacing: 1.5px;
-  color: var(--accent-cyan);
-  background: rgba(0, 229, 255, 0.06);
-  border: 1px solid rgba(0, 229, 255, 0.15);
-  padding: 4px 10px;
-  border-radius: 4px;
-  margin-bottom: 12px;
-  text-transform: uppercase;
-  
-  opacity: 0;
-  transform: translateY(-10px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
+  display: none !important;
 }
 
 .scrolly-section.active .section-badge {
@@ -1088,7 +1103,7 @@ body.scroll-up .garrafal-title .title-word {
   text-transform: uppercase;
   line-height: 1.2 !important; /* Altura de linha padronizada */
   text-align: center; /* Centraliza as linhas de texto entre si */
-  white-space: nowrap !important; /* Texto em uma única linha */
+  white-space: normal !important; /* Permite a quebra de linha */
   margin: 0 !important;
   padding: 0 !important;
   text-shadow: var(--glow-cyan); /* Glow de neon para combinar com os outros */
@@ -1105,6 +1120,7 @@ body.scroll-up .garrafal-title .title-word {
 
   .stat-item {
     gap: 14px;
+    max-width: 110px; /* Limita a largura para forçar a quebra em duas linhas */
   }
 
   .stat-icon {
@@ -1124,7 +1140,7 @@ body.scroll-up .garrafal-title .title-word {
   .stat-label {
     font-size: 0.88rem !important; /* Sincronizado com o badge no desktop */
     letter-spacing: 1.5px;
-    white-space: nowrap !important; /* Texto em uma única linha */
+    white-space: normal !important; /* Permite quebrar em duas linhas */
   }
 
   /* --- DESKTOP: 3 ícones em linha horizontal, logo acima do texto --- */
@@ -1190,19 +1206,24 @@ body.scroll-up .garrafal-title .title-word {
   }
 
   .stat-icon {
-    width: 44px !important;
-    height: 44px !important;
+    width: 32px !important;
+    height: 32px !important;
   }
 
   .stat-number-wrapper {
-    font-size: 2.8rem !important;
+    font-size: 1.8rem !important; /* Aumentado para 1.8rem */
+  }
+
+  .stat-item {
+    max-width: 140px !important; /* Limita a largura dos itens para forçar a quebra em duas linhas em todos os slides */
+    gap: 4px !important; /* Reduz o espaço vertical entre o ícone/número e a legenda */
   }
 
   .stat-label {
     font-size: 0.88rem !important; /* Sincronizado com o badge no desktop */
     letter-spacing: 1.5px;
     font-weight: 500 !important;
-    white-space: nowrap !important; /* Texto em uma única linha */
+    white-space: normal !important; /* Permite quebrar em duas linhas */
   }
 }
 
@@ -1299,7 +1320,8 @@ body.scroll-up .garrafal-title .title-word {
   font-weight: 500; /* Igualando a espessura */
   color: var(--accent-cyan);
   text-shadow: var(--glow-cyan);
-  white-space: nowrap;
+  white-space: normal; /* Permite a quebra de linha com <br> */
+  text-align: center; /* Centraliza as duas linhas */
   pointer-events: none;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -1308,6 +1330,12 @@ body.scroll-up .garrafal-title .title-word {
   line-height: 1.2 !important; /* Altura de linha padronizada */
   margin: 0 !important;
   padding: 0 !important;
+}
+
+.whatsapp-btn-sub {
+  font-size: 0.75rem;
+  display: inline-block;
+  margin-top: 2px;
 }
 
 .scrolly-section.active .btn-whatsapp-local {
@@ -1339,10 +1367,7 @@ body.scroll-up .garrafal-title .title-word {
 
 /* Assistir: Apenas ícone de Play centralizado nos frames de animação */
 .watch-btn {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -30%); /* Começa deslocado para surgir deslizando */
+  position: static !important; /* Static para se alinhar na linha .bottom-header-row no mobile */
   display: flex;
   flex-direction: column; /* Organiza triângulo acima do texto */
   align-items: center;
@@ -1359,7 +1384,7 @@ body.scroll-up .garrafal-title .title-word {
   padding: 0 !important; /* Reseta padding padrão */
   margin: 0 !important;  /* Reseta margin padrão */
   transition-delay: 0s;
-  flex: none;
+  flex: 1 !important; /* Faz ocupar espaço igual na proporção da linha */
   opacity: 0;
   pointer-events: none;
 }
@@ -1371,7 +1396,8 @@ body.scroll-up .garrafal-title .title-word {
   font-weight: 500; /* Igualando a espessura */
   color: var(--accent-cyan);
   text-shadow: var(--glow-cyan);
-  white-space: nowrap;
+  white-space: normal; /* Permite a quebra de linha com <br> */
+  text-align: center; /* Centraliza as linhas de texto */
   pointer-events: none;
   letter-spacing: 1px;
   text-transform: uppercase;
@@ -1382,9 +1408,15 @@ body.scroll-up .garrafal-title .title-word {
   padding: 0 !important;
 }
 
+.watch-btn-sub {
+  font-size: 0.75rem; /* Ajustado para ter o mesmo tamanho da linha superior */
+  display: inline-block;
+  margin-top: 2px;
+}
+
 .scrolly-section.active .watch-btn {
   opacity: 1;
-  transform: translate(-50%, -50%);
+  transform: translateY(0);
   pointer-events: auto;
   transition-delay: 0.3s, 0.3s, 0s, 0s, 0s; /* Sincroniza delay com company-stats */
 }
@@ -2039,21 +2071,25 @@ body.scroll-up .garrafal-title .title-word {
   #scroll-canvas-wrapper {
     top: 65px !important;    /* Alinha com a parte inferior do cabeçalho no desktop (65px) */
     bottom: 40px !important; /* Alinha com o topo do rodapé no desktop (40px) */
-    left: 0 !important;
-    width: 100vw !important;
+    left: 25vw !important;   /* Desloca 25% para a direita no desktop */
+    width: 75vw !important;  /* Reduz a largura para não transbordar pela direita */
     height: calc(100vh - 105px) !important; /* Altura total subtraindo cabeçalho (65px) e rodapé (40px) */
   }
 
   #scroll-canvas-inner {
-    width: 100% !important;
+    width: auto !important;
     height: 100% !important;
     max-width: none !important;
     max-height: none !important;
-    aspect-ratio: auto !important;
+    aspect-ratio: 16 / 9 !important; /* Força a proporção nativa da animação */
   }
 
   #scroll-canvas {
-    object-fit: cover !important; /* Preenche toda a área sem esticar, recortando se necessário */
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: contain !important; /* Garante que a animação inteira apareça sem cortes */
   }
 
   #scroll-canvas-vignette {
@@ -2063,6 +2099,21 @@ body.scroll-up .garrafal-title .title-word {
       linear-gradient(0deg, var(--bg-color) 0%, rgba(var(--bg-color-rgb), 0) 30%),
       linear-gradient(270deg, var(--bg-color) 0%, rgba(var(--bg-color-rgb), 0) 30%),
       linear-gradient(90deg, var(--bg-color) 0%, rgba(var(--bg-color-rgb), 0) 30%) !important;
+  }
+
+  #slide-identifier-hud {
+    top: calc(65px + 20px) !important; /* Logo abaixo do cabeçalho desktop (65px) */
+    bottom: auto !important; /* Reseta o bottom do mobile */
+    left: auto !important; /* Reseta o left do mobile */
+    right: 80px !important; /* Afastado 80px da margem direita (mesma margem do cabeçalho) */
+    font-size: 5rem !important; /* Fonte aumentada no desktop */
+    text-align: right !important; /* Garante alinhamento de texto à direita */
+    transform: translateY(12px) !important; /* Reseta o translate(-50%) do mobile */
+  }
+
+  #slide-identifier-hud.active {
+    opacity: 0.125 !important; /* Opacidade reduzida no desktop */
+    transform: translateY(0) !important; /* Reseta o translate(-50%) do mobile */
   }
 
   .hud-header .brand-text {
@@ -2209,7 +2260,7 @@ body.scroll-up .garrafal-title .title-word {
     order: 3 !important;
     position: fixed !important;
     top: auto !important;
-    left: 76vw !important; /* Redistribuído para ficar exatamente no meio após o ajuste do WhatsApp */
+    left: 74vw !important; /* Posicionado no meio exato entre as estatísticas (58vw) e o WhatsApp (90vw) */
     right: auto !important;
     bottom: 46px !important; /* Ajustado para alinhar com a base do texto descritivo */
     width: auto !important;
@@ -2254,7 +2305,8 @@ body.scroll-up .garrafal-title .title-word {
 
   .btn-whatsapp-local {
     bottom: 46px !important; /* Ajustado para alinhar com a base do texto descritivo */
-    right: 80px !important; /* Alinhado com a margem do cabeçalho */
+    left: 90vw !important; /* Fixado em vw para manter espaçamento constante de 16vw: 58vw -> 74vw -> 90vw */
+    right: auto !important;
     width: auto !important;
     height: auto !important;
     display: flex !important;
