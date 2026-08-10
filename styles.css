@@ -171,29 +171,31 @@ body.menu-active #scroll-canvas-wrapper {
 /* --- IDENTIFICADOR DE SLIDE DINÂMICO --- */
 #slide-identifier-hud {
   position: absolute;
-  /* MOBILE: Centralizado horizontalmente na base do canvas, logo acima do bloco de descrição */
+  /* MOBILE: Centralizado horizontalmente logo acima da linha de ícones (.bottom-header-row) sem encostar */
   top: auto;
-  bottom: 235px;
+  bottom: calc(100% + 10px); /* 10px acima do topo de .bottom-header-row */
   left: 50%;
   right: auto;
   transform: translate(-50%, 12px); /* Começa ligeiramente deslocado para cima na transição */
   font-family: 'Black Ops One', sans-serif;
-  font-size: 2.4rem; /* Tamanho da fonte aumentado no mobile */
+  font-size: 3.4rem; /* Tamanho da fonte aumentado no mobile */
   color: var(--accent-cyan);
   pointer-events: none;
   letter-spacing: 2px;
   text-shadow: 0 0 10px rgba(0, 229, 255, 0.4);
+  white-space: nowrap;
   
   /* Animação suave igual aos ícones */
   opacity: 0;
-  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
-  transition-delay: 0.3s; /* Mesma sincronia dos outros ícones */
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  transition-delay: 0s; /* Esconde imediatamente ao sair */
   z-index: 15 !important; /* Fica acima da .content-wrapper (z-index 10) e do bg-container (z-index 0) */
 }
 
 #slide-identifier-hud.active {
   opacity: 0.15; /* Mais transparente (85% transparente / 15% visível) */
   transform: translate(-50%, 0); /* Estado ativo centralizado horizontalmente */
+  transition-delay: 0.1s; /* Surgimento sincronizado com o surgimento do slide */
 }
 
 /* --- HUD HEADER --- */
@@ -437,9 +439,10 @@ body.modal-active .bottom-group {
   pointer-events: none !important;
 }
 
-/* Oculta título e tag durante o player de vídeo */
+/* Oculta título, HUD e textos do site durante o player de vídeo */
 body.modal-active .section-badge,
-body.modal-active .garrafal-title {
+body.modal-active .garrafal-title,
+body.modal-active #slide-identifier-hud {
   opacity: 0 !important;
   transition: opacity 0.3s ease !important;
 }
@@ -487,7 +490,7 @@ body.modal-active:not(.video-playing) .garrafal-title {
 }
 
 /* Ajuste específico para desktop (cobrindo apenas a área do texto no lado esquerdo) */
-@media (min-width: 1024px) {
+@media (min-width: 1024px) and (min-aspect-ratio: 13/10) {
   .text-blur-bg {
     width: 60%;
     background: transparent;
@@ -741,7 +744,7 @@ body.modal-active:not(.video-playing) .garrafal-title {
   font-size: 1.15em !important;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 1023px), (max-aspect-ratio: 13/10) {
   #bg-video {
     width: 100% !important;
     left: 0 !important;
@@ -845,8 +848,8 @@ body.modal-active:not(.video-playing) .garrafal-title {
   .scrolly-section {
     padding-top: 72px !important;
     padding-bottom: 36px !important;
-    padding-left: 24px !important;
-    padding-right: 24px !important;
+    padding-left: calc(4vw + 16px) !important;
+    padding-right: calc(4vw + 16px) !important;
     transform: none !important; /* Desativa transformações de transição no mobile para evitar erros de cálculo do scroll */
     transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) !important, visibility 0.8s !important;
   }
@@ -863,6 +866,8 @@ body.modal-active:not(.video-playing) .garrafal-title {
 
   .bottom-group {
     order: 3 !important;
+    width: 100% !important;
+    max-width: 100% !important;
   }
 
   .garrafal-title .title-line:not(:last-child) {
@@ -881,7 +886,7 @@ body.modal-active:not(.video-playing) .garrafal-title {
     align-items: flex-end !important; /* Alinha os textos na mesma linha na base */
     justify-content: space-between !important;
     width: 100% !important;
-    min-height: 50px !important;
+    min-height: 82px !important;
     margin-bottom: 8px !important;
   }
   
@@ -969,7 +974,7 @@ body.scroll-up .garrafal-title .title-word {
   flex-direction: column;
   justify-content: flex-end;
   width: 100%;
-  max-width: 480px;
+  max-width: 100%;
   margin-top: auto; /* Empurra todo o grupo para a base */
 }
 
@@ -1019,7 +1024,7 @@ body.scroll-up .garrafal-title .title-word {
   justify-content: flex-start;
   gap: 8px; /* Reduzido de 16px */
   width: 100%;
-  max-width: 480px;
+  max-width: 100%;
   margin-top: 8px; /* Reduzido de 14px */
   margin-bottom: 24px; /* Aumentado para mover para cima, aproveitando o espaço abaixo do título */
   padding: 4px 0; /* Reduzido de 8px 0 */
@@ -1109,7 +1114,7 @@ body.scroll-up .garrafal-title .title-word {
   text-shadow: var(--glow-cyan); /* Glow de neon para combinar com os outros */
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1024px) and (min-aspect-ratio: 13/10) {
   .company-stats {
     max-width: 540px;
     gap: 20px;
@@ -1545,7 +1550,7 @@ body.scroll-up .garrafal-title .title-word {
 
 
 
-@media (min-width: 768px) {
+@media (min-width: 1024px) and (min-aspect-ratio: 13/10) {
 
 
   #contato .contact-cols-container {
@@ -1684,7 +1689,7 @@ body.scroll-up .garrafal-title .title-word {
 }
 
 /* Regras mobile para as duas colunas independentes de contato */
-@media (max-width: 767px) {
+@media (max-width: 1023px), (max-aspect-ratio: 13/10) {
   #contato .contact-cols-container {
     display: flex !important;
     flex-direction: row !important;
@@ -1769,11 +1774,11 @@ body.scroll-up .garrafal-title .title-word {
 /* --- MODAL VÍDEO FUTURISTA --- */
 .modal-overlay {
   position: fixed;
-  top: 74px; /* Ajustado para 74px para overlap do border-bottom do cabeçalho */
+  top: 60px; /* Encosta perfeitamente na base do cabeçalho */
   left: 0;
   width: 100vw;
-  height: calc(100vh - 106px); /* Altura correspondente descontando cabeçalho (74px) + rodapé (32px) */
-  background: #070a11; /* Fundo sólido original restaurado */
+  height: calc(100vh - 60px); /* Preenche da base do cabeçalho até o final da tela */
+  background: var(--bg-color) !important; /* Cor de fundo azul marinho escuro do cabeçalho (rgb(14, 22, 36)) */
   z-index: 1000;
   display: flex;
   align-items: center;
@@ -1784,7 +1789,7 @@ body.scroll-up .garrafal-title .title-word {
 }
 
 .modal-overlay.loading {
-  background: #050814 !important; /* Fundo totalmente sólido durante a tela de carregamento */
+  background: var(--bg-color) !important;
 }
 
 .modal-overlay.hidden {
@@ -1799,24 +1804,36 @@ body.scroll-up .garrafal-title .title-word {
   background: transparent;
   border: none;
   z-index: 1;
-  opacity: 0.75; /* Vídeo com 75% de opacidade para poder ver o site por trás dele */
+  opacity: 1;
 }
 
 .modal-video.hidden {
   display: none !important;
 }
 
-.video-vignette {
-  display: none !important; /* Escondido para usarmos máscara de transparência real no container */
-}
-
+/* Vinheta em meio termo perfeito (degradê radial e sombra interna equilibrados na cor azul do cabeçalho) */
+.video-vignette,
 .video-vignette.hidden {
-  display: none !important;
+  display: block !important;
+  position: absolute !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  pointer-events: none !important;
+  z-index: 100 !important; /* Fica acima da simulação do vídeo e do robô */
+  background: radial-gradient(
+    ellipse 72% 72% at center,
+    rgba(14, 22, 36, 0) 25%,
+    rgba(14, 22, 36, 0.6) 62%,
+    rgba(14, 22, 36, 0.95) 95%
+  ) !important;
+  box-shadow: inset 0 0 80px 35px rgba(14, 22, 36, 0.9) !important;
 }
 
 .video-close-btn {
   position: absolute;
-  bottom: 70px; /* Subido de 20px para 70px */
+  bottom: 70px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 1010;
@@ -1836,7 +1853,7 @@ body.scroll-up .garrafal-title .title-word {
 }
 
 .modal-content {
-  background: transparent; /* Torna o fundo transparente para revelar a página por baixo */
+  background: transparent;
   border: none;
   box-shadow: none;
   width: 100vw;
@@ -1859,6 +1876,7 @@ body.scroll-up .garrafal-title .title-word {
   justify-content: center;
   width: 100%;
   height: 100%;
+  position: relative;
 }
 
 .robot-video-simulation {
@@ -2062,7 +2080,7 @@ body.scroll-up .garrafal-title .title-word {
 }
 
 /* RESPONSIVIDADE (DESKTOP ENHANCEMENT) */
-@media (min-width: 768px) {
+@media (min-width: 1024px) and (min-aspect-ratio: 13/10) {
   .hud-header {
     padding-left: 80px !important; /* Logo afastada 80px da borda esquerda */
     padding-right: 80px !important; /* Menu afastado 80px da borda direita */
@@ -2102,18 +2120,22 @@ body.scroll-up .garrafal-title .title-word {
   }
 
   #slide-identifier-hud {
+    position: fixed !important;
     top: calc(65px + 20px) !important; /* Logo abaixo do cabeçalho desktop (65px) */
     bottom: auto !important; /* Reseta o bottom do mobile */
     left: auto !important; /* Reseta o left do mobile */
     right: 80px !important; /* Afastado 80px da margem direita (mesma margem do cabeçalho) */
-    font-size: 5rem !important; /* Fonte aumentada no desktop */
+    font-size: 3.2rem !important; /* Fonte reduzida no desktop */
     text-align: right !important; /* Garante alinhamento de texto à direita */
     transform: translateY(12px) !important; /* Reseta o translate(-50%) do mobile */
+    transition: opacity 0.3s ease, transform 0.3s ease !important;
+    transition-delay: 0s !important;
   }
 
   #slide-identifier-hud.active {
     opacity: 0.125 !important; /* Opacidade reduzida no desktop */
     transform: translateY(0) !important; /* Reseta o translate(-50%) do mobile */
+    transition-delay: 0.1s !important;
   }
 
   .hud-header .brand-text {
@@ -2168,7 +2190,7 @@ body.scroll-up .garrafal-title .title-word {
   }
 
   /* Ajustes específicos para tablets e notebooks com telas menores para evitar encavalamento do cabeçalho */
-  @media (min-width: 768px) and (max-width: 1150px) {
+  @media (min-width: 1024px) and (max-width: 1200px) and (min-aspect-ratio: 13/10) {
     .hud-header {
       padding-left: 30px !important;
       padding-right: 30px !important;
@@ -2343,6 +2365,11 @@ body.scroll-up .garrafal-title .title-word {
     text-decoration: none !important;
   }
 
+  .watch-btn-sub,
+  .whatsapp-btn-sub {
+    font-size: inherit !important;
+  }
+
   .bottom-group {
     order: 4 !important;
   }
@@ -2511,7 +2538,7 @@ body.scroll-up .garrafal-title .title-word {
   animation: shimmer-blue-glow 3.7s infinite ease-in-out 0.4s;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 1023px) {
   .intro-line-1 {
     font-size: 1.1rem;
     letter-spacing: 4px;
@@ -2532,8 +2559,10 @@ body.scroll-up .garrafal-title .title-word {
 }
 
 /* Modal Responsivo Tela Cheia no Mobile */
-@media (max-width: 767px) {
+@media (max-width: 1023px) {
   .modal-overlay {
+    top: 60px !important;
+    height: calc(100vh - 60px) !important;
     padding: 0;
   }
 
@@ -2706,7 +2735,7 @@ body.scroll-up .garrafal-title .title-word {
   animation: shimmer-blue-glow 3.7s infinite ease-in-out 0.4s;
 }
 
-@media (max-width: 767px) {
+@media (max-width: 1023px) {
   .intro-line-1 {
     font-size: 1.1rem;
     letter-spacing: 4px;
@@ -2726,7 +2755,7 @@ body.scroll-up .garrafal-title .title-word {
 }
 
 /* Modal Responsivo Tela Cheia no Mobile */
-@media (max-width: 767px) {
+@media (max-width: 1023px) {
   .modal-overlay {
     padding: 0;
   }
@@ -2823,7 +2852,7 @@ body.scroll-up .garrafal-title .title-word {
   transform: scale(1.05);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1023px) {
   .loader-word {
     font-size: 2.6rem; /* Reduzido de 3.2rem para 2.6rem */
     letter-spacing: 3px;

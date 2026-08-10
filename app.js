@@ -149,6 +149,33 @@ document.addEventListener('DOMContentLoaded', () => {
     sectionLinks[sec.id] = document.querySelector(`#hud-navigation a[href="#${sec.id}"]`);
   });
 
+  let slideIdHudTimer = null;
+  function updateSlideIdentifier(newText, activeSection) {
+    const slideIdHud = document.getElementById('slide-identifier-hud');
+    if (!slideIdHud) return;
+
+    if (slideIdHudTimer) {
+      clearTimeout(slideIdHudTimer);
+    }
+
+    // 1. Inicia a animação de saída (fade out e deslocamento para baixo)
+    slideIdHud.classList.remove('active');
+
+    // 2. Anexa ao container da linha de ícones (.bottom-header-row) da seção ativa
+    slideIdHudTimer = setTimeout(() => {
+      if (activeSection) {
+        const headerRow = activeSection.querySelector('.bottom-header-row');
+        if (headerRow && slideIdHud.parentElement !== headerRow) {
+          headerRow.appendChild(slideIdHud);
+        }
+      }
+      slideIdHud.textContent = newText;
+      // Força o navegador a processar o reflow no estado inativo (opacity: 0, translateY: 12px) antes da entrada
+      void slideIdHud.offsetWidth;
+      slideIdHud.classList.add('active');
+    }, 200);
+  }
+
   // Separar os títulos das seções em blocos de palavras/linhas para efeito em cascata
   const titleElements = document.querySelectorAll('.garrafal-title');
   titleElements.forEach(title => {
@@ -157,7 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   function formatTitles() {
-    const isMobile = window.innerWidth < 768;
+    const isMobile = window.innerWidth < 1024 || (window.innerWidth / window.innerHeight) <= 1.3;
     titleElements.forEach(title => {
       let htmlContent = title.getAttribute('data-original-html');
       if (title.closest('#inicio') || title.closest('#hero')) {
@@ -237,7 +264,7 @@ document.addEventListener('DOMContentLoaded', () => {
   formatTitles();
 
   // Escuta alteração do tamanho de tela e formata dinamicamente sem necessidade de recarregar F12
-  const resizeMediaQuery = window.matchMedia('(max-width: 767px)');
+  const resizeMediaQuery = window.matchMedia('(max-width: 1023px), (max-aspect-ratio: 13/10)');
   try {
     resizeMediaQuery.addEventListener('change', formatTitles);
   } catch (e) {
@@ -513,22 +540,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     const sectionNames = ["ATUAÇÃO", "EMPRESA", "ATIVIDADES", "MANUTENÇÃO", "LOCAÇÃO", "VENDA", "CONTATO"];
-    const slideIdHud = document.getElementById('slide-identifier-hud');
-    if (slideIdHud) {
-      slideIdHud.classList.remove('active'); // Remove temporariamente para reiniciar a animação
-    }
+    updateSlideIdentifier(sectionNames[currentStep] || "MYKA", sections[currentStep]);
 
     sections.forEach((sec, idx) => {
       const link = sectionLinks[sec.id];
       if (idx === currentStep) {
         sec.classList.add('active');
         if (link) link.classList.add('active');
-        if (slideIdHud && sectionNames[idx]) {
-          slideIdHud.textContent = sectionNames[idx];
-          // Força reflow para reiniciar animação de entrada
-          void slideIdHud.offsetWidth;
-          slideIdHud.classList.add('active');
-        }
       } else {
         sec.classList.remove('active');
         if (link) link.classList.remove('active');
