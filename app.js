@@ -372,6 +372,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let compressorGroup, robotGroup, factoryParticles;
   let currentScrollFraction = 0;
   let lastScrollY = window.scrollY;
+  let lastStep = -1;
 
   function init3D() {
     scene = new THREE.Scene();
@@ -539,19 +540,22 @@ document.addEventListener('DOMContentLoaded', () => {
       stepIndicator.textContent = `0${currentStep + 1} / 07`;
     }
 
-    const sectionNames = ["ATUAÇÃO", "EMPRESA", "ATIVIDADES", "MANUTENÇÃO", "LOCAÇÃO", "VENDA", "CONTATO"];
-    updateSlideIdentifier(sectionNames[currentStep] || "MYKA", sections[currentStep]);
+    if (currentStep !== lastStep) {
+      lastStep = currentStep;
+      const sectionNames = ["ATUAÇÃO", "EMPRESA", "ATIVIDADES", "MANUTENÇÃO", "LOCAÇÃO", "VENDA", "CONTATO"];
+      updateSlideIdentifier(sectionNames[currentStep] || "MYKA", sections[currentStep]);
 
-    sections.forEach((sec, idx) => {
-      const link = sectionLinks[sec.id];
-      if (idx === currentStep) {
-        sec.classList.add('active');
-        if (link) link.classList.add('active');
-      } else {
-        sec.classList.remove('active');
-        if (link) link.classList.remove('active');
-      }
-    });
+      sections.forEach((sec, idx) => {
+        const link = sectionLinks[sec.id];
+        if (idx === currentStep) {
+          sec.classList.add('active');
+          if (link) link.classList.add('active');
+        } else {
+          sec.classList.remove('active');
+          if (link) link.classList.remove('active');
+        }
+      });
+    }
 
     // Animação dos contadores da seção EMPRESA
     animateCompanyStats();
