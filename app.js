@@ -1096,6 +1096,58 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
+  // LÓGICA DE SCROLL SNAP PERSONALIZADA
+  let snapTimer = null;
+  let isSnapping = false;
+
+  function stopSnap() {
+    isSnapping = false;
+    if (snapTimer) {
+      clearTimeout(snapTimer);
+      snapTimer = null;
+    }
+  }
+
+  // Cancela o snap se o usuário interagir ativamente durante o processo
+  window.addEventListener('wheel', stopSnap, { passive: true });
+  window.addEventListener('touchstart', stopSnap, { passive: true });
+  window.addEventListener('touchmove', stopSnap, { passive: true });
+  window.addEventListener('keydown', stopSnap, { passive: true });
+
+  window.addEventListener('scroll', () => {
+    // Se o modal de vídeo estiver aberto, não faz snap
+    if (modal && !modal.classList.contains('hidden')) return;
+    if (isSnapping) return;
+
+    if (snapTimer) {
+      clearTimeout(snapTimer);
+    }
+
+    snapTimer = setTimeout(() => {
+      const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+      if (totalHeight <= 0) return;
+
+      const stepSize = totalHeight / (sections.length - 1);
+      const currentScroll = window.scrollY;
+      const targetIndex = Math.round(currentScroll / stepSize);
+      const targetTop = targetIndex * stepSize;
+
+      // Só executa o snap se o usuário não estiver já posicionado no slide exato
+      if (Math.abs(currentScroll - targetTop) > 5) {
+        isSnapping = true;
+        window.scrollTo({
+          top: targetTop,
+          behavior: 'smooth'
+        });
+
+        // Libera a trava do snap após a animação de scroll terminar (média de 600ms)
+        setTimeout(() => {
+          isSnapping = false;
+        }, 600);
+      }
+    }, 250); // 250ms após parar de rolar
+  }, { passive: true });
+
   // INICIALIZAÇÃO
   // init3D(); // Desativado temporariamente para remover o fundo 3D
   // render();
