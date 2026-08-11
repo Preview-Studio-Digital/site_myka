@@ -173,12 +173,12 @@ body.menu-active #scroll-canvas-wrapper {
   position: absolute;
   /* MOBILE: Centralizado horizontalmente logo acima da linha de ícones (.bottom-header-row) sem encostar */
   top: auto;
-  bottom: calc(100% + 10px); /* 10px acima do topo de .bottom-header-row */
+  bottom: calc(100% - 20px); /* Ajustado para a posição exata solicitada */
   left: 50%;
   right: auto;
   transform: translate(-50%, 12px); /* Começa ligeiramente deslocado para cima na transição */
   font-family: 'Black Ops One', sans-serif;
-  font-size: 3.4rem; /* Tamanho da fonte aumentado no mobile */
+  font-size: 2.6rem; /* Ajustado no mobile para balancear legibilidade e tamanho da tela */
   color: var(--accent-cyan);
   pointer-events: none;
   letter-spacing: 2px;
@@ -193,7 +193,7 @@ body.menu-active #scroll-canvas-wrapper {
 }
 
 #slide-identifier-hud.active {
-  opacity: 0.15; /* Mais transparente (85% transparente / 15% visível) */
+  opacity: 0.25; /* Opacidade aumentada para 0.25 (75% transparente / 25% visível) */
   transform: translate(-50%, 0); /* Estado ativo centralizado horizontalmente */
   transition-delay: 0.1s; /* Surgimento sincronizado com o surgimento do slide */
 }
@@ -775,10 +775,10 @@ body.modal-active:not(.video-playing) .garrafal-title {
     font-size: 11.5vw !important;
   }
   #empresa .garrafal-title .title-line:nth-child(2) {
-    font-size: 7.5vw !important;
+    font-size: 10vw !important;
   }
   #empresa .garrafal-title .title-line:nth-child(3) {
-    font-size: 5.8vw !important;
+    font-size: 8.5vw !important;
   }
 
   /* Slide 3 (Atividades) - MANUTENÇÃO. / LOCAÇÃO. / VENDA. */
@@ -811,10 +811,10 @@ body.modal-active:not(.video-playing) .garrafal-title {
     font-size: 12.5vw !important;
   }
   #locacao .garrafal-title .title-line:nth-child(2) {
-    font-size: 8.5vw !important;
+    font-size: 11vw !important;
   }
   #locacao .garrafal-title .title-line:nth-child(3) {
-    font-size: 6.8vw !important;
+    font-size: 9.5vw !important;
   }
 
   /* Slide 6 (Venda) - PROCEDÊNCIA. / VARIEDADE. / PREÇO. */
