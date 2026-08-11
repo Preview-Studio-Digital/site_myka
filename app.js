@@ -135,6 +135,18 @@ document.addEventListener('DOMContentLoaded', () => {
   const robotSpeechText = document.getElementById('robot-speech-text');
   const watchButtons = document.querySelectorAll('.watch-btn');
 
+  // Inicializa o estado de assistido a partir do localStorage
+  watchButtons.forEach(btn => {
+    let videoKey = btn.getAttribute('data-video');
+    if (videoKey === 'inicio') videoKey = 'hero';
+    if (videoKey === 'empresa') videoKey = 'quem-somos';
+    if (videoKey === 'atividades') videoKey = 'servicos';
+    
+    if (localStorage.getItem(`video_assistido_${videoKey}`) === 'true') {
+      btn.classList.add('assistido');
+    }
+  });
+
   // Lógica do Menu Hambúrguer (Mobile)
   const menuToggleBtn = document.getElementById('menu-toggle-btn');
   const hudNavigation = document.getElementById('hud-navigation');
@@ -756,6 +768,10 @@ document.addEventListener('DOMContentLoaded', () => {
       if (videoKey === 'inicio') videoKey = 'hero';
       if (videoKey === 'empresa') videoKey = 'quem-somos';
       if (videoKey === 'atividades') videoKey = 'servicos';
+
+      // Marca o vídeo como assistido localmente
+      localStorage.setItem(`video_assistido_${videoKey}`, 'true');
+      btn.classList.add('assistido');
 
       const info = videoTransmissions[videoKey] || videoTransmissions['hero'];
       
