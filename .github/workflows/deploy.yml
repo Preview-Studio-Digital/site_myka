@@ -1,25 +1,31 @@
-name: Deploy to Netlify
+name: Deploy to Locaweb via FTP
 
 on:
   push:
     branches:
       - main
-      - master
+  workflow_dispatch:
 
 jobs:
-  deploy:
+  web-deploy:
+    name: Deploy
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Repository
+      - name: 🚚 Obter código mais recente
         uses: actions/checkout@v4
 
-      - name: Deploy to Netlify
-        uses: nwtgck/actions-netlify@v3
+      - name: 📂 Sincronizar arquivos com a Locaweb via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          publish-dir: './'
-          production-deploy: true
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          deploy-message: "Deploy automatico via GitHub Actions"
-        env:
-          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: Web/
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/.github*
+            **/.github*/**
+            **/node_modules/**
+            *.md
+
