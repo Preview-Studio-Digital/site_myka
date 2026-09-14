@@ -847,21 +847,26 @@ document.addEventListener('DOMContentLoaded', () => {
         if (videoKey === 'hero' || videoKey === 'quem-somos' || videoKey === 'servicos' || videoKey === 'manutencao' || videoKey === 'locacao' || videoKey === 'venda' || videoKey === 'contato') {
           if (modalVideo) {
             modalVideo.classList.add('hidden');
-            let videoSrc = 'video-slide1.webm';
+            
+            // Detecta suporte a WebM (se não suportar, como no iPad/Safari, usa MP4)
+            const supportsWebM = !!(modalVideo.canPlayType && modalVideo.canPlayType('video/webm; codecs="vp8, opus"').replace(/no/, '') || modalVideo.canPlayType('video/webm; codecs="vp9, opus"').replace(/no/, ''));
+            const ext = supportsWebM ? '.webm' : '.mp4';
+
+            let videoBase = 'video-slide1';
             if (videoKey === 'quem-somos') {
-              videoSrc = 'video-slide2.webm';
+              videoBase = 'video-slide2';
             } else if (videoKey === 'servicos') {
-              videoSrc = 'video-slide3.webm';
+              videoBase = 'video-slide3';
             } else if (videoKey === 'manutencao') {
-              videoSrc = 'video-slide4.webm';
+              videoBase = 'video-slide4';
             } else if (videoKey === 'locacao') {
-              videoSrc = 'video-slide5.webm';
+              videoBase = 'video-slide5';
             } else if (videoKey === 'venda') {
-              videoSrc = 'video-slide6.webm';
+              videoBase = 'video-slide6';
             } else if (videoKey === 'contato') {
-              videoSrc = 'video-slide7.webm';
+              videoBase = 'video-slide7';
             }
-            modalVideo.src = videoSrc + '?t=' + Date.now();
+            modalVideo.src = videoBase + ext + '?t=' + Date.now();
             modalVideo.load();
             
             // Eventos de carregamento do vídeo

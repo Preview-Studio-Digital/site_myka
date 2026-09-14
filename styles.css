@@ -754,89 +754,89 @@ body.modal-active:not(.video-playing) .garrafal-title {
   }
 
 
-  /* --- AJUSTE DE ESCALA DOS TÍTULOS PARA OCUPAR A LARGURA DA TELA (MOBILE) --- */
+  /* --- AJUSTE DE ESCALA DOS TÍTULOS PARA OCUPAR A LARGURA DA TELA (MOBILE / TABLET / IPAD) --- */
   
   /* Slide 1 (Início) - A MYKA NO / PULMÃO DA SUA / INDÚSTRIA */
   #inicio .garrafal-title .title-line:nth-child(1),
   #hero .garrafal-title .title-line:nth-child(1) {
-    font-size: 10vw !important;
+    font-size: 7.8vw !important;
   }
   #inicio .garrafal-title .title-line:nth-child(2),
   #hero .garrafal-title .title-line:nth-child(2) {
-    font-size: 8vw !important;
+    font-size: 6.2vw !important;
   }
   #inicio .garrafal-title .title-line:nth-child(3),
   #hero .garrafal-title .title-line:nth-child(3) {
-    font-size: 6vw !important;
+    font-size: 4.8vw !important;
   }
 
   /* Slide 2 (Empresa) - RESPONSABILIDADE. / PROFISSIONALISMO. / EXPERIÊNCIA. */
   #empresa .garrafal-title .title-line:nth-child(1) {
-    font-size: 11.5vw !important;
+    font-size: 8.8vw !important;
   }
   #empresa .garrafal-title .title-line:nth-child(2) {
-    font-size: 10vw !important;
+    font-size: 7.6vw !important;
   }
   #empresa .garrafal-title .title-line:nth-child(3) {
-    font-size: 8.5vw !important;
+    font-size: 6.5vw !important;
   }
 
   /* Slide 3 (Atividades) - MANUTENÇÃO. / LOCAÇÃO. / VENDA. */
   #atividades .garrafal-title .title-line:nth-child(1),
   #servicos .garrafal-title .title-line:nth-child(1) {
-    font-size: 15vw !important;
+    font-size: 11.2vw !important;
   }
   #atividades .garrafal-title .title-line:nth-child(2),
   #servicos .garrafal-title .title-line:nth-child(2) {
-    font-size: 13vw !important;
+    font-size: 9.8vw !important;
   }
   #atividades .garrafal-title .title-line:nth-child(3),
   #servicos .garrafal-title .title-line:nth-child(3) {
-    font-size: 10.5vw !important;
+    font-size: 8.0vw !important;
   }
 
   /* Slide 4 (Manutenção) - PREVENÇÃO. / PREDIÇÃO. / CORREÇÃO. */
   #manutencao .garrafal-title .title-line:nth-child(1) {
-    font-size: 17vw !important;
+    font-size: 12.5vw !important;
   }
   #manutencao .garrafal-title .title-line:nth-child(2) {
-    font-size: 14.5vw !important;
+    font-size: 10.8vw !important;
   }
   #manutencao .garrafal-title .title-line:nth-child(3) {
-    font-size: 9.2vw !important;
+    font-size: 7.2vw !important;
   }
 
   /* Slide 5 (Locação) - DISPONIBILIDADE. / FLEXIBILIDADE. / AGILIDADE. */
   #locacao .garrafal-title .title-line:nth-child(1) {
-    font-size: 12.5vw !important;
+    font-size: 9.6vw !important;
   }
   #locacao .garrafal-title .title-line:nth-child(2) {
-    font-size: 11vw !important;
+    font-size: 8.4vw !important;
   }
   #locacao .garrafal-title .title-line:nth-child(3) {
-    font-size: 9.5vw !important;
+    font-size: 7.2vw !important;
   }
 
   /* Slide 6 (Venda) - PROCEDÊNCIA. / VARIEDADE. / PREÇO. */
   #venda .garrafal-title .title-line:nth-child(1) {
-    font-size: 16vw !important;
+    font-size: 11.8vw !important;
   }
   #venda .garrafal-title .title-line:nth-child(2) {
-    font-size: 13vw !important;
+    font-size: 9.8vw !important;
   }
   #venda .garrafal-title .title-line:nth-child(3) {
-    font-size: 10vw !important;
+    font-size: 7.6vw !important;
   }
 
   /* Slide 7 (Contato) - CREDIBILIDADE. / CONFIANÇA. / PROTEÇÃO. */
   #contato .garrafal-title .title-line:nth-child(1) {
-    font-size: 14vw !important;
+    font-size: 10.5vw !important;
   }
   #contato .garrafal-title .title-line:nth-child(2) {
-    font-size: 11vw !important;
+    font-size: 8.4vw !important;
   }
   #contato .garrafal-title .title-line:nth-child(3) {
-    font-size: 8.5vw !important;
+    font-size: 6.5vw !important;
   }
 
   .footer-info {
